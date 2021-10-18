@@ -10,6 +10,7 @@ sudo apt update && sudo apt install isc-dhcp-server
 ```
 
 En `/etc/default/isc-dhcp-server`:
+
 - Descomentar la línea: `DHCPDv4_CONF=/etc/dhcp/dhcpd.conf`
 - Especificar por qué interfaz escuchará y servirá IPs: `INTERFACESv4="eth1"`  
 
@@ -188,9 +189,10 @@ end
 ```
 
 Vemos que son correctos los parámetros:
+
 - Rango de IP
 - Máscara
-- Tiempo de concesión (*ha pasado un rato desde que pedí configuración hasta que hice el copypaste, por eso el lifetime ha bajado*)
+- Tiempo de concesión *(ha pasado un rato desde que pedí configuración hasta que hice el copypaste, por eso el lifetime ha bajado)*
 
 ```
 vagrant@cliente:~$ ip r
