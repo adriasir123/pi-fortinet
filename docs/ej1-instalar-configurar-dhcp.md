@@ -9,7 +9,7 @@
 sudo apt update && sudo apt install isc-dhcp-server
 ```
 
-En `/etc/default/isc-dhcp-server`:  
+En `/etc/default/isc-dhcp-server`:
 - Descomentar la línea: `DHCPDv4_CONF=/etc/dhcp/dhcpd.conf`
 - Especificar por qué interfaz escuchará y servirá IPs: `INTERFACESv4="eth1"`  
 
