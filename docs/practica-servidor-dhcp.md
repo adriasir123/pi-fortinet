@@ -210,34 +210,39 @@ Ethernet adapter Ethernet 2:
 En `nodolan1`:
 
 - Cambiar `/etc/network/interfaces`:
-  ```
-  allow-hotplug eth0
-  iface eth0 inet dhcp
-    post-up ip route del default dev $IFACE || true
 
-  auto eth1
-  iface eth1 inet dhcp
-  ```
+```
+allow-hotplug eth0
+iface eth0 inet dhcp
+  post-up ip route del default dev $IFACE || true
+
+auto eth1
+iface eth1 inet dhcp
+```
+
 - Pedir configuración:  
-  ```
-  sudo dhclient eth1
-  ```
+
+```
+sudo dhclient eth1
+```
 
 En `nodolan2`:
 
 - Cambiar `/etc/network/interfaces`:
-  ```
-  allow-hotplug eth0
-  iface eth0 inet dhcp
-    post-up ip route del default dev $IFACE || true
 
-  auto eth1
-  iface eth1 inet dhcp
-  ```
-- Pedir configuración:  
-  ```
-  sudo dhclient eth1
-  ```
+```
+allow-hotplug eth0
+iface eth0 inet dhcp
+  post-up ip route del default dev $IFACE || true
+
+auto eth1
+iface eth1 inet dhcp
+```
+- Pedir configuración:
+
+```
+sudo dhclient eth1
+```
 
 En `nodowin10`:
 ```
