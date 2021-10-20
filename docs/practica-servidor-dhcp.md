@@ -624,7 +624,8 @@ Ethernet adapter Ethernet 2:
 
 ## Tarea 6
 > Realizar un playbook en ansible que configure el servidor como:
-- DHCP
+>
+>- DHCP
 - Router-NAT
 
 <https://github.com/adriasir123/servidor-dhcp-ansible>
