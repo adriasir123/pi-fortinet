@@ -2,7 +2,8 @@
 
 ## Tarea 1
 > Escenario Vagrant:
-- Servidor:
+>
+>- Servidor:
   - NAT para dar salida a Internet *(la tratamos como si fuera una pública)*
   - Privada1 (veryisolated)
   - Privada2 (veryisolated)
