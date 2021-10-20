@@ -3,13 +3,13 @@
 ## Tarea 1
 > Escenario Vagrant:
 >
->- Servidor:
+> - Servidor:
 >   - NAT para dar salida a Internet *(la tratamos como si fuera una >pública)*
 >   - Privada1 (veryisolated)
 >   - Privada2 (veryisolated)
->- nodo_lan1: cliente conectado a privada1
->- nodo_lan2: cliente conectado a privada2
->- nodowin10: cliente conectado a privada1
+> - nodo_lan1: cliente conectado a privada1
+> - nodo_lan2: cliente conectado a privada2
+> - nodowin10: cliente conectado a privada1
 
 ```
 Vagrant.configure("2") do |config|
