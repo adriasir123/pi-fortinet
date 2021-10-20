@@ -5,13 +5,13 @@ theme:
   palette: 
     - scheme: default
       primary: pink
-      accent: yellow
+      accent: pink
       toggle:
         icon: material/toggle-switch-off-outline
         name: Switch to dark mode
     - scheme: slate 
       primary: pink
-      accent: yellow
+      accent: pink
       toggle:
         icon: material/toggle-switch
         name: Switch to light mode
@@ -25,7 +25,8 @@ nav:
         - 'app-web-estatica': '2021-10-5-implantacion-despliegue-aplicacion-web-estatica.md'
         - 'ej2-pr-pag-compañero': '2021-10-14-ej2-pr-pag-compañero.md'
         - 'Ej1 DHCP': 'ej1-instalar-configurar-dhcp.md'
-        - 'Ej2 reserva DHCP': 'ej2-reserva-dhcp.md' 
+        - 'Ej2 reserva DHCP': 'ej2-reserva-dhcp.md'
+        - 'Práctica DHCP': 'practica-servidor-dhcp.md'
     - About: about.md
 extra:
   disqus: conocimiento-en-bits-neocities-org
