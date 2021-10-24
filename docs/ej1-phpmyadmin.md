@@ -30,6 +30,10 @@
 ### Paso 1
 > Accede desde el terminal a la base de datos con el root (con contraseña) y crea una base de datos y un usuario que tenga permiso sobre ella.
 
+instalar mariadb
+secure installation
+
+
 
 ### Paso 2
 > Instala desde los repositorios la aplicación phpmyadmin. Accede al servidor, al directorio phpmyadmin y comprueba que tienes acceso.
