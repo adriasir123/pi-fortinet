@@ -17,7 +17,7 @@ theme:
         name: Switch to light mode
 nav:
     - Home: index.md
-    - 2asir3:
+    - 2º ASIR3:
         - 'ej1-playbook-sencillo': '2021-09-22-ej1-playbook-sencillo.md'
         - 'ej1-pull-request': '2021-09-22-ej1-pull-request.md'
         - 'ej2-router-nat-vagrant': '2021-10-1-ej2-router-nat-vagrant.md'
@@ -27,6 +27,7 @@ nav:
         - 'Ej1 DHCP': 'ej1-instalar-configurar-dhcp.md'
         - 'Ej2 reserva DHCP': 'ej2-reserva-dhcp.md'
         - 'Práctica DHCP': 'practica-servidor-dhcp.md'
+        - 'Ej1 Mapeo de URLs': 'ej1-mapeo-urls-al-sistema-ficheros.md'
     - About: about.md
 extra:
   disqus: conocimiento-en-bits-neocities-org
