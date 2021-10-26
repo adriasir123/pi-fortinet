@@ -4,9 +4,9 @@
 ## ENTREGA
 
 ### Parte 1
-> Captura donde se vea la base de datos que has creado en el punto 1.
+> Captura donde se vea la base de datos creada en el punto 1
 
-![]()
+![](https://i.imgur.com/jGOUM30.png)
 
 ### Parte 2
 > ¿Cómo has quitado la configuración de acceso a phpmyadmin en el punto 5?
@@ -22,15 +22,11 @@ sudo systemctl restart apache2
 ![](https://i.imgur.com/Mzphzd1.png)
 
 ### Parte 4
-> Entrega una captura con el acceso a phpmyadmin con el usuario que creaste en el punto 1.
+> Captura accediendo a phpmyadmin con el usuario del punto 1
 
-![]()
+![](https://i.imgur.com/OdWmih8.png)
 
-
-
-
-
-
+A la derecha en rojo muestro el campo donde se indica con qué usuario hemos iniciado sesión.
 
 
 
@@ -289,11 +285,13 @@ Muestro que accedo a phpmyadmin desde nombre y funciona:
 > Acceder a phpmyadmin con el usuario del punto 1 `phpmyadmin_user`
 
 A la derecha vemos que estamos conectados con el usuario requerido:
-![](https://i.imgur.com/LVQhDru.png)
+![](https://i.imgur.com/OdWmih8.png)
 
 
 > Comprobar que podemos gestionar su base de datos
 
-Muestro que creo una tabla
+Muestro que puedo *crear una tabla*:
+![](https://i.postimg.cc/zBSfMwFr/phpmyadmin-crear-tabla.gif)
 
-Muestro que borror una tabla
+Muestro que puedo *borrar una tabla*:
+![](https://i.postimg.cc/76QRqdVM/phpmyadmin-borrar-tabla.gif)
