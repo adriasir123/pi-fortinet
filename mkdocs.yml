@@ -31,6 +31,7 @@ nav:
             - 'Ejercicio 1 Mapeo de URLs': 'ej1-mapeo-urls-al-sistema-ficheros.md'
         - IAW:
             - 'Ejercicio 1 phpMyAdmin': 'ej1-phpmyadmin.md'
+            - 'Ejercicio 2 BookMedik': 'ej2-bookmedik.md'
     - About: about.md
 extra:
   disqus: conocimiento-en-bits-neocities-org
