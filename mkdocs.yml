@@ -28,7 +28,8 @@ nav:
             - 'Ej1 DHCP': 'ej1-instalar-configurar-dhcp.md'
             - 'Ej2 reserva DHCP': 'ej2-reserva-dhcp.md'
             - 'Práctica DHCP': 'practica-servidor-dhcp.md'
-            - 'Ejercicio 1 Mapeo de URLs': 'ej1-mapeo-urls-al-sistema-ficheros.md'
+            - 'Ejercicio 1: Mapeo de URLs': 'ej1-mapeo-urls-al-sistema-ficheros.md'
+            - 'Ejercicio 5: VPS': 'ej5-vps.md'
         - IAW:
             - 'Ejercicio 1 phpMyAdmin': 'ej1-phpmyadmin.md'
             - 'Ejercicio 2 BookMedik': 'ej2-bookmedik.md'
