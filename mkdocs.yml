@@ -18,9 +18,6 @@ theme:
 nav:
     - Home: index.md
     - 2º ASIR3:
-        - 'ej1-pull-request': '2021-09-22-ej1-pull-request.md'
-        - 'app-web-estatica': '2021-10-5-implantacion-despliegue-aplicacion-web-estatica.md'
-        - 'ej2-pr-pag-compañero': '2021-10-14-ej2-pr-pag-compañero.md'
         - SRI:
             - 'ej1-playbook-sencillo': '2021-09-22-ej1-playbook-sencillo.md'
             - 'ej2-router-nat-vagrant': '2021-10-1-ej2-router-nat-vagrant.md'
@@ -31,6 +28,9 @@ nav:
             - 'Ejercicio 1: Mapeo de URLs': 'ej1-mapeo-urls-al-sistema-ficheros.md'
             - 'Ejercicio 5: VPS': 'ej5-vps.md'
         - IAW:
+            - 'ej1-pull-request': '2021-09-22-ej1-pull-request.md'
+            - 'app-web-estatica': '2021-10-5-implantacion-despliegue-aplicacion-web-estatica.md'
+            - 'ej2-pr-pag-compañero': '2021-10-14-ej2-pr-pag-compañero.md'
             - 'Ejercicio 1 phpMyAdmin': 'ej1-phpmyadmin.md'
             - 'Ejercicio 2 BookMedik': 'ej2-bookmedik.md'
     - About: about.md
