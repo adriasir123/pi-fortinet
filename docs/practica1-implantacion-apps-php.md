@@ -143,7 +143,7 @@ Configuración de email:
 
 ![](https://i.imgur.com/Ihe4gzV.png)
 
-Configuraciónd del tablón:
+Configuración del tablón:
 
 ![](https://i.imgur.com/FvNbCsi.png)
 
@@ -387,7 +387,7 @@ La única diferencia es que ahora, se accede a la BD remotamente.
 ## Tarea 3: Instalación de ConcreteCMS
 
 ### Paso 1
-> Configurar otro VirtualHost, ahora con `ServerName` www.adrianjaramillo-concretecms.org
+> Configurar otro VirtualHost, ahora con `ServerName` `www.adrianjaramillo-concretecms.org`
 
 ```
 <VirtualHost *:80>
@@ -485,11 +485,13 @@ Accedemos a `www.adrianjaramillo-concretecms.org` y comenzamos:
 Tenemos todos los requerimientos, así que podemos seguir.
 
 Datos de la cuenta admin introducidos:
+
 - Email: adristudy@gmail.com
 - Username: admin *(no aparece en la instalación, pero es así)*
 - Password: admin
 
 Datos de conexión a la BD introducidos:
+
 - Server: 10.0.0.3
 - Username: ConcreteCMS_user
 - Password: 1234
