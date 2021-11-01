@@ -1,6 +1,6 @@
 # Práctica: Implantación de aplicaciones web PHP
 
-## Tarea 0
+## Tarea 0: Preliminares
 
 ### Paso 1
 > Mostrar escenario Vagrant
@@ -259,9 +259,6 @@ Muestro que funciona:
 ![](https://i.postimg.cc/fyn7BtDy/phpbb-video-embebido.gif)
 
 
-> En este momento, muestra al profesor la aplicación funcionando en local
-
-
 
 ## Tarea 2: Configuración multinodo
 
@@ -351,7 +348,7 @@ sudo systemctl restart mariadb
 > Desinstalar mariadb en el servidor principal
 
 ```
-sudo apt purge mariadb-server
+sudo apt purge "mariadb*"
 ```
 
 ### Paso 8
@@ -385,62 +382,279 @@ Solamente hemos modificado la variable `$dbhost`, porque lo único que ha cambia
 
 La única diferencia es que ahora, se accede a la BD remotamente.
 
-### Paso 10
-> Mostrar al profesor la aplicación funcionando en local
 
 
-## Tarea 3: Instalación de concrete5
+## Tarea 3: Instalación de ConcreteCMS
 
-> Configura otro VirtualHost con `ServerName` www.adrianjaramillo-concrete5.org
-> Crear BD para concrete5
-> Crear usuario con permisos sobre `concrete5_db`
-> Descargar concrete5
-> Instalación de concrete5
+### Paso 1
+> Configurar otro VirtualHost, ahora con `ServerName` www.adrianjaramillo-concretecms.org
+
+```
+<VirtualHost *:80>
+	# The ServerName directive sets the request scheme, hostname and port that
+	# the server uses to identify itself. This is used when creating
+	# redirection URLs. In the context of virtual hosts, the ServerName
+	# specifies what hostname must appear in the request's Host: header to
+	# match this virtual host. For the default virtual host (this file) this
+	# value is not decisive as it is used as a last resort host regardless.
+	# However, you must set it for any further virtual host explicitly.
+
+	ServerName www.adrianjaramillo-concretecms.org
+	DocumentRoot /var/www/ConcreteCMS
+
+	# Available loglevels: trace8, ..., trace1, debug, info, notice, warn,
+	# error, crit, alert, emerg.
+	# It is also possible to configure the loglevel for particular
+	# modules, e.g.
+	#LogLevel info ssl:warn
+
+	ErrorLog ${APACHE_LOG_DIR}/error.log
+	CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+	# For most configuration files from conf-available/, which are
+	# enabled or disabled at a global level, it is possible to
+	# include a line for only one particular virtual host. For example the
+	# following line enables the CGI configuration for this host only
+	# after it has been globally disabled with "a2disconf".
+	#Include conf-available/serve-cgi-bin.conf
+</VirtualHost>
+
+# vim: syntax=apache ts=4 sw=4 sts=4 sr noet
+```
+
+Lo habilito:
+```
+sudo a2ensite ConcreteCMS.conf
+```
+
+Reinicio Apache:
+```
+sudo systemctl restart apache2
+```
+
+Modifico mi `/etc/hosts`:
+```
+# practica-implantacion-apps-php resolutions
+192.168.121.31 www.adrianjaramillo-phpBB.org
+192.168.121.31 www.adrianjaramillo-concretecms.org
+```
+
+### Paso 2
+> Crear BD para ConcreteCMS
+
+```
+CREATE DATABASE `ConcreteCMS_db`;
+```
+
+### Paso 3
+> Crear usuario con permisos sobre `ConcreteCMS_db`
+
+```
+CREATE USER 'ConcreteCMS_user' IDENTIFIED BY '1234';
+
+GRANT USAGE ON *.* TO 'ConcreteCMS_user'@'%' IDENTIFIED BY '1234';
+
+GRANT ALL privileges ON `ConcreteCMS_db`.* TO 'ConcreteCMS_user'@'%';
+
+FLUSH PRIVILEGES;
+```
+
+### Paso 4
+> Descargar ConcreteCMS
+
+```
+sudo wget https://www.concretecms.com/download_file/61dab82f-fb01-47bc-8cf1-deffff890224
+sudo unzip 61dab82f-fb01-47bc-8cf1-deffff890224
+sudo mv concrete5-8.5.6 ConcreteCMS
+```
+
+Todo este proceso lo hago sobre `/var/www`, para que el directorio resultante coincida con el `DocumentRoot` del VirtualHost previamente configurado.
+
+ConcreteCMS va a necesitar escribir sobre su DocumentRoot, así que cambiamos los propietarios a `www-data`:
+```
+sudo chown -R www-data:www-data /var/www/ConcreteCMS
+```
+
+### Paso 5
+> Instalación de ConcreteCMS
+
+Accedemos a `www.adrianjaramillo-concretecms.org` y comenzamos:
+
+![](https://i.imgur.com/VlpENcH.png)
+
+Tenemos todos los requerimientos, así que podemos seguir.
+
+Datos de la cuenta admin introducidos:
+- Email: adristudy@gmail.com
+- Username: admin *(no aparece en la instalación, pero es así)*
+- Password: admin
+
+Datos de conexión a la BD introducidos:
+- Server: 10.0.0.3
+- Username: ConcreteCMS_user
+- Password: 1234
+- Database Name: ConcreteCMS_db
+
+Esos datos son los que añado en la instalación:
+
+![](https://i.imgur.com/nUYOuUQ.png)
+
+ConcreteCMS se empieza a instalar:
+
+![](https://i.imgur.com/4tFT64w.png)
+
+Instalación completada:
+
+![](https://i.imgur.com/8ieZvWI.png)
+
+Vemos que la web funciona:
+
+![](https://i.imgur.com/qGfYQz0.png)
+
+### Paso 6
 > Cambiar el tema
+
+Paso el zip de mi máquina al home de la VM:
+```
+scp Downloads/theme_neat.zip vagrant@192.168.121.31:~/
+```
+
+No he podido pasar el zip directamente al directorio requerido, porque el usuario Vagrant no tiene permiso de escritura allí.
+
+Extraigo el zip en el directorio requerido:
+```
+sudo unzip ~/theme_neat.zip -d /var/www/ConcreteCMS/packages
+```
+
+Para instalarlo, hacemos lo siguiente:
+
+![](https://i.postimg.cc/W49xYmkr/install-theme-concrete5-gif.gif)
+
+Para activarlo, hacemos lo siguiente:
+
+![](https://i.postimg.cc/W4BWD9L2/activate-theme-concrete5.gif)
+
+Vemos que el tema se ha aplicado:
+
+![](https://i.imgur.com/TNDQTvF.png)
+
+### Paso 7
 > Crear contenido
-> Instalar una extensión a concrete5
+
+He creado una entrada en el blog, y muestro que funciona:
+
+![](https://i.postimg.cc/ncBC6xJF/blogpost-prueba-concretecms.gif)
+
+
+### Paso 8
+> Instalar un add-on en ConcreteCMS
+
+Paso el zip de mi máquina al home de la VM:
+```
+scp Downloads/hw_back_to_top.zip vagrant@192.168.121.31:~/
+```
+
+Extraigo el zip en el directorio requerido:
+```
+sudo unzip ~/hw_back_to_top.zip -d /var/www/ConcreteCMS/packages
+```
+
+Instalo el add-on:
+
+![](https://i.postimg.cc/BQhPmjKj/addon-install-concrete5.gif)
+
+Lo añado a la web:
+
+![](https://i.postimg.cc/bw5Zx42W/a-ado-addon-concrete.gif)
+
+Muestro que funciona:
+
+![](https://i.postimg.cc/yx7mM2jn/addon-funcionando-concrete.gif)
 
 
 
+## Tarea 4: Migración de ConcreteCMS a hosting
+
+### Paso 1
+> Eligir un servicio de hosting con PHP y base de datos
+
+<https://freehostingnoads.net/>
 
 
+### Paso 2
+> Crear un subdominio gratuito
+
+![](https://i.imgur.com/JRlFBMy.png)
 
 
-> En este momento, muestra al profesor la aplicación funcionando en local
+### Paso 3
+> Subir todo el DocumentRoot de ConcreteCMS usando FTP
+
+Instalo un cliente FTP:
+```
+sudo apt show ncftp
+```
+
+Las credenciales FTP que me ofrece el hosting son las siguientes:
+
+- FTP Username: 3976052
+- FTP Password: concretecmsadmin1 *(cambiada por mí)*
+- Hostname: concretecms.atwebpages.com
+
+Subo todo el DocumentRoot al directorio remoto *(nos pregunta la contraseña antes de empezar a subir ficheros)*:
+
+```
+ncftpput -R -v -u "3976052" concretecms.atwebpages.com /concretecms.atwebpages.com /var/www/ConcreteCMS/*
+```
 
 
+### Paso 4
+> Crear BD
+
+Introduzco lo siguiente en el hosting para crear la BD:
+
+![](https://i.imgur.com/Q2awXOT.png)
+
+Ya la tengo creada:
+
+![](https://i.imgur.com/tI1sJfz.png)
+
+Mi hosting por motivos de seguridad no permite las conexiones remotas a la BD, así que...
+
+Exporto la BD:
+```
+sudo mysqldump -u root ConcreteCMS_db > ConcreteCMS_db_backup.sql
+```
+
+Paso el fichero a mi máquina:
+```
+scp ConcreteCMS_db_backup.sql atlas@192.168.121.1:~/Downloads
+```
+
+Importo la BD en mi hosting:
+
+![](https://i.imgur.com/PIHkoxk.png)
 
 
+### Paso 5
+> Modificar los datos de conexión a la BD
+
+Modifico el fichero `application/config/database.php` en el hosting de la siguiente manera:
+
+![](https://i.imgur.com/0sSiacw.png)
 
 
+### Paso 6
+> Borrar el directorio `application/files/cache/` en el hosting
+
+Este paso es **MUY IMPORTANTE**, porque tal y como dicen en la documentación oficial de Concrete CMS sobre mover un site...
+
+![](https://i.imgur.com/yVcuwHh.png)
+
+Si no borramos ese directorio con caché, **nuestra web no funcionará**.
 
 
+### Paso 7
+> Mostrar la web funcionando en el hosting
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-## Tarea 4: Migración del CMS PHP en el hosting compartido
-
-Vamos a migrar la última aplicación que has instalado a un hosting externo, para ello sigue los siguientes pasos:
-
-> Elige un servicio de hosting compartido con las características necesarias para instalar un CMS PHP (soporte PHP, base de datos,…)
-
-> Date de alta en el servicio.
-
-> Realiza la migración: Sube los ficheros al hosting externo, cambia las credenciales de acceso a la base de datos,…
-
-> Entrega un documentación resumida donde expliques los pasos fundamentales para realizar esta tarea. En este momento, muestra al profesor la aplicación funcionando en el otro hosting. (4 puntos)
+![](https://i.imgur.com/nCZx6L7.png)
