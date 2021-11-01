@@ -1,4 +1,4 @@
-# Práctica: Implantación de aplicaciones web PHP
+# Práctica 1: Implantación de aplicaciones web PHP
 
 ## Tarea 0: Preliminares
 
