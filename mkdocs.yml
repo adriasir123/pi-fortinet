@@ -34,6 +34,7 @@ nav:
             - 'Ejercicio 1: phpMyAdmin': 'ej1-phpmyadmin.md'
             - 'Ejercicio 2: BookMedik': 'ej2-bookmedik.md'
             - 'Práctica 1: Apps PHP': 'practica1-implantacion-apps-php.md'
+            - 'Ejercicio 3: php-fpm': 'ej3-phpfpm.md'
     - About: about.md
 extra:
   disqus: conocimiento-en-bits-neocities-org
