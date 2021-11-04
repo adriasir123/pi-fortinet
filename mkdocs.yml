@@ -26,6 +26,7 @@ nav:
             - 'Ej2 reserva DHCP': 'ej2-reserva-dhcp.md'
             - 'Práctica DHCP': 'practica-servidor-dhcp.md'
             - 'Ejercicio 1: Mapeo de URLs': 'ej1-mapeo-urls-al-sistema-ficheros.md'
+            - 'Ejercicio 2: Control de acceso': 'ej2-control-acceso-autenticacion-autorizacion.md'
             - 'Ejercicio 5: VPS': 'ej5-vps.md'
         - IAW:
             - 'ej1-pull-request': '2021-09-22-ej1-pull-request.md'
