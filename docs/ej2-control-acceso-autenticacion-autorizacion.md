@@ -119,9 +119,9 @@ En `000-default.conf` no hay control de acceso definido, pero como el DocumentRo
 > Definir escenario Vagrant:
 >
 >- Servidor:
->    - Interfaz eth0 (NAT) actuando como pública
->    - Interfaz privada (veryisolated)
->- Cliente conectado a la red privada
+    - Interfaz eth0 (NAT) actuando como pública
+    - Interfaz privada (veryisolated)
+- Cliente conectado a la red privada
 
 ```
 Vagrant.configure("2") do |config|
