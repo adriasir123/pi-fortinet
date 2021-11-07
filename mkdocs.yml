@@ -30,6 +30,7 @@ nav:
             - 'Ejercicio 3: .htaccess con Apache': 'ej3-apache-.htaccess.md'
             - 'Ejercicio 4: Módulos en Apache': 'ej4-modulos-apache.md'
             - 'Ejercicio 5: VPS': 'ej5-vps.md'
+            - 'Ejercicio 6: Apache proxy inverso': 'ej6-apache-proxy-inverso.md'
         - IAW:
             - 'ej1-pull-request': '2021-09-22-ej1-pull-request.md'
             - 'app-web-estatica': '2021-10-5-implantacion-despliegue-aplicacion-web-estatica.md'
