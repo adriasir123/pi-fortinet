@@ -36,11 +36,12 @@ nav:
             - 'ej1-pull-request': '2021-09-22-ej1-pull-request.md'
             - 'app-web-estatica': '2021-10-5-implantacion-despliegue-aplicacion-web-estatica.md'
             - 'ej2-pr-pag-compañero': '2021-10-14-ej2-pr-pag-compañero.md'
-            - 'Ejercicio 1: phpMyAdmin': 'ej1-phpmyadmin.md'
-            - 'Ejercicio 2: BookMedik': 'ej2-bookmedik.md'
-            - 'Práctica 1: Apps PHP': 'practica1-implantacion-apps-php.md'
-            - 'Ejercicio 3: php-fpm': 'ej3-phpfpm.md'
-            - 'Práctica 2: Instalación/migración de apps a VPS': 'practica2-instalacion-migracion-apps-PHP-en-VPS.md'
+            - Apps PHP:
+                - 'Ejercicio 1: phpMyAdmin': 'ej1-phpmyadmin.md'
+                - 'Ejercicio 2: BookMedik': 'ej2-bookmedik.md'
+                - 'Ejercicio 3: php-fpm': 'ej3-phpfpm.md'
+                - 'Práctica 1: Apps PHP': 'practica1-implantacion-apps-php.md'
+                - 'Práctica 2: Instalación/migración de apps a VPS': 'practica2-instalacion-migracion-apps-PHP-en-VPS.md'
     - About: about.md
 extra:
   disqus: conocimiento-en-bits-neocities-org
