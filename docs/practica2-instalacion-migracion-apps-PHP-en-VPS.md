@@ -324,7 +324,7 @@ server {
 }
 ```
 Nextcloud no está oficialmente soportado para Nginx, así que esta configuración está hecha por contribuidores.  
-Igualmente, está publicada en la documentación oficial de Nextcloud: <https://docs.nextcloud.com/server/latest/admin_manual/installation/nginx.html#nextcloud-in-a-subdir-of-the-nginx-webroot>
+Igualmente, está publicada en la documentación oficial de Nextcloud: <https://docs.nextcloud.com/server/latest/admin_manual/installation/nginx.html#nextcloud-in-a-subdir-of-the-nginx-webroot>  
 Específicamente, he elegido hacer la manera en subdirectorio, para que mi entorno de desarrollo y el de producción sean lo más parecidos posible. Así, la migración luego será más sencilla.
 
 
