@@ -39,6 +39,7 @@ nav:
             - 'Ejercicio 2: BookMedik': 'ej2-bookmedik.md'
             - 'Práctica 1: Apps PHP': 'practica1-implantacion-apps-php.md'
             - 'Ejercicio 3: php-fpm': 'ej3-phpfpm.md'
+            - 'Práctica 2: Instalación/migración de apps a VPS': 'practica2-instalacion-migracion-apps-PHP-en-VPS.md'
     - About: about.md
 extra:
   disqus: conocimiento-en-bits-neocities-org
