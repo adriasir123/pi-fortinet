@@ -70,3 +70,7 @@ sudo apt install libapache2-mod-wsgi-py3
 
 
 SÓLO HAY QUE DOCUMENTAR EL FUNCIONAMIENTO DE GUESTBOOOK
+
+#################################################################
+TAREA ORIGINAL A RELLENAR
+#################################################################
