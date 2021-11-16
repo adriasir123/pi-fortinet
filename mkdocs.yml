@@ -32,6 +32,8 @@ nav:
             - 'Ejercicio 5: VPS': 'ej5-vps.md'
             - 'Ejercicio 6: Apache proxy inverso': 'ej6-apache-proxy-inverso.md'
             - 'Práctica 3: LEMP en VPS': 'practica3-LEMP-VPS.md'
+            - DNS:
+                - 'Ejercicio 1: bind9': 'ej1-instalar-configurar-bind9.md'  
         - IAW:
             - 'ej1-pull-request': '2021-09-22-ej1-pull-request.md'
             - 'app-web-estatica': '2021-10-5-implantacion-despliegue-aplicacion-web-estatica.md'
