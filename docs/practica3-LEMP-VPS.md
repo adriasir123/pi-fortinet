@@ -327,7 +327,7 @@ listen = /run/php/php7.4-fpm.sock
 ```
 Vemos que por defecto PHP-FPM se configura escuchando en un socket unix.
 
-> Configurar el VirtualHost `www.adrianjaramillo.tk` para que pueda ejecutar PHP
+> Configurar VirtualHost `www.adrianjaramillo.tk` para que pueda ejecutar PHP
 
 Añado lo siguiente a `/etc/nginx/sites-available/www.conf`:
 ```
@@ -358,28 +358,10 @@ Muestro que funciona:
 
 
 
+
 ## Ansible
 
-Realiza la configuración básica de nginx creando una receta ansible. Utilizando como base la receta ansible que utilizaste para el ejercicio 6 (https://fp.josedomingo.org/sri2122/u03/doc/ejercicio_proxy/ejercicio_proxy.zip), modifícala para añadir las siguientes funcionalidades:
+Hacer configuración básica de Nginx con ansible, partiendo de: <https://fp.josedomingo.org/sri2122/u03/doc/ejercicio_proxy/ejercicio_proxy.zip>
 
-- Instalación de los servicios. (Cada servicio se instalará y configurará en un rol diferenciado)
-
-instalar programas
-
-- Como hace la receta original, creará virtualhost que tengas definido en una lista. Estos virtual host estarán configurados para ejecutar PHP.
-
-con la lista, se refiere al fichero donde define variables
-
-
-- La receta debe poder desactivar los virtualhost que tengas definido en una lista.
-
-una parte de la lista es sobre los virtualhost que se quieren desactivar (puedo intentar a quitar el default)
-
-
-- Como la receta tiene que ser lo más general posible, si quieres hacer algo más de la práctica, añade las tareas a un rol llamado practica.
-
-
-
-
-
-Explica de forma precisa el proceso que has realizado encad auno de los puntos. Entrega pruebas de funcionamiento donde se pueda verificar el correcto funcionamiento.
+Repositorio con mi configuración:  
+<https://github.com/adriasir123/ansible-nginx>
