@@ -181,7 +181,7 @@ nameserver 10.0.0.10
 ```
 
 ### Parte 6
-> Realizar una consulta con dig tanto al maestro como al esclavo para comprobar que las respuestas son con autoridad. ¿En qué te tienes que fijar?
+> Realizar una consulta dig a maestro y esclavo para comprobar que las respuestas son con autoridad
 
 Al maestro:
 
@@ -191,14 +191,14 @@ Al esclavo:
 
 ![](https://i.imgur.com/RlMps2b.png)
 
-Lo que buscamos es esa flag "aa", que quiere decir "Authoritative Answer".  
+Buscamos esa flag "aa", que quiere decir "Authoritative Answer".  
 Nos devolverá esa flag siempre que hagamos consultas sobre zonas en las que los servidores tengan autoridad.
 
 La [RFC 1035](https://www.ietf.org/rfc/rfc1035.txt) dice lo siguiente:
 
 ![](https://i.imgur.com/0iqpeYW.png)
 
-Si por ejemplo hiciese una consulta en una zona sobre la que mi servidor NO TIENE autoridad, pasaría lo siguiente:
+Si por ejemplo hiciese una consulta en una zona sobre la que mi servidor *NO TIENE* autoridad, pasaría lo siguiente:
 
 ![](https://i.imgur.com/B6RLmkj.png)
 
@@ -249,47 +249,18 @@ iesgn.org.		86400	IN	SOA	adrianj.iesgn.org. admin.iesgn.org. 2001062503 21600 36
 Permite la transferencia.
 
 ### Parte 8
-> Realizar una consulta desde el cliente y comprobar qué servidor está respondiendo
+> Realizar consulta desde cliente y comprobar qué servidor responde
 
 ![](https://i.imgur.com/KkLDV39.png)
 
 Según nuestro orden en `resolv.conf`, siempre nos responderá el maestro, salvo que éste falle.
 
 ### Parte 9
-> Posteriormente apaga el servidor maestro y vuelve a realizar una consulta desde el cliente ¿quién responde? Enseña al profesor el funcionamiento del servidor esclavo.
+> Apagar maestro y hacer consulta desde cliente ¿quién responde?
 
-`/etc/resolv.conf`:
-```
-nameserver 10.0.0.2
-nameserver 10.0.0.10
-```
+![](https://i.imgur.com/VMsKXKA.png)
 
-esta prueba hacerla
- ver que responda el otro
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Responde el esclavo.
 
 
 
