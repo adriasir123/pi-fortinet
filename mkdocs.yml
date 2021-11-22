@@ -35,6 +35,7 @@ nav:
             - DNS:
                 - 'Ejercicio 1: bind9': 'ej1-instalar-configurar-bind9.md'
                 - 'Ejercicio 2: Slave DNS': 'ej2-instalar-configurar-slave.md'
+                - 'Ejercicio 3: Delegación subdominios': 'ej3-delegacion-subdominio-bind9.md'
         - IAW:
             - 'ej1-pull-request': '2021-09-22-ej1-pull-request.md'
             - 'app-web-estatica': '2021-10-5-implantacion-despliegue-aplicacion-web-estatica.md'
