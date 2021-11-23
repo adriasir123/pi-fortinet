@@ -48,6 +48,7 @@ nav:
                 - 'Práctica 2: Instalación/migración de apps a VPS': 'practica2-instalacion-migracion-apps-PHP-en-VPS.md'
         - SAD:
             - 'Criptografía 1: Cifrado asímetrico': 'practica-cifrado-asimetrico-gpg-openssl.md'
+        - 'Escenario libvirt': 'practica-escenario-libvirt.md'
     - About: about.md
 extra:
   disqus: conocimiento-en-bits-neocities-org
