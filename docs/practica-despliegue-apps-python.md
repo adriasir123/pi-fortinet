@@ -151,16 +151,34 @@ Poll 2:
 
 
 
-## Tarea 2: Entorno de producción
-
-Vamos a realizar el despliegue de nuestra aplicación en un entorno de producción, para ello vamos a utilizar nuestro VPS, sigue los siguientes pasos
-
+## Tarea 2: Entorno de producción (VPS)
 
 ### Parte 1
 > Clona el repositorio en el VPS.
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 ### Parte 2
 > Crea un entorno virtual e instala las dependencias de tu aplicación.
+
+
+
+
+
+
+
+
 
 ### Parte 3
 > Instala el módulo que permite que python trabaje con mysql:

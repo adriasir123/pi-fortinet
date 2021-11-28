@@ -201,4 +201,88 @@ gpg --keyserver pgp.rediris.es --recv-key 4DFDE0A4BA1C00D5
 
 
 
-## Tarea 2: Correo seguro con evolution/thunderbird
+## Tarea 2: Correo seguro con evolution
+
+Ahora vamos a configurar nuestro cliente de correo electrónico para poder mandar correos cifrados, para ello:
+
+### Parte 1
+> Configurar el cliente de correo evolution con tu cuenta de correo habitual
+
+```
+sudo apt install evolution
+```
+
+![](https://i.imgur.com/S75Ga85.png)
+
+En gnome previamente había añadido adristudy@gmail.com como mi cuenta de correo, así que Evolution se ha autoconfigurado con esa cuenta al instalarse.
+
+
+
+
+
+
+
+
+
+
+### Parte 2
+> Añade a la cuenta las opciones de seguridad para poder enviar correos firmados con tu clave privada
+
+
+Indico mi clave privada para firmar:
+
+![](https://i.imgur.com/EzbBEeH.png)
+
+
+> Configurar opciones de seguridad para poder cifrar correos para otros destinatarios
+
+
+
+
+### Parte 3
+> Enviar un correo con tus compañeros y comprueba el funcionamiento adecuado de GPG
+
+Envío un correo a Carlos:
+![](https://i.imgur.com/Yxc5hAX.png)
+
+Este es el correo enviado:
+![](https://i.imgur.com/znoJDqT.png)
+
+No lo puedo ver, porque está cifrado con la clave de Carlos, y yo no lo puedo descifrar porque no tengo su privada.
+
+Este es el correo que le ha llegado a Carlos:
+![](https://i.imgur.com/5Yq8DNm.png)
+
+> Recibir un correo de Carlos y comprobar el funcionamiento adecuado de GPG
+
+Este es el correo que he recibido:
+
+![](https://i.imgur.com/sEaWbLf.png)
+
+Se ha desencriptado correctamente, y la firma se ha verificado.
+
+
+
+### Parte X
+> Mandar a Raúl un correo cifrado y firmado
+
+Me bajo la clave de Raúl a mi keybox:
+```
+gpg --keyserver pgp.rediris.es --recv-key A036DF623D608DE0
+```
+```
+gpg: key A036DF623D608DE0: public key "Raúl Ruiz Padilla <rruizp@gmail.com>" imported
+gpg: Total number processed: 1
+gpg:               imported: 1
+```
+
+Si dejo marcada esa opción, no será necesario firmar las claves públicas de las personas a quienes queramos enviar correos:
+![](https://i.imgur.com/AdGK5p7.png)
+
+Prueba de que he enviado el correo:
+
+![](https://i.imgur.com/oq8629Y.png)
+
+Me aparece ese error porque está encriptado con la clave pública de Raúl, y como no tengo la privada asociada no prueba desencriptarlo.
+
+Eso significa que se ha encriptado correctamente.
