@@ -1,22 +1,19 @@
-# Ejercicio 2: Desplegando aplicaciones flask con apache2 + gunicorn
+# Ejercicio 2: Desplegando aplicaciones flask con Apache + gunicorn
 
-## Creación del venv
+En esta tarea se usa la aplicación [Guestbook](https://github.com/josedom24/guestbook).
+
+## Crear venv
 
 ```
 mkdir venv
+cd venv
 sudo apt update
 sudo apt install python3-venv
 python3 -m venv .
-source ~/venv/bin/activate
+source bin/activate
 ```
 
-## Instalación de gunicorn
-
-```
-pip install gunicorn
-```
-
-## Descarga de la app guestbook
+## Descargar Guestbook
 
 ```
 sudo apt install git
@@ -25,22 +22,30 @@ pip install -r requirements.txt
 sudo apt install redis
 ```
 
-## Despliegue de guestbook con gunicorn
+## Fichero wsgi
 
-Crear `wsgi.py`:
+`/home/vagrant/guestbook/app/wsgi.py`
 ```
 from app import prog as application
 ```
 
-Lanzar gunicorn:
+## Instalar Gunicorn
+
 ```
-gunicorn -w 2 -b :8080 wsgi:application
-http://192.168.121.63:8080/
+pip install gunicorn
 ```
 
-## Creación de una unidad systemd
+## Probar funcionamiento
 
-`/etc/systemd/system/gunicorn-guestbook.service`
+```
+gunicorn -w 2 -b :8080 wsgi
+```
+
+![](https://i.imgur.com/EfohYP9.png)
+
+## Crear unidad systemd
+
+`/etc/systemd/system/gunicorn-guestbook.service`:
 ```
 [Unit]
 Description=gunicorn-guestbook
@@ -54,7 +59,7 @@ User=www-data
 Group=www-data
 Restart=always
 
-ExecStart=/home/vagrant/venv/bin/gunicorn -w 2 -b :8080 wsgi:application
+ExecStart=/home/vagrant/venv/bin/gunicorn -w 2 -b :8080 wsgi
 ExecReload=/bin/kill -s HUP $MAINPID
 ExecStop=/bin/kill -s TERM $MAINPID
 
@@ -64,71 +69,92 @@ Environment=PYTHONPATH='/home/vagrant/guestbook/app:/home/vagrant/venv/lib/pytho
 PrivateTmp=true
 ```
 
-Habilitar:
-
+La activo e inicio:
 ```
 sudo systemctl enable gunicorn-guestbook.service
 sudo systemctl start gunicorn-guestbook.service
 ```
 
-## Apache como proxy para gunicorn
+Pruebo que funciona:
 
+![](https://i.imgur.com/vmqHUoY.png)
+
+## Apache + Gunicorn
 
 ```
 sudo apt install apache2
 sudo a2enmod proxy_http
 ```
 
-`/etc/apache2/sites-available/guestbook.conf`:
+Creo `/etc/apache2/sites-available/guestbook.conf`:
 ```
 <VirtualHost *:80>
 
-	ServerName www.guestbook-gunicorn.com
+        ServerName www.guestbook-gunicorn.com
+        DocumentRoot /home/vagrant/guestbook/app
+
+        <Directory /home/vagrant/guestbook/app>
+            Require all granted
+        </Directory>
 
         ProxyPass / http://127.0.0.1:8080/
         ProxyPassReverse / http://127.0.0.1:8080/
 
 </VirtualHost>
-
-# vim: syntax=apache ts=4 sw=4 sts=4 sr noet
 ```
-Necesitamos `ProxyPassReverse` porque Guestbook hace una redirección a localhost .
 
-
+Lo habilito:
 ```
 sudo a2ensite guestbook.conf
-sudo systemctl restart apache2.service
 ```
 
+Reinicio Apache:
 ```
-# ej2-apache2-gunicorn resolutions
-192.168.121.63 www.guestbook-gunicorn.com
+sudo systemctl restart apache2
 ```
 
-## Nginx como proxy para gunicorn
+Modifico mi `/etc/hosts`:
+```
+# ej2-guestbook-gunicorn resolutions
+192.168.121.2 www.guestbook-gunicorn.com
+```
+
+Pruebo que funciona:
+
+![](https://i.imgur.com/Bfz4n77.png)
+
+## Nginx + Gunicorn
 
 ```
-sudo apt install curl gnupg2 ca-certificates lsb-release
 sudo apt install nginx
-sudo nginx -t
 ```
 
-VirtualHost:
-`/etc/nginx/conf.d/guestbook.conf`
+Creo `/etc/nginx/sites-available/guestbook.conf`:
 ```
 server {
 
-listen 80;
-server_name     www.guestbook-gunicorn.com;
+    listen 80;
+    server_name www.guestbook-gunicorn.com;
+    root /home/vagrant/guestbook/app;
 
-location / {
-    proxy_pass http://localhost:8080;
-    include proxy_params;
+    location / {
+        proxy_pass http://localhost:8080;
+        include proxy_params;
+    }
+
 }
-
-}
 ```
 
+Lo habilito:
 ```
-sudo systemctl restart nginx.service
+sudo ln -s /etc/nginx/sites-available/guestbook.conf /etc/nginx/sites-enabled/
 ```
+
+Reinicio Nginx:
+```
+sudo systemctl restart nginx
+```
+
+Pruebo que funciona:
+
+![](https://i.imgur.com/VFZn6WR.png)
