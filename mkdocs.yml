@@ -51,6 +51,7 @@ nav:
                 - 'Ejercicio 1: Apache + mod_wsgi': 'ej1-apps-flask-apache2-mod_wsgi.md'
                 - 'Ejercicio 2: Apache/Nginx + Gunicorn': 'ej2-apache2-gunicorn.md'
                 - 'Ejercicio 3: Apache/Nginx + uWSGI': 'ej3-apache-uwsgi.md'
+                - 'Práctica: Despliegue python': 'practica-despliegue-apps-python.md'
         - SAD:
             - 'Criptografía 1: Cifrado asímetrico': 'practica-cifrado-asimetrico-gpg-openssl.md'
         - 'Escenario libvirt': 'practica-escenario-libvirt.md'
