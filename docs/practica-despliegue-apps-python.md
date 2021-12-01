@@ -1,8 +1,8 @@
 # Práctica: Despliegue de aplicaciones python
 
-## Tarea 1: Entorno de desarrollo
+En esta práctica se usa la aplicación [Django tutorial](https://docs.djangoproject.com/en/3.2/intro/tutorial01/).
 
-tutorial de django 3.2 (https://docs.djangoproject.com/en/3.2/intro/tutorial01/)
+## Tarea 1: Entorno de desarrollo
 
 ### Parte 0
 > Crear escenario
@@ -21,18 +21,18 @@ end
 ```
 
 ### Parte 1
-> Realizar fork del repositorio: https://github.com/josedom24/django_tutorial
+> Hacer fork de <https://github.com/josedom24/django_tutorial>
 
 ![](https://i.imgur.com/eqNYbrr.png)
 
-> Clonar el repo en el entorno de desarrollo
+> Clonar repo
 
 ```
 git clone git@github.com:adriasir123/django_tutorial.git
 ```
 
 ### Parte 2
-> Crear un entorno virtual
+> Crear entorno virtual
 
 ```
 mkdir venv
@@ -50,11 +50,9 @@ pip install -r requirements.txt
 ```
 
 ### Parte 3
-> Comprobar que se usará una base de datos sqlite. ¿Qué fichero tienes que consultar?
+> Comprobar que se usa SQLite. ¿Qué fichero la define?
 
-`settings.py`
-
-El bloque con la información que necesitamos es:
+`settings.py`, en el siguiente bloque:
 ```
 DATABASES = {
     'default': {
@@ -64,20 +62,19 @@ DATABASES = {
 }
 ```
 
-> ¿Cómo se llama la base de datos que vamos a crear?
+> ¿Nombre de la BD que se creará?
 
 `db.sqlite3`
 
 ### Parte 4
-> Crear la base de datos  
-*(A partir de los modelos de datos se crean las tablas de la bd)*
+> Crear tablas en SQLite
 
 ```
 python3 manage.py migrate
 ```
 
 ### Parte 5
-> Crear usuario administrador
+> Crear usuario admin
 
 ```
 python3 manage.py createsuperuser
@@ -90,39 +87,38 @@ Password (again):
 Superuser created successfully.
 ```
 
-- Usuario: admin
-- Contraseña: 123admin456
+- **Username**: admin
+- **Password**: 123admin456
 
 ### Parte 6
-> modificar allowed hosts
+> Habilitar acceso a la app
 
 `settings.py`:
 ```
 ALLOWED_HOSTS = ['192.168.121.102']
 ```
+*(Dirección de destino a habilitar)*
 
-Para que permita esa dirección de acceso al servidor
-
-> Ejecuta el servidor web de desarrollo
+> Ejecutar servidor web desarrollo
 
 ```
 python3 manage.py runserver 0.0.0.0:8000
 ```
 
-Página principal:
+Index:
+
 ![](https://i.imgur.com/OeNUoxK.png)
 
+/admin:
 
-y entra en la zona de administración (/admin) Zona de administración:
 ![](https://i.imgur.com/filgcVV.png)
 
-
-Comprobar que los datos se han añadido correctamente (usuario admin)
+Comprobar que el usuario admin se ha añadido correctamente:
 
 ![](https://i.imgur.com/ZIdaCXy.png)
 
 ### Parte 7
-> Crear dos preguntas, con posibles respuestas
+> Crear dos preguntas con respuestas
 
 Pregunta 1:
 
@@ -133,9 +129,9 @@ Pregunta 2:
 ![](https://i.imgur.com/43J3Wlb.png)
 
 ### Parte 8
-> Comprobar en el navegador que la aplicación está funcionando, accede a la url /polls
+> Comprobar que la URL `/polls` funciona
 
-Polls principal:
+/polls:
 
 ![](https://i.imgur.com/BKlJSAA.png)
 
@@ -151,54 +147,70 @@ Poll 2:
 
 
 
+
 ## Tarea 2: Entorno de producción (VPS)
 
 ### Parte 1
-> Clona el repositorio en el VPS.
+> Clonar repositorio en VPS
 
-
-
-
-
-
-
-
-
-
-
-
-
+```
+git clone https://github.com/adriasir123/django_tutorial.git
+```
 
 ### Parte 2
-> Crea un entorno virtual e instala las dependencias de tu aplicación.
+> Crear entorno virtual
 
+```
+mkdir venv
+cd venv
+sudo apt install python3-venv
+python3 -m venv .
+source bin/activate
+```
 
+> Instalar dependencias
 
-
-
-
-
-
+```
+pip install -r requirements.txt
+```
 
 ### Parte 3
-> Instala el módulo que permite que python trabaje con mysql:
+> Instalar módulo para que python se pueda comunicar con MariaDB
+
 ```
-(env)$ pip install mysqlclient
+sudo apt install python3-dev default-libmysqlclient-dev build-essential
+pip install mysqlclient
 ```
 
 ### Parte 4
-> Crea una base de datos y un usuario en mysql.
+> Crear BD
+
+```
+CREATE DATABASE `django_tutorial_db`;
+```
+
+> Crear usuario con permisos sobre `django_tutorial_db`
+
+```
+CREATE USER 'django_tutorial_user' IDENTIFIED BY '1234';
+
+GRANT USAGE ON *.* TO 'django_tutorial_user'@localhost IDENTIFIED BY '1234';
+
+GRANT ALL privileges ON `django_tutorial_db`.* TO 'django_tutorial_user'@localhost;
+
+FLUSH PRIVILEGES;
+```
 
 ### Parte 5
-> Configura la aplicación para trabajar con mysql, para ello modifica la configuración de la base de datos en el archivo settings.py:
+> Modificar la conexión a la BD en `settings.py`
 
 ```
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'nombre base datos',
-        'USER': 'nombre usuario',
-        'PASSWORD': 'contraseña usuario',
+        'NAME': 'django_tutorial_db',
+        'USER': 'django_tutorial_user',
+        'PASSWORD': '1234',         
         'HOST': 'localhost',
         'PORT': '',
     }
@@ -206,22 +218,382 @@ DATABASES = {
 ```
 
 ### Parte 6
-> Como en la tarea 1, realiza la migración de la base de datos que creará la estructura de datos necesarias. Comprueba que se han creado la base de datos y las tablas.
+> Crear tablas en MariaDB
+
+```
+python3 manage.py migrate
+```
+
+> Comprobar que se han creado
+
+```
+MariaDB [django_tutorial_db]> show tables;
++------------------------------+
+| Tables_in_django_tutorial_db |
++------------------------------+
+| auth_group                   |
+| auth_group_permissions       |
+| auth_permission              |
+| auth_user                    |
+| auth_user_groups             |
+| auth_user_user_permissions   |
+| django_admin_log             |
+| django_content_type          |
+| django_migrations            |
+| django_session               |
+| polls_choice                 |
+| polls_question               |
++------------------------------+
+12 rows in set (0.001 sec)
+```
+
+> Volcado de datos en desarrollo
+
+```
+python3 manage.py dumpdata > db.json
+```
+
+> Volcado de datos en VPS:
+
+```
+python3 manage.py loaddata db.json
+```
 
 ### Parte 7
-> Crea un usuario administrador.
+> Instalar y configurar Gunicorn para ejecutar Django.  
+Luego, configurar Nginx como proxy inverso para servir `django_tutorial`
+
+#### Instalar Gunicorn
+
+```
+pip install gunicorn
+```
+
+#### Crear unidad systemd
+
+`/etc/systemd/system/gunicorn-django-tutorial.service`:
+```
+[Unit]
+Description=gunicorn-django-tutorial
+After=network.target
+
+[Install]
+WantedBy=multi-user.target
+
+[Service]
+User=www-data
+Group=www-data
+Restart=always
+
+ExecStart=/home/blackmamba/venv/bin/gunicorn -w 2 -b :8080 django_tutorial.wsgi
+ExecReload=/bin/kill -s HUP $MAINPID
+ExecStop=/bin/kill -s TERM $MAINPID
+
+WorkingDirectory=/home/blackmamba/django_tutorial
+Environment=PYTHONPATH='/home/blackmamba/django_tutorial:/home/blackmamba/venv/lib/python3.9/site-packages'
+
+PrivateTmp=true
+```
+
+La activo e inicio:
+```
+sudo systemctl enable gunicorn-django-tutorial.service
+sudo systemctl start gunicorn-django-tutorial.service
+```
+
+#### Nginx + Gunicorn
+
+Creo `/etc/nginx/sites-available/django.conf`:
+```
+server {
+
+    listen 80;
+    server_name django.adrianjaramillo.tk;
+    root /home/blackmamba/django_tutorial;
+
+    location / {
+        proxy_pass http://localhost:8080;
+        include proxy_params;
+    }
+
+}
+```
+
+Lo habilito:
+```
+sudo ln -s /etc/nginx/sites-available/django.conf /etc/nginx/sites-enabled/
+```
+
+Reinicio Nginx:
+```
+sudo systemctl restart nginx
+```
+
+#### Añadir nuevo registro DNS
+
+![](https://i.imgur.com/Dgw0mq8.png)
+
+#### Modificar settings.py
+
+```
+ALLOWED_HOSTS = ['django.adrianjaramillo.tk']
+```
+
+Reinicio:
+```
+sudo systemctl restart gunicorn-django-tutorial.service
+```
+
+Pruebo que funciona:
+
+![](https://i.imgur.com/ag517YK.png)
 
 ### Parte 8
-> Elige un servidor de aplicaciones python y configura nginx como proyx inverso para servir la aplicación.
+> ¿Funciona el css de polls? Arréglalo.
+
+`/etc/nginx/sites-available/django.conf`:
+```
+location /static/polls {
+    alias /home/blackmamba/django_tutorial/polls/static/polls;
+}
+```
+
+Reinicio Nginx:
+```
+sudo systemctl restart nginx
+```
+
+Pruebo que funciona:
+
+![](https://i.imgur.com/2SGXgU1.png)
+
+> ¿Funciona el css de admin? Arréglalo.
+
+`/etc/nginx/sites-available/django.conf`:
+```
+location /static/admin {
+    alias /home/blackmamba/venv/lib/python3.9/site-packages/django/contrib/admin/static/admin/;
+}
+```
+
+Reinicio Nginx:
+```
+sudo systemctl restart nginx
+```
+
+Pruebo que funciona:
+
+![](https://i.imgur.com/plc3TzP.png)
 
 ### Parte 9
-> Debes asegurarte que el contenido estático se está sirviendo: ¿Se muestra la imagen de fondo de la aplicación? ¿Se ve de forma adecuada la hoja de estilo de la zona de administración?.
+> Desactivar debug
+
+`settings.py`:
+```
+DEBUG = False
+```
+
+Reinicio:
+```
+sudo systemctl restart gunicorn-django-tutorial.service
+```
+
+Pruebo que funciona:
+
+![](https://i.imgur.com/ESRxqoB.png)
+
+Si DEBUG fuese True, al escribir esa URL que no existe, me habría aparecido mucha más información:
+
+![](https://i.imgur.com/Gt9qRe9.png)
+
+*(DEBUG = True)*
 
 ### Parte 10
-> Desactiva en la configuración el modo debug a False. Para que los errores de ejecución no den información sensible de la aplicación.
+> Mostrar la página funcionando
 
-### Parte 11
-> Muestra la página funcionando. En la zona de administración se debe ver de forma adecuada la hoja de estilo.
+![](https://i.postimg.cc/5ydStsgg/djangotutorial-vps-funcionando.gif)
 
-### Parte 12
-> En este momento, muestra al profesor la aplicación funcionando. Entrega una documentación resumida donde expliques los pasos fundamentales para realizar esta tarea y pantallazos donde sevea que todo está funcionando.
+
+
+
+
+
+## Tarea 3: Modificación de nuestra aplicación
+
+En esta sección primero se cambia en desarrollo, y luego se pasa a producción.
+
+### Parte 0
+> Añadir `settings.py` a `.gitignore`
+
+```
+django_tutorial/settings.py
+```
+
+**¡Esta acción es importante!**  
+El fichero cambia MUCHO con respecto a desarrollo/producción *(DEBUG, ALLOWED_HOSTS, DATABASES)*.
+
+### Parte 1
+> Modificar `django_tutorial/polls/templates/polls/index.html` con tu nombre
+
+```
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}">
+
+{% if latest_question_list %}
+    <ul>
+    {% for question in latest_question_list %}
+    <li><a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No polls are available.</p>
+{% endif %}
+
+<h2>Adrián Jaramillo Rodríguez</h2>
+```
+
+Prueba en desarrollo:
+
+![](https://i.postimg.cc/Xq4nw8Zj/polls-nombre.png)
+
+Subir cambios desde desarrollo:
+```
+git commit -am "mi nombre polls index.html"
+git push
+```
+
+Bajar cambios en producción:
+```
+git pull
+```
+
+Reinicio gunicorn para que actualice la configuración:
+```
+sudo systemctl restart gunicorn-django-tutorial.service
+```
+
+Prueba en producción:
+
+![](https://i.postimg.cc/DzD9R2yD/minombre-polls-produccion.png)
+
+### Parte 2
+> Modificar la imagen de fondo en la página principal
+
+En `/home/vagrant/django_tutorial/polls/templates/index.html`...
+
+Añadir en el head:
+```
+<style>
+  body {
+    background-image: url('https://w.wallhaven.cc/full/lm/wallhaven-lm12ey.jpg');
+  }
+</style>
+```
+
+Comentar en el body:
+```
+<!--
+  <div id="stripes">
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+-->
+```
+
+Prueba en desarrollo:
+
+![](https://i.imgur.com/w8Jy6Mq.png)
+
+Subir cambios desde desarrollo:
+```
+git commit -am "fondo cambiado en index.html"
+git push
+```
+
+Bajar cambios en producción:
+```
+git pull
+```
+
+Reinicio gunicorn para que actualice la configuración:
+```
+sudo systemctl restart gunicorn-django-tutorial.service
+```
+
+Prueba en producción:
+
+![](https://i.imgur.com/bzbYZpn.png)
+
+### Parte 3
+> Crear una nueva tabla en la base de datos
+
+Añadir a `django_tutorial/polls/models.py`:
+```
+class Categoria(models.Model):
+    Abr = models.CharField(max_length=4)
+    Nombre = models.CharField(max_length=50)
+
+    def __str__(self):
+  	    return self.Abr+" - "+self.Nombre
+```
+
+Aplicar cambios:
+```
+python manage.py makemigrations
+python manage.py migrate
+```
+
+Modificar la siguiente línea en `django_tutorial/polls/admin.py`...
+```
+from .models import Choice, Question, Categoria
+```
+
+...y añadir esta otra:
+```
+admin.site.register(Categoria)
+```
+
+Prueba en desarrollo:
+
+![](https://i.imgur.com/qozi4Oh.png)
+*(la tabla categorías se ha creado, y he rellenado datos)*
+
+Vuelco los nuevos datos en desarrollo:
+```
+python3 manage.py dumpdata > db2.json
+```
+
+Subir cambios desde desarrollo:
+```
+git add .
+git commit -am "nueva tabla"
+git push
+```
+
+Bajar cambios en producción:
+```
+git pull
+```
+
+Creo la tabla:
+```
+python manage.py migrate
+```
+
+Cargo los datos:
+```
+python3 manage.py loaddata db2.json
+```
+
+Reinicio gunicorn para que actualice la configuración:
+```
+sudo systemctl restart gunicorn-django-tutorial.service
+```
+
+Prueba en producción:
+
+![](https://i.imgur.com/nnNjlC7.png)

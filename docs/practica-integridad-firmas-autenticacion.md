@@ -3,17 +3,24 @@
 ## Tarea 1: Firmas electrónicas
 
 ### Ejercicio 1
-> Manda un documento y la firma electrónica del mismo a un compañero.
+> Enviar un fichero y la firma del mismo a Carlos
 
+Enviaré:
+```
+-rw-r--r-- 1 vagrant vagrant   17 Nov 25 12:13 paracarlos.txt
+```
+
+Genero su firma:
 ```
 gpg --detach-sign paracarlos.txt
 ```
+
+Obtengo:
 ```
--rw-r--r-- 1 vagrant vagrant   17 Nov 25 12:13 paracarlos.txt
 -rw-r--r-- 1 vagrant vagrant  438 Nov 25 12:14 paracarlos.txt.sig
 ```
 
-> Verifica la firma que tu has recibido.
+> Verificar la firma recibida
 
 Recibo:
 ```
@@ -34,116 +41,130 @@ gpg:          There is no indication that the signature belongs to the owner.
 Primary key fingerprint: B446 8625 8561 6A3F BC93  5F9A 4DFD E0A4 BA1C 00D5
 ```
 
-
-
-
-
 ### Ejercicio 2
 > ¿Qué significa el mensaje que aparece en el momento de verificar la firma?
 
+```
  gpg: Firma correcta de "Pepe D <josedom24@gmail.com>" [desconocido]
  gpg: ATENCIÓN: ¡Esta clave no está certificada por una firma de confianza!
  gpg:          No hay indicios de que la firma pertenezca al propietario.
  Huellas dactilares de la clave primaria: E8DD 5DA9 3B88 F08A DA1D  26BF 5141 3DDB 0C99 55FC
+```
+
+
+
+
 
 ### Ejercicio 3
-> Vamos a crear un anillo de confianza entre los miembros de nuestra clase, para ello.
+> Crearemos un anillo de confianza entre los compañeros
 
-
-
-
-
-
-### Parte 1
-> Tu clave pública debe estar en un servidor de claves
+#### Parte 1
+> Subir clave pública a `pgp.rediris.es`
 
 ```
 gpg --keyserver pgp.rediris.es --send-key F0B9E3109E86B53F6C0791E43A110CF1BEBCA39E
 ```
 
-### Parte 2
-> Escribe tu fingerprint en un papel y dárselo a tu compañero, para que puede descargarse tu clave pública.
+#### Parte 2
+> Pasar el fingerprint a tus compañeros para que puedan descargarse tu clave pública
 
 Hecho.
 
-### Parte 3
-> Te debes bajar al menos tres claves públicas de compañeros. Firma estas claves.
+#### Parte 3
+> Bajar tres claves públicas de compañeros. Firmar estas claves.
 
+Me bajo la de Carlos:
+```
+gpg --keyserver pgp.rediris.es --recv-keys 4DFDE0A4BA1C00D5
+```
+
+Firmo la de Carlos:
 ```
 gpg --sign-key B446862585616A3FBC935F9A4DFDE0A4BA1C00D5
 ```
+
+Muestro mi firma en la clave de Carlos:
+
+![](https://i.imgur.com/uAaPgyo.png)
+
+
+Me bajo la de María Jesús:
 ```
-pub  rsa3072/4DFDE0A4BA1C00D5
-     created: 2021-11-25  expires: 2023-11-25  usage: SC  
-     trust: unknown       validity: unknown
-sub  rsa3072/54A887151550A718
-     created: 2021-11-25  expires: 2023-11-25  usage: E   
-[ unknown] (1). Carlos Rivero <carlosrivero1988@gmail.com>
-
-
-pub  rsa3072/4DFDE0A4BA1C00D5
-     created: 2021-11-25  expires: 2023-11-25  usage: SC  
-     trust: unknown       validity: unknown
- Primary key fingerprint: B446 8625 8561 6A3F BC93  5F9A 4DFD E0A4 BA1C 00D5
-
-     Carlos Rivero <carlosrivero1988@gmail.com>
-
-This key is due to expire on 2023-11-25.
-Are you sure that you want to sign this key with your
-key "Adrián Jaramillo Rodríguez <adristudy@gmail.com>" (3A110CF1BEBCA39E)
-
-Really sign? (y/N) y
+gpg --keyserver pgp.rediris.es --recv-keys BE770D0718D1F998
 ```
 
-
-### Parte 4
-> Tu te debes asegurar que tu clave pública es firmada por al menos tres compañeros de la clase.
-
-Recibo:
+Firmo la de María Jesús:
 ```
--rw-r--r-- 1 vagrant vagrant 3069 Nov 25 12:43 clave_adrian_firmada.asc
+gpg --sign-key bpmariajesus20@gmail.com
 ```
 
-Importo:
+Muestro mi firma en la clave de María Jesús:
+
+![](https://i.imgur.com/rXHWWeX.png)
+
+
+Me bajo la de Miguel:
 ```
-gpg --import clave_adrian_firmada.asc
-```
-
-
-
-### Parte 5
-> Una vez que firmes una clave se la tendrás que devolver a su dueño, para que otra persona se la firme.
-
-```
-gpg --armor --output carlos_rivero_firmado_adri.asc --export carlosrivero1988@gmail.com
+gpg --keyserver pgp.rediris.es --recv-keys 93E00F9A8C74FBC0
 ```
 
-Se la he devuelto.
-
-### Parte 6
-> Cuando tengas las tres firmas sube la clave al servidor de claves y rellena tus datos en la tabla Claves públicas PGP 2020-2021
-
-Para mi keybox:
+Firmo la de Miguel:
 ```
-gpg --import clavefirmada_adri.asc
+gpg --sign-key miguelcor.rrss@gmail.com
 ```
 
-Para el keyserver:
-```
-gpg --keyserver pgp.rediris.es --send-key F0B9E3109E86B53F6C0791E43A110CF1BEBCA39E
-```
+Muestro mi firma en la clave de Miguel:
 
+![](https://i.imgur.com/J1YYQ9r.png)
+
+#### Parte 4
+> Tu clave pública tiene que tener 3 firmas
+
+En mi keybox:
 ```
 gpg --list-sigs adristudy@gmail.com
 ```
 ```
-
+pub   rsa3072 2021-11-25 [SC] [expires: 2023-11-25]
+      F0B9E3109E86B53F6C0791E43A110CF1BEBCA39E
+uid           [ultimate] Adrián Jaramillo Rodríguez <adristudy@gmail.com>
+sig 3        3A110CF1BEBCA39E 2021-11-25  Adrián Jaramillo Rodríguez <adristudy@gmail.com>
+sig          4DFDE0A4BA1C00D5 2021-11-25  Carlos Rivero <carlosrivero1988@gmail.com>
+sig          0A3D7E065504F64B 2021-11-25  Daniel Parrales Garcia (Para ASIR) <daniparrales16@gmail.com>
+sig          51D0DEC846173F6A 2021-11-25  Lara Pruna Ternero <larapruter@gmail.com>
+sub   rsa3072 2021-11-25 [E] [expires: 2023-11-25]
+sig          3A110CF1BEBCA39E 2021-11-25  Adrián Jaramillo Rodríguez <adristudy@gmail.com>
 ```
 
+En `pgp.rediris.es`:
 
+![](https://i.imgur.com/Y59vjg0.png)
 
-### Parte 7
-> Asegurate que te vuelves a bajar las claves públicas de tus compañeros que tengan las tres firmas.
+#### Parte 5
+> Al firmar claves, devolverlas a su dueño
+
+Las exporto de esta manera:
+```
+gpg --armor --output carlos_rivero_firmado_adri.asc --export carlosrivero1988@gmail.com
+```
+
+#### Parte 6
+> Subir a `pgp.rediris.es` la clave cuando tenga tres firmas
+
+```
+gpg --keyserver pgp.rediris.es --send-key F0B9E3109E86B53F6C0791E43A110CF1BEBCA39E
+```
+
+Muestro las 3 firmas en el keyserver:
+
+![](https://i.imgur.com/rWPO617.png)
+
+> Rellenar datos de tu clave pública [aquí](https://dit.gonzalonazareno.org/redmine/projects/asir2/wiki/Claves_p%C3%BAblicas_PGP_2021-2022)
+
+![](https://i.imgur.com/v3FHprc.png)
+
+#### Parte 7
+> Bajar las claves públicas de tus compañeros con tres firmas
 
 Daniel:
 ```
@@ -160,23 +181,42 @@ Carlos:
 gpg --keyserver pgp.rediris.es --recv-key 4DFDE0A4BA1C00D5
 ```
 
-
-
-
-
-
-
+*(todas esas claves tienen 3 firmas originalmente en el servidor, pero al intentar descargarlas gpg borra las firmas)*
 
 ### Ejercicio 4
-> Muestra las firmas que tiene tu clave pública.
+> Mostrar las firmas de tu clave pública
+
+```
+gpg --list-sigs adristudy@gmail.com
+```
+```
+pub   rsa3072 2021-11-25 [SC] [expires: 2023-11-25]
+      F0B9E3109E86B53F6C0791E43A110CF1BEBCA39E
+uid           [ultimate] Adrián Jaramillo Rodríguez <adristudy@gmail.com>
+sig 3        3A110CF1BEBCA39E 2021-11-25  Adrián Jaramillo Rodríguez <adristudy@gmail.com>
+sig          4DFDE0A4BA1C00D5 2021-11-25  Carlos Rivero <carlosrivero1988@gmail.com>
+sig          0A3D7E065504F64B 2021-11-25  Daniel Parrales Garcia (Para ASIR) <daniparrales16@gmail.com>
+sig          51D0DEC846173F6A 2021-11-25  Lara Pruna Ternero <larapruter@gmail.com>
+sub   rsa3072 2021-11-25 [E] [expires: 2023-11-25]
+sig          3A110CF1BEBCA39E 2021-11-25  Adrián Jaramillo Rodríguez <adristudy@gmail.com>
+```
 
 ### Ejercicio 5
-> Comprueba que ya puedes verificar sin “problemas” una firma recibida por una persona en la que confías.
+> Comprobar que se puede verificar "sin problemas” la firma de Carlos, porque ya se confía
+
+```
+gpg --verify taninonino.txt.sig taninonino.txt
+```
+```
+gpg: Signature made Thu Nov 25 12:12:20 2021 UTC
+gpg:                using RSA key B446862585616A3FBC935F9A4DFDE0A4BA1C00D5
+gpg: Good signature from "Carlos Rivero <carlosrivero1988@gmail.com>" [full]
+```
 
 ### Ejercicio 6
 > Comprueba que puedes verificar con confianza una firma de una persona en las que no confías, pero sin embargo si confía otra persona en la que tu tienes confianza total.
 
-
+mirar mi documentación antigua
 
 
 
