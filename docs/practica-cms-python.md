@@ -94,11 +94,11 @@ Artículo 1:
 python manage.py dumpdata --exclude auth.permission --exclude contenttypes > db.json
 ```
 
-> Guardar la aplicación en un repositorio
+> Guardar la aplicación en repositorio
 
 Lo creo: <https://github.com/adriasir123/django-fiber>
 
-Dejo `.gitignore` así:
+Modifico `.gitignore`:
 ```
 *.pyc
 /build/
@@ -112,7 +112,7 @@ testproject/fiber_test/__pycache__
 testproject/testproject/__pycache__
 ```
 
-Subo al repo:
+Subo cambios al repo:
 ```
 git remote remove origin
 git branch -M main
@@ -124,7 +124,7 @@ git push --set-upstream origin master
 ```
 
 ## Apartado 4
-> Desplegar la app en hera (servidor web apache y servidor de base de datos mariadb en KVM), utilizando un entorno virtual. Utiliza uwsgi. El contenido estático debe servirlo el servidor web. La aplicación será accesible en la url python.adrianj.gonzalonazareno.org.
+> Desplegar la app en hera con Utiliza uWSGI, y la BD en ares. . El contenido estático debe servirlo el servidor web. La aplicación será accesible en la url python.adrianj.gonzalonazareno.org.
 
 Clonar repositorio:
 ```

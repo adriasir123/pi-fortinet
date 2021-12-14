@@ -55,6 +55,7 @@ nav:
                 - 'Práctica: CMS python': 'practica-cms-python.md'
         - SAD:
             - 'Criptografía 1: Cifrado asímetrico': 'practica-cifrado-asimetrico-gpg-openssl.md'
+            - 'Práctica: VPN': 'practica-vpn-sad.md'
         - 'Escenario libvirt': 'practica-escenario-libvirt.md'
     - About: about.md
 extra:
