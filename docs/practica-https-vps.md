@@ -1,32 +1,30 @@
 # Práctica: Configuración de HTTPS en el VPS
 
-Se configurará en todos los VirtualHosts usando [Let's Encrypt
+Se configurará para todos los VirtualHosts usando [Let's Encrypt
 ](https://letsencrypt.org).
+
+
 
 ## Parte 1
 > Comprobar que Brave tiene el certificado de Let’s Encrypt
 
-Directamente el navegador no tiene el certificado, pero tiene el del Root X1:
-
-![](https://i.imgur.com/0BqmthE.png)
-
-Aquí está entrando en funcionamiento una cadena de confianza.
-
-Si vamos a la web de Let's Encrypt, que está con su certificado vemos la cadena:
-
-![](https://i.imgur.com/LqYHkrH.png)
-
-DST Root CA X3 -> ISRG Root X1 -> R3 -> lencr.org (server web)
-
-![](https://i.imgur.com/ucGZFTI.png)
-
-Explicar la jerarquía:
+Antes de comprobar nada, es esencial entender su chain of trust:
 
 ![](https://letsencrypt.org/images/isrg-hierarchy.png)
 
+Como vemos, existen muchas entidades certificadoras, pero las que nos interesan son `ISRG Root X1` y `R3`. Ésta última es la que suele firmar a los usuarios finales.
 
+Brave no tiene el certificado de `R3`, sino el de `ISRG Root X1`:
 
+![](https://i.imgur.com/0BqmthE.png)
 
+¿Por qué esto es así? Por la chain of trust que he mostrado arriba.
+
+Podemos hacer una prueba de esto, si accedemos a la web oficial de Let’s Encrypt y mostramos la jerarquía del certificado:
+
+![](https://i.imgur.com/LqYHkrH.png)
+
+Directamente Brave "no confía" en `R3`, porque no tiene su certificado y por lo cual no puede verificar su firma, pero sí tiene el certificado root de `ISRG Root X1` que firmó a R3, entonces puede verificar esa firma en el certificado de `R3` y en consecuencia, confiar en él.
 
 
 

@@ -37,6 +37,8 @@ nav:
                 - 'Ejercicio 2: Slave DNS': 'ej2-instalar-configurar-slave.md'
                 - 'Ejercicio 3: Delegación subdominios': 'ej3-delegacion-subdominio-bind9.md'
                 - 'Práctica: DNS+Web+BD en escenario': 'practica-web-bd-dns-escenario.md'
+            - HTTPS:
+                - 'Práctica: HTTPS en VPS': 'practica-https-vps.md'
         - IAW:
             - 'ej1-pull-request': '2021-09-22-ej1-pull-request.md'
             - 'app-web-estatica': '2021-10-5-implantacion-despliegue-aplicacion-web-estatica.md'
