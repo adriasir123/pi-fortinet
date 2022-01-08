@@ -1152,35 +1152,35 @@ traceroute to 192.168.0.2 (192.168.0.2), 30 hops max, 60 byte packets
 
 #### Conectar cliente
 
-1. Conecto la VM a la red `internet-vpn3`:
+Conecto la VM a la red `internet-vpn3`:
 
 ![](https://i.imgur.com/oeLET6E.png)
 
-2. Configuro estáticamente la interfaz:
+Configuro estáticamente la interfaz:
 
 ```
 netsh interface ip set address name="Ethernet" static 192.88.99.12 255.255.255.0 192.88.99.10
 ```
 
-3. Compruebo que la configuración se aplicó correctamente:
+Compruebo que la configuración se aplicó correctamente:
 
 ![](https://i.imgur.com/RmHnYNI.png)
 
-4. Compruebo que tengo conectividad con servervpn:
+Compruebo que tengo conectividad con servervpn:
 
 ![](https://i.imgur.com/kC4Rl5T.png)
 
 #### Configurar cliente
 
-1. Descargo e instalo Wireguard:
+Descargo e instalo Wireguard:
 
 ![](https://i.imgur.com/PnuNBVQ.png)
 
-2. Compruebo que funciona el programa:
+Compruebo que funciona el programa:
 
 ![](https://i.imgur.com/6xiDTEw.png)
 
-3. Creo un nuevo túnel en blanco:
+Creo un nuevo túnel en blanco:
 
 ![](https://i.imgur.com/MQs39Ts.png)
 
@@ -1188,11 +1188,11 @@ Como nos podemos dar cuenta, la generación de claves ha sido automática:
 
 ![](https://i.imgur.com/zMqkR69.png)
 
-4. Completo la configuración y nombro el túnel:
+Completo la configuración y nombro el túnel:
 
 ![](https://i.imgur.com/NuWRSBw.png)
 
-5. Verifico que se ha creado correctamente:
+Verifico que se ha creado correctamente:
 
 ![](https://i.imgur.com/YRScpHp.png)
 
@@ -1255,49 +1255,49 @@ Tracert a clientenormal:
 
 #### Conectar cliente
 
-1. Conecto la VM a la red `internet-vpn3`:
+Conecto la VM a la red `internet-vpn3`:
 
 ![](https://i.imgur.com/GZCPo8P.png)
 
-2. Configuro estáticamente la interfaz:
+Configuro estáticamente la interfaz:
 
 ```
 ifconfig wlan0 192.88.99.13 netmask 255.255.255.0 up
 ```
 
-3. Compruebo que la configuración se aplicó correctamente:
+Compruebo que la configuración se aplicó correctamente:
 
 ![](https://i.imgur.com/UpCkiZu.png)
 
-4. Compruebo que tengo conectividad con servervpn:
+Compruebo que tengo conectividad con servervpn:
 
 ![](https://i.imgur.com/KE9LR9G.png)
 
 #### Configurar cliente
 
-1. Instalo Wireguard:
+Instalo Wireguard:
 
 ![](https://i.imgur.com/1vEHzQN.png)
 
-2. Compruebo que funciona el programa:
+Compruebo que funciona el programa:
 
 ![](https://i.imgur.com/t2LZRNB.png)
 
-3. Creo un nuevo túnel en blanco:
+Creo un nuevo túnel en blanco:
 
 ![](https://i.imgur.com/iS2mELB.png)
 
-4. Genero un par de claves:
+Genero un par de claves:
 
 ![](https://i.imgur.com/9PAPaVg.png)
 
-5. Completo la configuración:
+Completo la configuración:
 
 ![](https://i.imgur.com/fITSxMx.png)
 
 ![](https://i.imgur.com/G6KNIlD.png)
 
-5. Verifico que se ha creado correctamente el túnel:
+Verifico que se ha creado correctamente el túnel:
 
 ![](https://i.imgur.com/vqUOuEw.png)
 
