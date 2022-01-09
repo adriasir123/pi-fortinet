@@ -4,20 +4,20 @@ theme:
   name: 'material'
   palette:
     - scheme: default
-      primary: pink
-      accent: pink
+      primary: indigo
+      accent: indigo
       toggle:
         icon: material/toggle-switch-off-outline
         name: Switch to dark mode
     - scheme: slate
-      primary: pink
-      accent: pink
+      primary: indigo
+      accent: indigo
       toggle:
         icon: material/toggle-switch
         name: Switch to light mode
 nav:
     - Home: index.md
-    - 2º ASIR3:
+    - 2º ASIR 21/22:
         - SRI:
             - 'ej1-playbook-sencillo': '2021-09-22-ej1-playbook-sencillo.md'
             - 'ej2-router-nat-vagrant': '2021-10-1-ej2-router-nat-vagrant.md'
@@ -57,6 +57,7 @@ nav:
                 - 'Práctica: CMS python': 'practica-cms-python.md'
         - SAD:
             - 'Criptografía 1: Cifrado asímetrico': 'practica-cifrado-asimetrico-gpg-openssl.md'
+            - 'Criptografía 2: Firmas': 'practica-integridad-firmas-autenticacion.md'
             - 'Práctica: VPN': 'practica-vpn-sad.md'
         - 'Escenario libvirt': 'practica-escenario-libvirt.md'
     - About: about.md

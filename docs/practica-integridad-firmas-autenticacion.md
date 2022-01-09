@@ -223,24 +223,6 @@ mirar mi documentación antigua
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ## Tarea 2: Correo seguro con evolution
 
 Ahora vamos a configurar nuestro cliente de correo electrónico para poder mandar correos cifrados, para ello:
@@ -326,3 +308,67 @@ Prueba de que he enviado el correo:
 Me aparece ese error porque está encriptado con la clave pública de Raúl, y como no tengo la privada asociada no prueba desencriptarlo.
 
 Eso significa que se ha encriptado correctamente.
+
+
+
+
+
+
+## Tarea 3: Integridad de ficheros
+
+### Parte 1
+> Descargar la ISO de Debian
+
+```
+wget https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/debian-11.2.0-amd64-netinst.iso
+```
+
+Obtengo el fichero:
+```
+-rw-r--r-- 1 vagrant vagrant 396361728 Dec 18 13:24 debian-11.2.0-amd64-netinst.iso
+```
+
+
+
+### Parte 2
+> Comprobar la integridad de la ISO descargada usando `sha512sum`
+
+
+
+
+
+
+
+
+
+
+
+
+
+### Parte 3
+
+Verifica que el contenido del hash que has utilizado no ha sido manipulado, usando la firma digital que encontrarás en el repositorio. Puedes encontrar una guía para realizarlo en este artículo: How to verify an authenticity of downloaded Debian ISO images
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+end
