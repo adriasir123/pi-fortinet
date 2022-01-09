@@ -333,21 +333,79 @@ Obtengo el fichero:
 ### Parte 2
 > Comprobar la integridad de la ISO descargada usando `sha512sum`
 
+En el fichero [SHA512SUMS](https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/SHA512SUMS) que nos proporciona Debian, nos encontramos el siguiente checksum para la ISO descargada:
+```
+c685b85cf9f248633ba3cd2b9f9e781fa03225587e0c332aef2063f6877a1f0622f56d44cf0690087b0ca36883147ecb5593e3da6f965968402cdbdf12f6dd74
+```
 
+Luego utilizo `sha512sum` sobre la ISO que me he descargado:
+```
+sha512sum debian-11.2.0-amd64-netinst.iso
+```
+```
+c685b85cf9f248633ba3cd2b9f9e781fa03225587e0c332aef2063f6877a1f0622f56d44cf0690087b0ca36883147ecb5593e3da6f965968402cdbdf12f6dd74  debian-11.2.0-amd64-netinst.iso
+```
 
+Ambos hashes coinciden, así que nos hemos descargado el fichero correctamente.
 
+Igualmente, si queremos evitar errores, podemos usar [una herramienta online](https://text-compare.com/) para comparar strings:
 
-
-
-
-
-
+![](https://i.imgur.com/KUhapSW.png)
 
 
 
 ### Parte 3
+> Verificar que `SHA512SUMS` no ha sido manipulado usando `SHA512SUMS.sign`
 
-Verifica que el contenido del hash que has utilizado no ha sido manipulado, usando la firma digital que encontrarás en el repositorio. Puedes encontrar una guía para realizarlo en este artículo: How to verify an authenticity of downloaded Debian ISO images
+Primero descargo ambos ficheros:
+```
+wget https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/SHA512SUMS
+wget https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/SHA512SUMS.sign
+```
+
+Muestro que los tengo:
+```
+-rw-r--r-- 1 vagrant vagrant       494 Dec 18 20:42 SHA512SUMS
+-rw-r--r-- 1 vagrant vagrant       833 Dec 18 20:45 SHA512SUMS.sign
+```
+
+Averiguo el fingerprint del par de claves que se usó originalmente para crear la firma `SHA512SUMS.sign`:
+```
+gpg --verify SHA512SUMS.sign
+```
+![](https://i.imgur.com/pSmi6pt.png)
+
+No se puede verificar la firma porque no tenemos la clave pública de Debian en nuestro keybox, pero ya sabemos su fingerprint para descargarla:
+```
+gpg --keyserver keyring.debian.org --recv DF9B9C49EAA9298432589D76DA87E80D6294BE9B
+```
+```
+gpg: key DA87E80D6294BE9B: public key "Debian CD signing key <debian-cd@lists.debian.org>" imported
+gpg: Total number processed: 1
+gpg:               imported: 1
+```
+
+Finalmente, podemos verificar la firma:
+```
+gpg --verify SHA512SUMS.sign SHA512SUMS
+```
+```
+gpg: Signature made Sat Dec 18 20:45:36 2021 UTC
+gpg:                using RSA key DF9B9C49EAA9298432589D76DA87E80D6294BE9B
+gpg: Good signature from "Debian CD signing key <debian-cd@lists.debian.org>" [unknown]
+gpg: WARNING: This key is not certified with a trusted signature!
+gpg:          There is no indication that the signature belongs to the owner.
+Primary key fingerprint: DF9B 9C49 EAA9 2984 3258  9D76 DA87 E80D 6294 BE9B
+```
+
+Se ha podido verificar correctamente, `SHA512SUMS` es legítimo.
+
+
+
+
+
+
+
 
 
 
