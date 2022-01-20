@@ -405,6 +405,255 @@ Se ha podido verificar correctamente, `SHA512SUMS` es legítimo.
 
 
 
+## Tarea 4: Integridad y autenticidad (apt-secure)
+
+### Parte 1
+> ¿Qué herramienta utiliza apt-secure para firmar y verificar firmas?
+
+GPG.
+
+
+
+### Parte 2
+> ¿Para qué sirve `apt-key`?
+
+Se usa para gestionar la lista de claves que mantiene apt para autenticar paquetes.  
+
+Los paquetes que sean autenticados usando estas claves se considerarán "trusted".
+
+> ¿Qué muestra el comando `apt-key list`?
+
+Lista las claves públicas en las que confiamos.  
+
+Muestro mi output de `apt-key list`:
+```
+Warning: apt-key is deprecated. Manage keyring files in trusted.gpg.d instead (see apt-key(8)).
+/etc/apt/trusted.gpg.d/debian-archive-bullseye-automatic.gpg
+------------------------------------------------------------
+pub   rsa4096 2021-01-17 [SC] [expires: 2029-01-15]
+      1F89 983E 0081 FDE0 18F3  CC96 73A4 F27B 8DD4 7936
+uid           [ unknown] Debian Archive Automatic Signing Key (11/bullseye) <ftpmaster@debian.org>
+sub   rsa4096 2021-01-17 [S] [expires: 2029-01-15]
+
+/etc/apt/trusted.gpg.d/debian-archive-bullseye-security-automatic.gpg
+---------------------------------------------------------------------
+pub   rsa4096 2021-01-17 [SC] [expires: 2029-01-15]
+      AC53 0D52 0F2F 3269 F5E9  8313 A484 4904 4AAD 5C5D
+uid           [ unknown] Debian Security Archive Automatic Signing Key (11/bullseye) <ftpmaster@debian.org>
+sub   rsa4096 2021-01-17 [S] [expires: 2029-01-15]
+
+/etc/apt/trusted.gpg.d/debian-archive-bullseye-stable.gpg
+---------------------------------------------------------
+pub   rsa4096 2021-02-13 [SC] [expires: 2029-02-11]
+      A428 5295 FC7B 1A81 6000  62A9 605C 66F0 0D6C 9793
+uid           [ unknown] Debian Stable Release Key (11/bullseye) <debian-release@lists.debian.org>
+
+/etc/apt/trusted.gpg.d/debian-archive-buster-automatic.gpg
+----------------------------------------------------------
+pub   rsa4096 2019-04-14 [SC] [expires: 2027-04-12]
+      80D1 5823 B7FD 1561 F9F7  BCDD DC30 D7C2 3CBB ABEE
+uid           [ unknown] Debian Archive Automatic Signing Key (10/buster) <ftpmaster@debian.org>
+sub   rsa4096 2019-04-14 [S] [expires: 2027-04-12]
+
+/etc/apt/trusted.gpg.d/debian-archive-buster-security-automatic.gpg
+-------------------------------------------------------------------
+pub   rsa4096 2019-04-14 [SC] [expires: 2027-04-12]
+      5E61 B217 265D A980 7A23  C5FF 4DFA B270 CAA9 6DFA
+uid           [ unknown] Debian Security Archive Automatic Signing Key (10/buster) <ftpmaster@debian.org>
+sub   rsa4096 2019-04-14 [S] [expires: 2027-04-12]
+
+/etc/apt/trusted.gpg.d/debian-archive-buster-stable.gpg
+-------------------------------------------------------
+pub   rsa4096 2019-02-05 [SC] [expires: 2027-02-03]
+      6D33 866E DD8F FA41 C014  3AED DCC9 EFBF 77E1 1517
+uid           [ unknown] Debian Stable Release Key (10/buster) <debian-release@lists.debian.org>
+
+/etc/apt/trusted.gpg.d/debian-archive-stretch-automatic.gpg
+-----------------------------------------------------------
+pub   rsa4096 2017-05-22 [SC] [expires: 2025-05-20]
+      E1CF 20DD FFE4 B89E 8026  58F1 E0B1 1894 F66A EC98
+uid           [ unknown] Debian Archive Automatic Signing Key (9/stretch) <ftpmaster@debian.org>
+sub   rsa4096 2017-05-22 [S] [expires: 2025-05-20]
+
+/etc/apt/trusted.gpg.d/debian-archive-stretch-security-automatic.gpg
+--------------------------------------------------------------------
+pub   rsa4096 2017-05-22 [SC] [expires: 2025-05-20]
+      6ED6 F5CB 5FA6 FB2F 460A  E88E EDA0 D238 8AE2 2BA9
+uid           [ unknown] Debian Security Archive Automatic Signing Key (9/stretch) <ftpmaster@debian.org>
+sub   rsa4096 2017-05-22 [S] [expires: 2025-05-20]
+
+/etc/apt/trusted.gpg.d/debian-archive-stretch-stable.gpg
+--------------------------------------------------------
+pub   rsa4096 2017-05-20 [SC] [expires: 2025-05-18]
+      067E 3C45 6BAE 240A CEE8  8F6F EF0F 382A 1A7B 6500
+uid           [ unknown] Debian Stable Release Key (9/stretch) <debian-release@lists.debian.org>
+```
+
+
+
+### Parte 3
+> ¿Dónde se encuentran los distintos keyrings que usa `apt-key`?
+
+En `/etc/apt/trusted.gpg.d/`.
+
+
+
+### Parte 4
+> ¿Qué contiene el fichero `Release` de un repositorio?
+
+En otros datos, contiene los checksums de los ficheros que hay en el repositorio.
+
+Ejemplo: http://ftp.debian.org/debian/dists/Debian11.2/Release
+
+> ¿Y `Release.gpg`?
+
+Contiene la firma detached ascii-armored del fichero `Release`.
+
+Ejemplo: http://ftp.debian.org/debian/dists/Debian11.2/Release.gpg
+
+
+
+### Parte 5
+> Explicar el proceso por el cual apt nos asegura que los ficheros que estamos descargando son legítimos
+
+1. Se descargan los ficheros `Release`, `Release.gpg`, y el fichero `Packages` que corresponda.
+2. Se comprueba usando la firma `Release.gpg` más la clave pública correspondiente, que el fichero `Release` es legítimo. A partir de aquí, apt ya confía en todos sus checksums.
+3. Apt compara el checksum del fichero `Packages` con el que encuentra en el fichero `Release`; si coinciden, quiere decir que se descargó el fichero correcto.
+4. Al descargarnos un paquete individual se compara su checksum con el que aparece en `Packages`; si coinciden, quiere decir que se descargó el paquete correcto.
+
+
+
+### Parte 6
+> Añadir el repositorio de VirtualBox
+
+Añado las claves gpg necesarias:
+```
+wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo apt-key add -
+wget -q https://www.virtualbox.org/download/oracle_vbox.asc -O- | sudo apt-key add -
+```
+
+Añado el repositorio:
+```
+echo "deb [arch=amd64] http://download.virtualbox.org/virtualbox/debian bullseye contrib" | sudo tee /etc/apt/sources.list.d/virtualbox.list
+```
+
+
+
+
+
+
+## Tarea 5: Autenticación en SSH
+
+### Parte 1
+> Explica los pasos que se producen entre el cliente y el servidor para que el protocolo cifre la información que se transmite
+
+Una sesión SSH tiene 2 fases antes de que se pueda cifrar la comunicación. Las explicaré a continuación.
+
+**CONEXIÓN**
+
+1. El cliente establece una conexión TCP con el servidor, y este responde con las versiones del protocolo que soporta.
+2. Si el cliente usa una versión del protocolo que coincida con las que acepta el servidor, la conexión continúa.
+3. El servidor comparte su clave pública con el cliente, para que este compruebe si efectivamente es la máquina a la que quería conectarse.
+4. A partir de ahora, ambas partes están preparadas para la negociación de una clave de sesión usando Diffie-Hellman.
+
+**NEGOCIACIÓN DE LA ENCRIPTACIÓN PARA LA SESIÓN**
+
+1. Ambas partes se ponen de acuerdo en un número primo alto, que servirá como "seed value".
+2. Ambas partes se ponen de acuerdo en un tipo de cifrado (normalmente AES).
+3. Ambas partes generan otro número primo por separado, que mantienen en secreto de la otra parte. Se usará como clave privada durante esta fase de negociación *(esta clave privada NO es la misma que se usa para la autenticación)*.
+4. La clave privada generada + el tipo de cifrado + el número primo compartido, se usarán para generar una clave pública que estará derivada de la clave privada.
+5. Ambas partes intercambian sus claves públicas generadas *(estas claves públicas NO son las mismas que se usan para la autenticación)*.
+6. Cada parte usará su clave privada + la clave pública de la otra parte + el número primo compartido original, para calcular una clave compartida "shared secret". Aunque este proceso lo realiza cada parte por separado, mientras se usen claves públicas y privadas opuestas, se llegará al mismo "shared secret".
+7. Este "shared secret" se usará para encriptar toda comunicación a partir de ahora. Es una clave simétrica.
+
+> ¿Para qué se utiliza la criptografía simétrica?
+
+Para encriptar las conexiones, mediante el uso de una clave secreta.
+
+Esta se genera a través de un proceso llamado "key exchange algorithm",
+y es única por sesión.  
+En cuanto ambas partes la sepan, el resto de la sesión se encriptará usando esta clave.
+
+> ¿Y la asimétrica?
+
+Se usa:
+* Durante el intercambio de clave para la encriptación simétrica. Ambas partes generan un par de claves temporal e intercambian la clave pública para poder generar el "shared secret" (clave simétrica) que se usará posteriormente.
+* En la autenticación del cliente con el servidor.
+
+
+
+### Parte 2
+> Explica los dos métodos de autenticación que existen
+
+**CON CONTRASEÑA**
+
+Es el método más simple. Funciona así:
+
+1. El servidor pide al cliente que introduzca la contraseña del usuario con el que se están intentando conectar.
+2. Esta contraseña se envía usando la encriptación previamente negociada, para que se mantenga en secreto frente a terceros.
+
+**CON PAR DE CLAVES**
+
+Es el método más popular y recomendado. Funciona así:
+
+1. El cliente envía el ID del par de claves con el que se quiere autenticar ante el servidor.
+2. El servidor comprueba el fichero `authorized_keys` del usuario al que el cliente está intentando conectarse, para comprobar si existe la clave correspondiente al ID que envió el cliente en el paso anterior.
+3. Si se encuentra una clave pública que corresponda con el ID enviado, el servidor genera un número aleatorio y usa esa clave pública para encriptarlo.
+4. El servidor envía al cliente este número encriptado.
+5. Si el cliente tiene la clave privada asociada, podrá desencriptar este mensaje y revelar el número original.
+6. El cliente combina el número desencriptado con la clave compartida de sesión que se está usando para encriptar la comunicación, y calcula el hash MD5 de este valor.
+7. El cliente envía este hash de vuelta al servidor como respuesta al mensaje del número encriptado.
+8. El servidor usa la misma clave compartida de sesión junto con el número original que envió al cliente, y calcula el hash MD5 él también.
+8. El servidor compara el hash que él mismo generó con el que el cliente le envió. Si estos valores son iguales, se prueba que el cliente tiene la clave privada correcta y finalmente, este cliente es autenticado correctamente.
+
+### Parte 3
+> ¿Qué función tiene el fichero `~/.ssh/know_hosts` en el cliente?
+
+
+
+
+
+
+
+
+
+
+
+### Parte 4
+> ¿Qué significa este mensaje que aparece la primera vez que nos conectamos a un servidor?
+```
+$ ssh debian@172.22.200.74
+The authenticity of host '172.22.200.74 (172.22.200.74)' can't be established.
+ECDSA key fingerprint is SHA256:7ZoNZPCbQTnDso1meVSNoKszn38ZwUI4i6saebbfL4M.
+Are you sure you want to continue connecting (yes/no)?
+```
+
+
+
+### Parte 5
+> En ocasiones cuando estamos trabajando en el cloud, y reutilizamos una ip flotante nos aparece este mensaje:
+
+```
+$ ssh debian@172.22.200.74
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@    WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!     @
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!
+Someone could be eavesdropping on you right now (man-in-the-middle attack)!
+It is also possible that a host key has just been changed.
+The fingerprint for the ECDSA key sent by the remote host is
+SHA256:W05RrybmcnJxD3fbwJOgSNNWATkVftsQl7EzfeKJgNc.
+Please contact your system administrator.
+Add correct host key in /home/jose/.ssh/known_hosts to get rid of this message.
+Offending ECDSA key in /home/jose/.ssh/known_hosts:103
+ remove with:
+ ssh-keygen -f "/home/jose/.ssh/known_hosts" -R "172.22.200.74"
+ECDSA host key for 172.22.200.74 has changed and you have requested strict checking.
+```
+
+
+### Parte 6
+> ¿Qué guardamos y para qué sirve el fichero en el servidor ~/.ssh/authorized_keys?
 
 
 
