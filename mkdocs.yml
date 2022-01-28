@@ -62,6 +62,7 @@ nav:
             - 'Criptografía 2: Firmas': 'practica-integridad-firmas-autenticacion.md'
             - 'Práctica: VPN': 'practica-vpn-sad.md'
             - 'Ejercicio 1 iptables: por nodo': 'ej1-iptables-nodo.md'
+            - 'Ejercicio 1 nftables: por nodo': 'ej1-nftables-nodo.md'
         - 'Escenario libvirt': 'practica-escenario-libvirt.md'
     - About: about.md
 extra:
