@@ -61,8 +61,10 @@ nav:
             - 'Criptografía 1: Cifrado asímetrico': 'practica-cifrado-asimetrico-gpg-openssl.md'
             - 'Criptografía 2: Firmas': 'practica-integridad-firmas-autenticacion.md'
             - 'Práctica: VPN': 'practica-vpn-sad.md'
-            - 'Ejercicio 1 iptables: por nodo': 'ej1-iptables-nodo.md'
-            - 'Ejercicio 1 nftables: por nodo': 'ej1-nftables-nodo.md'
+            - Cortafuegos:
+                - 'Ejercicio 1 iptables: por nodo': 'ej1-iptables-nodo.md'
+                - 'Ejercicio 1 nftables: por nodo': 'ej1-nftables-nodo.md'
+                - 'Ejercicio 2 iptables: perimetral': 'ej2-iptables-perimetral.md'
         - 'Escenario libvirt': 'practica-escenario-libvirt.md'
     - About: about.md
 extra:
