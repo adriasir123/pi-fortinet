@@ -171,11 +171,12 @@ Que funcione esta conexión significa que tanto las reglas de este paso como del
 
 
 
-## Tráfico SSH ProxyJump en zeus
+## Parte 5
+> Permitir tráfico ssh para hacer proxyjump desde zeus
 
 Según como estaba planteado nuestro escenario, se tenía que acceder a la DMZ y a la LAN a través de zeus por ssh. Esto nos obliga a añadir reglas INPUT/OUPUT desde zeus hacia estas redes, para que el salto SSH pueda funcionar.
 
-Muestro mi información en `.ssh/config` sobre el escenario, para que sepamos de dónde partimos:
+Muestro la parte correspondiente de mi `.ssh/config`, para que sepamos de dónde partimos:
 ```
 #####################
 # escenario libvirt #
@@ -225,19 +226,19 @@ Host hera-casa
   ProxyJump zeus-casa
 ```
 
-Tráfico ssh saliente desde zeus a DMZ:
+Tráfico ssh saliente zeus → DMZ:
 ```
 sudo iptables -A OUTPUT -o eth2 -p tcp --dport 22 -m state --state NEW,ESTABLISHED -j ACCEPT
 sudo iptables -A INPUT -i eth2 -p tcp --sport 22 -m state --state ESTABLISHED -j ACCEPT
 ```
 
-Tráfico ssh saliente desde zeus a LAN:
+Tráfico ssh saliente zeus → LAN:
 ```
 sudo iptables -A OUTPUT -o eth3 -p tcp --dport 22 -m state --state NEW,ESTABLISHED -j ACCEPT
 sudo iptables -A INPUT -i eth3 -p tcp --sport 22 -m state --state ESTABLISHED -j ACCEPT
 ```
 
-Pruebo que puedo conectar a hera:
+Pruebo que puedo conectar a Hera desde mi host:
 ```
 atlas@olympus:~/vagrant/escenario-libvirt$ ssh hera-casa
 
@@ -251,7 +252,7 @@ Last login: Sun Feb  6 16:08:56 2022 from 172.16.0.1
 [vagrant@hera ~]$
 ```
 
-Pruebo que puedo conectar a apolo:
+Pruebo que puedo conectar a Apolo desde mi host:
 ```
 atlas@olympus:~/vagrant/escenario-libvirt$ ssh apolo-casa
 Linux apolo 5.10.0-10-amd64 #1 SMP Debian 5.10.84-1 (2021-12-08) x86_64
@@ -273,7 +274,7 @@ Last login: Sun Feb  6 16:07:35 2022 from 10.0.1.1
 vagrant@apolo:~$
 ```
 
-Pruebo que puedo conectar a ares:
+Pruebo que puedo conectar a Ares desde mi host:
 ```
 atlas@olympus:~/vagrant/escenario-libvirt$ ssh ares-casa
 
@@ -289,7 +290,8 @@ vagrant@ares:~$
 
 
 
-## Políticas por defecto
+## Parte 6
+> Políticas por defecto
 
 ```
 sudo iptables -P INPUT DROP
@@ -301,7 +303,8 @@ Si no se nos cortan las conexiones ssh a las máquinas después de este paso, la
 
 
 
-## Desde Apolo y Hera se debe permitir la conexión ssh por el puerto 22 a la máquina Zeus.
+## Parte 7
+> Permitir tráfico ssh Apolo-Hera → Zeus
 
 ```
 sudo iptables -A INPUT -s 10.0.1.102,172.16.0.200 -p tcp --dport 22 -m state --state NEW,ESTABLISHED -j ACCEPT
@@ -352,7 +355,8 @@ vagrant@zeus:~$
 
 
 
-## La máquina Zeus debe tener permitido el tráfico para la interfaz loopback.
+## Parte 8
+> Permitir tráfico loopback en Zeus
 
 ```
 sudo iptables -A OUTPUT -o lo -p icmp -j ACCEPT
@@ -373,10 +377,8 @@ rtt min/avg/max/mdev = 0.064/0.079/0.095/0.015 ms
 
 
 
-
-
-
-## Aceptar ping entrante a Zeus desde la DMZ
+## Parte 9
+> Permitir ping entrante DMZ → Zeus
 
 ```
 sudo iptables -A INPUT -i eth2 -p icmp -m icmp --icmp-type echo-request -j ACCEPT
@@ -397,13 +399,14 @@ rtt min/avg/max/mdev = 0.267/0.379/0.492/0.114 ms
 
 
 
-## Rechazar ping entrante a Zeus desde la LAN
+## Parte 10
+> Rechazar ping entrante LAN → Zeus
 
 ```
 sudo iptables -A INPUT -i eth3 -p icmp -m icmp --icmp-type echo-request -j REJECT
 ```
 
-Pruebo que no funciona el ping desde Ares:
+Pruebo que bloquea el ping desde Ares:
 ```
 vagrant@ares:~$ ping 10.0.1.1
 PING 10.0.1.1 (10.0.1.1) 56(84) bytes of data.
@@ -414,10 +417,10 @@ PING 10.0.1.1 (10.0.1.1) 56(84) bytes of data.
 
 
 
-## Denegar ping entrante a Zeus desde el exterior
+## Parte 11
+> Bloquear ping entrante exterior → Zeus
 
-La política por defecto de INPUT la tenemos a DROP, y tampoco tenemos reglas en este momento que acepten el ping entrante desde el exterior (eth1):
-
+La política por defecto de INPUT la tenemos a DROP, y tampoco tenemos reglas en este momento que acepten el ping entrante desde el exterior *(eth1)*:
 ```
 Chain INPUT (policy DROP 37915 packets, 1859K bytes)
  pkts bytes target     prot opt in     out     source               destination
@@ -430,12 +433,12 @@ Chain INPUT (policy DROP 37915 packets, 1859K bytes)
     6   504 ACCEPT     icmp --  eth2   *       0.0.0.0/0            0.0.0.0/0            icmptype 8
    11   924 REJECT     icmp --  eth3   *       0.0.0.0/0            0.0.0.0/0            icmptype 8 reject-with icmp-port-unreachable
 ```
-
 Esto significa que no necesitamos añadir ninguna regla adicional para que se deniegue el ping entrante a Zeus desde el exterior.
 
 
 
-## Ping saliente Zeus -> LAN+DMZ
+## Parte 12
+> Permitir ping saliente Zeus → LAN-DMZ
 
 ```
 sudo iptables -A OUTPUT -d 10.0.1.0/24,172.16.0.0/16 -p icmp -m icmp --icmp-type echo-request -j ACCEPT
@@ -468,7 +471,8 @@ rtt min/avg/max/mdev = 0.359/0.445/0.532/0.086 ms
 
 
 
-## Ping saliente Zeus -> exterior
+## Parte 13
+> Permitir ping saliente Zeus → exterior
 
 ```
 sudo iptables -A OUTPUT -o eth1 -p icmp -m icmp --icmp-type echo-request -j ACCEPT
@@ -489,7 +493,8 @@ rtt min/avg/max/mdev = 19.103/19.468/19.834/0.365 ms
 
 
 
-## Ping Hera -> LAN
+## Parte 14
+> Permitir ping Hera → LAN
 
 ```
 sudo iptables -A FORWARD -s 172.16.0.200 -o eth3 -p icmp -m icmp --icmp-type echo-request -j ACCEPT
@@ -510,7 +515,8 @@ rtt min/avg/max/mdev = 0.898/1.417/1.937/0.520 ms
 
 
 
-## Tráfico SSH Hera -> LAN
+## Parte 15
+> Permitir tráfico ssh Hera → LAN
 
 ```
 sudo iptables -A FORWARD -s 172.16.0.200 -o eth3 -p tcp --dport 22 -m state --state NEW,ESTABLISHED -j ACCEPT
@@ -533,7 +539,8 @@ vagrant@ares:~$
 
 
 
-## Tráfico SSH LAN -> Hera
+## Parte 16
+> Permitir tráfico ssh LAN → Hera
 
 ```
 sudo iptables -A FORWARD -i eth3 -d 172.16.0.200 -p tcp --dport 22 -m state --state NEW,ESTABLISHED -j ACCEPT
@@ -556,14 +563,15 @@ Last login: Sun Feb  6 16:56:24 2022 from 172.16.0.1
 
 
 
-## Tráfico LAN+DMZ -> exterior
+## Parte 17
+> Permitir ping LAN-DMZ → exterior
 
 ```
 sudo iptables -A FORWARD -s 10.0.1.0/24,172.16.0.0/16 -o eth1 -p icmp -m icmp --icmp-type echo-request -j ACCEPT
 sudo iptables -A FORWARD -i eth1 -d 10.0.1.0/24,172.16.0.0/16 -p icmp -m icmp --icmp-type echo-reply -j ACCEPT
 ```
 
-Tenemos, porque lo hicimos en una anterior práctica sobre el escenario, una regla de SNAT que entra en juego en este apartado, así que no la tenemos que añadir. Es la siguiente:
+Tenemos, porque lo hicimos en una anterior práctica sobre el escenario, una regla de SNAT que entra en juego en este apartado, así que no la tenemos que volver a añadir. Es la siguiente:
 ```
 sudo iptables -t nat -A POSTROUTING -o eth1 -j MASQUERADE
 ```
@@ -594,9 +602,8 @@ rtt min/avg/max/mdev = 14.081/14.255/14.430/0.174 ms
 
 
 
-
-
-## LAN puede navegar
+## Parte 18
+> LAN puede navegar
 
 ```
 sudo iptables -A FORWARD -i eth3 -o eth1 -p tcp -m multiport --dport 80,443 -m state --state NEW,ESTABLISHED -j ACCEPT
@@ -623,10 +630,8 @@ Escape character is '^]'.
 
 
 
-
-
-
-## La máquina Hera puede navegar
+## Parte 19
+> Hera puede navegar
 
 ```
 sudo iptables -A FORWARD -s 172.16.0.200 -o eth1 -p tcp -m multiport --dport 80,443 -m state --state NEW,ESTABLISHED -j ACCEPT
@@ -653,20 +658,23 @@ Escape character is '^]'.
 
 
 
-## Instalar en Hera un servidor de correos y un ftp
+## Parte 20
 
-### Correo
+Tenemos que instalar en Hera un servidor de correos y un servidor ftp.
+
+### Servidor de correo
+
 Instalo:
 ```
 sudo dnf install postfix
 ```
 
-Modifico la siguiente línea en `/etc/postfix/main.cf` para que acepte peticiones desde cualquier IP y no sólo desde localhost (como está por defecto):
+Modifico `/etc/postfix/main.cf` para que acepte peticiones desde cualquier IP y no sólo desde localhost *(es como está por defecto)*:
 ```
 inet_interfaces = all
 ```
 
-Inicio el servicio:
+Inicio postfix:
 ```
 sudo systemctl start postfix
 ```
@@ -683,7 +691,7 @@ tcp   LISTEN 0      128             [::]:22           [::]:*    users:(("sshd",p
 tcp   LISTEN 0      100             [::]:25           [::]:*    users:(("master",pid=32765,fd=17))
 ```
 
-### FTP
+### Servidor FTP
 
 ```
 sudo dnf install vsftpd
@@ -705,7 +713,8 @@ tcp   LISTEN 0      100             [::]:25           [::]:*    users:(("master"
 
 
 
-## Web+FTP accesibles desde el exterior
+## Parte 21
+> Permitir tráfico exterior → Hera para Web-FTP
 
 La regla DNAT web ya la tenía previamente, así que no hace falta añadirla. La recuerdo:
 ```
@@ -750,7 +759,8 @@ Escape character is '^]'.
 
 
 
-## Web+FTP accesibles desde la LAN
+## Parte 22
+> Permitir tráfico LAN → Hera para Web-FTP
 
 Reglas forward web:
 ```
@@ -785,7 +795,8 @@ Escape character is '^]'.
 
 
 
-## El servidor de correos sólo debe ser accesible desde la LAN
+## Parte 23
+> Permitir tráfico LAN → Hera al servidor correo, pero no se podrá acceder desde otro sitio
 
 ```
 sudo iptables -A FORWARD -i eth3 -d 172.16.0.200 -p tcp --dport 25 -j ACCEPT
@@ -815,7 +826,8 @@ sudo iptables -t nat -D PREROUTING -i eth1 -p tcp --dport 25 -j DNAT --to-destin
 
 
 
-## En Ares hay un servidor mysql. Se puede acceder desde la DMZ, pero no desde el exterior.
+## Parte 24
+> Permitir tráfico DMZ → Ares al servidor mysql. No se podrá acceder desde el exterior
 
 ```
 sudo iptables -A FORWARD -i eth2 -d 10.0.1.101 -p tcp --dport 3306 -j ACCEPT
@@ -837,27 +849,14 @@ Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
 MariaDB [(none)]>
 ```
 
+Desde el exterior no podremos acceder claramente, porque no existe una regla DNAT válida:
+
 ![](https://i.imgur.com/T3uQOhq.png)
 
-Desde el exterior no podremos acceder claramente, porque no existe una regla DNAT válida.
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-## Bloquear ICMP Flood limitando el número de peticiones por segundo
+## Parte 25
+> Bloquear ICMP Flood limitando el número de peticiones por segundo
 
 Desde el exterior y la LAN hemos bloqueado el tráfico ICMP así que no tenemos que preocuparnos por ataques de flood. **Desde la DMZ sí tenemos permitido el tráfico, así que lo tenemos que limitar**.
 
@@ -885,20 +884,8 @@ Vuelvo a lanzar el ataque, y veo cómo se quedan los contadores después de vari
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-## Bloquear SYN Flood
+## Parte 26
+> Bloquear SYN Flood
 
 Necesitamos esta regla para limitar:
 ```
@@ -921,15 +908,9 @@ También hay que tener en cuenta que esa cantidad de paquetes en varios segundos
 
 
 
+## Parte 27
 
-
-
-
-
-
-
-
-## Bloquear escaneos de puertos a Zeus
+Bloquear escaneos de puertos a Zeus.
 
 ### Lógica base
 Según he investigado existen [ciertas reglas](https://serverfault.com/questions/941952/iptables-rules-and-port-scanners-blocking) que dicen bloquear los escaneos de puertos, pero al probarlas no funcionan.
@@ -1088,62 +1069,11 @@ En syslog no me aparece nada porque no tengo tráfico udp permitido.
 
 
 
+## Parte 28
 
+Modificar el cortafuegos todo lo necesario para que los servicios antiguos sigan funcionando.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-## Apartado final: comprobar que todo lo anterior siga funcionando
-
-### Tráfico DNS externa -> Apolo
+### Tráfico DNS externa → Apolo
 
 ```
 sudo iptables -A FORWARD -i eth1 -d 10.0.1.102 -p udp --dport 53 -m state --state NEW,ESTABLISHED -j ACCEPT
@@ -1175,9 +1105,7 @@ adrianj.gonzalonazareno.org. 86229 IN	NS	zeus.adrianj.gonzalonazareno.org.
 ;; MSG SIZE  rcvd: 103
 ```
 
-
-
-### Tráfico DNS Apolo -> externa
+### Tráfico DNS Apolo → externa
 
 ```
 sudo iptables -A FORWARD -s 10.0.1.102 -o eth1 -p udp --dport 53 -m state --state NEW,ESTABLISHED -j ACCEPT
@@ -1235,7 +1163,7 @@ endor.josedomingo.org.	900	IN	A	37.187.119.60
 ;; WHEN: Thu Feb 10 08:03:32 UTC 2022
 ;; MSG SIZE  rcvd: 111
 ```
-*(funciona porque Ares y Apolo están en la misma red, y no hacen falta reglas adicionales)*
+*(funciona sin reglas adicionales porque Ares y Apolo están en la misma red)*
 
 Para que Zeus pueda hacer consultas DNS usando Apolo, necesitamos reglas adicionales:
 ```
@@ -1303,15 +1231,13 @@ stackoverflow.com.	300	IN	A	151.101.65.69
 ;; MSG SIZE  rcvd: 138
 ```
 
-
-
-### Tráfico http externa -> Hera
+### Tráfico http externa → Hera
 
 La regla DNAT no hace falta añadirla, porque ya la teníamos de antes:
 
 ![](https://i.postimg.cc/DZn2s1ZG/dnat-80-web.png)
 
-Las reglas forward no hacen falta añadirlas porque ya las hemos hecho durante la práctica:
+Las reglas forward no hacen falta añadirlas porque ya las hemos hecho durante esta práctica:
 
 ![](https://i.postimg.cc/rmLRZhVY/forward-http-hera.png)
 
@@ -1319,13 +1245,7 @@ Desde fuera, compruebo que puedo acceder a `www.adrianj.gonzalonazareno.org`:
 
 ![](https://i.postimg.cc/4yYrq1Nj/acceso-web-externa-hera-www.png)
 
-
-
-
-
-
-
-### Tráfico correo apolo-externa
+### Tráfico correo Apolo → externa
 
 ```
 sudo iptables -A FORWARD -s 10.0.1.102 -o eth1 -p tcp --dport 25 -j ACCEPT
@@ -1345,9 +1265,7 @@ Muestro que me ha llegado:
 
 ![](https://i.imgur.com/BxVGGh3.png)
 
-
-
-### Tráfico correo externa-apolo
+### Tráfico correo externa → Apolo
 
 Vuelvo a añadir la regla DNAT que previamente eliminé:
 ```
@@ -1363,7 +1281,7 @@ Envío desde gmail un correo a Apolo:
 
 ![](https://i.imgur.com/4b87Myc.png)
 
-Miro en Apolo que me haya llegado:
+Compruebo en Apolo que me haya llegado:
 
 ![](https://i.imgur.com/JF2VMhe.png)
 
@@ -1373,19 +1291,13 @@ Muestro el contenido para que se vea que es el correo correcto:
 
 
 
-
-
-
-
-
-
-## Debemos implementar que el cortafuegos funcione después de un reinicio de la máquina.
+## Parte 29
+> El cortafuegos tiene que funcionar después de un reinicio
 
 Necesitamos el paquete `iptables-persistent`, que no tenemos que instalar porque ya se hizo en prácticas sobre el escenario anteriores.
 
-Una vez teniendo el paquete instalado, para guardar las reglas ejecuto este comando:
+Teniendo el paquete instalado, para guardar las reglas ejecuto este comando:
 ```
 iptables-save > /etc/iptables/rules.v4
 ```
-
 Se guardarán en ese fichero, y eso las hará persistentes en reinicios.
