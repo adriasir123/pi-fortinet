@@ -66,6 +66,7 @@ nav:
                 - 'Ejercicio 1 nftables: por nodo': 'ej1-nftables-nodo.md'
                 - 'Ejercicio 2 iptables: perimetral': 'ej2-iptables-perimetral.md'
                 - 'Ejercicio 2 nftables: perimetral': 'ej2-nftables-perimetral.md'
+                - 'Práctica iptables: perimetral escenario': 'perimetral-iptables-escenario.md'
         - 'Escenario libvirt': 'practica-escenario-libvirt.md'
     - About: about.md
 extra:
