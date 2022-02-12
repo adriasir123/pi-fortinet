@@ -1,17 +1,10 @@
-# Welcome to MkLorum
+# Bievenido a mi web
 
-For full documentation visit [mkdocs.org](https://www.mkdocs.org).
+Aquí estaré posteando todas las prácticas que haga durante el curso 2021/2022 de 2º ASIR.
 
-## Commands
+Este blog está hecho con 2 objetivos principales en mente:
 
-* `mkdocs new [dir-name]` - Create a new project.
-* `mkdocs serve` - Start the live-reloading docs server.
-* `mkdocs build` - Build the documentation site.
-* `mkdocs -h` - Print help message and exit.
+* Simpleza para mí a la hora de hacer tareas, y para los profesores a la hora de corregirlas.
+* Crear documentaciones que sirvan tanto para futuros estudiantes del IES Gonzalo Nazareno como para mí, o cualquier estudiante de ASIR en general.
 
-## Project layout
-
-    mkdocs.yml    # The configuration file.
-    docs/
-        index.md  # The documentation homepage.
-        ...       # Other markdown pages, images and other files.
+Espero que lo posteado aquí te sea utilidad, intento hacer mis prácticas siempre lo mejor posible.
