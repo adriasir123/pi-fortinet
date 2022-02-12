@@ -16,7 +16,7 @@ theme:
         icon: material/toggle-switch
         name: Switch to light mode
 nav:
-    - Home: index.md
+    - Principal: index.md
     - 2º ASIR 21/22:
         - SRI:
             - 'ej1-playbook-sencillo': '2021-09-22-ej1-playbook-sencillo.md'
@@ -68,6 +68,5 @@ nav:
                 - 'Ejercicio 2 nftables: perimetral': 'ej2-nftables-perimetral.md'
                 - 'Práctica iptables: perimetral escenario': 'perimetral-iptables-escenario.md'
         - 'Escenario libvirt': 'practica-escenario-libvirt.md'
-    - About: about.md
 extra:
   disqus: conocimiento-en-bits-neocities-org

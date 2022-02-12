@@ -1,12 +1,10 @@
 # Ejercicio 1 iptables: Implementación de un cortafuegos personal
 
-
-
 ## Preliminares
 
 ### Escenario
 
-```
+```ruby
 Vagrant.configure("2") do |config|
 
 config.vm.synced_folder ".", "/vagrant", disabled: true
@@ -37,7 +35,8 @@ end
 ```
 
 Instalo un servidor web para dejar abierto el puerto 80:
-```
+
+```shell
 sudo apt update
 sudo apt install apache2
 ```
