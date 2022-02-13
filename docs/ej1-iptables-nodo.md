@@ -41,43 +41,43 @@ sudo apt update
 sudo apt install apache2
 ```
 
-
-
 ### Limpieza de reglas previas
 
 En mi caso no necesito hacer este paso ya que parto de una máquina vagrant nueva.  
 Igualmente, dejaré los comandos por aquí y explicados:
+
 ```
 sudo iptables -F
 ```
+
 *(borra todas las reglas de todas las cadenas en la tabla filter)*
 
 ```
 sudo iptables -t nat -F
 ```
+
 *(borra todas las reglas de todas las cadenas en la tabla nat)*
 
 ```
 sudo iptables -Z
 ```
+
 *(pone los contadores a cero en todas las cadenas de la tabla filter)*
 
 ```
 sudo iptables -t nat -Z
 ```
+
 *(pone los contadores a cero en todas las cadenas de la tabla nat)*
-
-
 
 ### Tráfico ssh entrante
 
 Estamos conectados a la máquina por ssh, así que tenemos que permitir el tráfico ssh entrante antes de cambiar las políticas por defecto a DROP *(para no perder la conexión)*:
+
 ```
 sudo iptables -A INPUT -s 192.168.121.0/24 -p tcp --dport 22 -m state --state NEW,ESTABLISHED -j ACCEPT
 sudo iptables -A OUTPUT -d 192.168.121.0/24 -p tcp --sport 22 -m state --state ESTABLISHED -j ACCEPT
 ```
-
-
 
 ### Cambiar política por defecto
 
