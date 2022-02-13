@@ -44,34 +44,31 @@ sudo apt install apache2
 ### Limpieza de reglas previas
 
 En mi caso no necesito hacer este paso ya que parto de una máquina vagrant nueva.  
-Igualmente, dejaré los comandos explicados por aquí:
+Igualmente, dejaré los comandos explicados por aquí.
+
+Borrar todas las reglas de todas las cadenas en la tabla filter:
 
 ```console
-sudo iptables -F # (1)
+sudo iptables -F
 ```
 
-1.  :man_raising_hand: I'm a code annotation! I can contain `code`, __formatted
-    text__, images, ... basically anything that can be written in Markdown.
-
-*(borra todas las reglas de todas las cadenas en la tabla filter)*
+Borrar todas las reglas de todas las cadenas en la tabla nat:
 
 ```console
 sudo iptables -t nat -F
 ```
 
-*(borra todas las reglas de todas las cadenas en la tabla nat)*
+Poner los contadores a cero en todas las cadenas de la tabla filter:
 
 ```console
 sudo iptables -Z
 ```
 
-*(pone los contadores a cero en todas las cadenas de la tabla filter)*
+Poner los contadores a cero en todas las cadenas de la tabla nat:
 
 ```console
 sudo iptables -t nat -Z
 ```
-
-*(pone los contadores a cero en todas las cadenas de la tabla nat)*
 
 ### Tráfico ssh entrante
 
