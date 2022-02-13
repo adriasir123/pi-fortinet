@@ -1,4 +1,4 @@
-# Ejercicio 1 iptables: Implementación de un cortafuegos personal
+# Ejercicio 1 iptables: cortafuegos por nodo
 
 ## Preliminares
 
@@ -44,27 +44,27 @@ sudo apt install apache2
 ### Limpieza de reglas previas
 
 En mi caso no necesito hacer este paso ya que parto de una máquina vagrant nueva.  
-Igualmente, dejaré los comandos por aquí y explicados:
+Igualmente, dejaré los comandos explicados por aquí:
 
-```
+```console title="Borrar todas las reglas de todas las cadenas en la tabla filter"
 sudo iptables -F
 ```
 
 *(borra todas las reglas de todas las cadenas en la tabla filter)*
 
-```
+```console
 sudo iptables -t nat -F
 ```
 
 *(borra todas las reglas de todas las cadenas en la tabla nat)*
 
-```
+```console
 sudo iptables -Z
 ```
 
 *(pone los contadores a cero en todas las cadenas de la tabla filter)*
 
-```
+```console
 sudo iptables -t nat -Z
 ```
 
