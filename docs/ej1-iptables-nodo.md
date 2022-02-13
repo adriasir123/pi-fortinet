@@ -36,7 +36,7 @@ end
 
 Instalo un servidor web para dejar abierto el puerto 80:
 
-```shell
+```console
 sudo apt update
 sudo apt install apache2
 ```
