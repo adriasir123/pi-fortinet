@@ -254,6 +254,8 @@ Veo en gmail que me están llegando:
 
 ### Tarea 8
 
+#### Parte 1
+
 > Borrar el fichero `.forward` anteriormente creado
 
 ```console
@@ -267,6 +269,8 @@ Es **obligatorio** que borremos este fichero para que lo que hagamos durante est
 ![funcionamiento forward](https://i.imgur.com/pxhEqFg.png)
 
 Es decir, **si tenemos un fichero `.forward` no podremos recibir ningún correo en usuarios locales**.
+
+#### Parte 2
 
 > Configurar postfix con buzón Maildir
 
@@ -282,7 +286,9 @@ Reinicio postfix:
 sudo systemctl restart postfix
 ```
 
-> Enviar un correo a tu usuario y comprobar que el correo se ha guardado en el buzón Maildir. Recuerda que ese tipo de buzón no se puede leer con la utilidad mail.
+#### Parte 3
+
+> Enviar un correo a tu usuario
 
 Me envío un correo a mí mismo para hacer la prueba:
 
@@ -294,7 +300,11 @@ Mensaje
 
 ```
 
-Compruebo `/var/log/mail.log` para ver que haya llegado correctamente:
+#### Parte 4
+
+> Comprobar que el correo se ha guardado en el buzón Maildir
+
+Primero compruebo `/var/log/mail.log` para ver que haya llegado correctamente:
 
 ![maildir log](https://i.imgur.com/lrEepw0.png)
 
@@ -314,6 +324,52 @@ Maildir/
 ```
 
 **¡Atención! NO TENEMOS que crear esta estructura de directorios manualmente para que funcione, lo hace postfix.**
+
+#### Parte 5
+
+> Visualizar el correo recibido en `Maildir`
+
+Podríamos perfectamente abrir manualmente los ficheros con `cat`, pero esto es rudimentario, usaremos la herramienta `mail`.
+
+Según se dice en la guía de José Domingo, desde que usamos `Maildir` como buzón ya no podremos visualizar los correos con `mail`. Esto es cierto si ejecutamos el comando sin argumentos:
+
+```console
+blackmamba@kampe:~$ mail
+No mail for blackmamba
+```
+
+**PERO** podemos hacer lo siguiente:
+
+```console
+blackmamba@kampe:~$ mail -f Maildir
+"/home/blackmamba/Maildir": 1 message 1 new
+>N   1 blackmamba@localho Tue Feb 15 17:08  13/459   Prueba Maildir
+? 1
+Return-Path: <blackmamba@localhost>
+X-Original-To: blackmamba@localhost
+Delivered-To: blackmamba@localhost
+Received: by kampe.adrianjaramillo.tk (Postfix, from userid 1000)
+	id A9FDB42CF6; Tue, 15 Feb 2022 17:08:01 +0000 (UTC)
+To: <blackmamba@localhost>
+Subject: Prueba Maildir
+X-Mailer: mail (GNU Mailutils 3.10)
+Message-Id: <20220215170801.A9FDB42CF6@kampe.adrianjaramillo.tk>
+Date: Tue, 15 Feb 2022 17:08:01 +0000 (UTC)
+From: blackmamba@localhost
+
+Mensaje
+?
+```
+
+Indicando la ruta de `Maildir` con `mail -f` nos posibilita ver los correos perfectamente.
+
+Muestro el man de `mail` para un mejor entendimiento:
+
+![mail -f man](https://i.imgur.com/95YeS20.png)
+
+### Tarea 9
+
+
 
 
 
