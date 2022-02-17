@@ -27,9 +27,13 @@ sudo apt install mailutils
 
 ### Tarea 1
 
+#### 1.1
+
 > Crear registro SPF en el DNS
 
 ![registro spf](https://i.imgur.com/Fmp7QUO.png)
+
+#### 1.2
 
 > Enviar un correo desde la vps a gmail
 
@@ -41,13 +45,17 @@ Mensaje
 
 ```
 
+#### 1.3
+
 > Mostrar `/var/log/mail.log` para verificar que el correo se ha enviado correctamente
 
-Muestro la línea relevante:
+Línea relevante:
 
 ```console
 Feb 14 16:20:33 kampe postfix/smtp[516217]: 242F742268: to=<adristudy@gmail.com>, relay=gmail-smtp-in.l.google.com[64.233.167.26]:25, delay=1.3, delays=0.03/0.01/0.29/0.95, dsn=2.0.0, status=sent (250 2.0.0 OK  1644855633 l11si9233120wms.107 - gsmtp)
 ```
+
+#### 1.4
 
 > Mostrar el correo recibido en gmail
 
@@ -65,23 +73,33 @@ Al ver eso, queda totalmente claro que el checkeo SPF ha sido exitoso.
 
 ### Tarea 2
 
-> Crear registros MX y CNAME correspondiente en el DNS
+#### 2.1
+
+> Crear registro MX y CNAME correspondiente en el DNS
 
 ![registros dns mx y mail](https://i.imgur.com/1pcAAMz.png)
+
+#### 2.2
 
 > Habilitar en el firewall del vps el tráfico entrante al puerto 25
 
 ![firewall 25 vps](https://i.imgur.com/r6VLM8T.png)
 
+#### 2.3
+
 > Enviar un correo desde gmail a la vps
 
 ![correo para vps](https://i.imgur.com/3duHQSd.png)
+
+#### 2.4
 
 > Comprobar que la vps ha recibido correctamente el correo mirando `/var/log/mail.log`
 
 ![mail log vps](https://i.imgur.com/zfKjEvb.png)
 
-> Muestro el correo recibido
+#### 2.5
+
+> Mostrar el correo recibido
 
 ```console
 blackmamba@kampe:~$ mail
@@ -144,9 +162,11 @@ Content-Type: text/html; charset="UTF-8"
 
 ## Tarea 3: Uso de alias y redirecciones
 
-### Crear tarea cron
+### 3.1
 
-Abro la configuración con:
+> Crear tarea cron
+
+Abro la configuración:
 
 ```console
 crontab -e
@@ -160,9 +180,12 @@ MAILTO = root
 * * * * * echo Prueba de mensajes crontab
 ```
 
-Esta tarea ejecuta un echo cada minuto y envía un correo a root con el resultado. No vemos ese echo por terminal ni en la sesión de nuestro usuario ni en la de root, pero nos sirve para hacer pruebas.
+Esta tarea ejecuta un echo cada minuto y envía un correo a root con el resultado.  
+No vemos ese echo por terminal ni en la sesión de nuestro usuario ni en la de root, pero nos sirve para hacer pruebas.
 
-### Comprobar que llegan correos en root
+### 3.2
+
+> Comprobar que llegan correos en root
 
 ```console
 root@kampe:~# mail
@@ -173,16 +196,19 @@ root@kampe:~# mail
  U   4 Cron Daemon        Mon Feb 14 21:23  22/762   Cron <blackmamba@kampe> echo Prueba de mensajes crontab
 ```
 
-Como podemos ver, están llegando. Son todos iguales, así que muestro uno de ellos:
+Son todos iguales, así que muestro uno de ellos:
 
 ![correo crontab root](https://i.imgur.com/dWPZ8k3.png)
 
-La parte que nos interesa es la marcada, el "From" y el "To". Los correos los envía el daemon de Cron usando root, hacia el usuario root.  
-En el mensaje del correo está el resultado del echo.
+La parte que nos interesa es la marcada, el "From" y el "To".  
+Los correos los envía el daemon de Cron usando root, hacia el usuario root.  
+En el cuerpo del correo está el resultado del echo.
 
 Según como está ahora configurado cron, no nos llegarían esos correos a nuestro usuario.
 
-### Crea un nuevo alias para que se manden a un usuario sin privilegios. 
+### 3.3
+
+> Crear un alias para que lleguen los correos a `blackmamba`
 
 Modifico `/etc/aliases`:
 
@@ -198,9 +224,9 @@ Para que este cambio tome efecto ejecuto:
 sudo newaliases
 ```
 
-### Comprobar que llegan a ese usuario
+### 3.4
 
-Ya están llegando:
+> Comprobar que ya llegan los correos a `blackmamba`
 
 ```console
 blackmamba@kampe:~$ mail
@@ -236,11 +262,13 @@ Prueba de mensajes crontab
 ?
 ```
 
-He mostrado el contenido para que se vea el campo "To:", que apunta a root, pero el alias funciona así que me llega a mi usuario principal "blackmamba".
+He mostrado el contenido para que se vea el campo "To:", que apunta a root, pero el alias funciona así que me llega a mi usuario principal `blackmamba`.
 
-### Por último crea una redirección para enviar esos correo a gmail
+### 3.5
 
-Creo el fichero `/home/blackmamba/.forward` con el siguiente contenido:
+> Crear una redirección para enviar esos correos a gmail
+
+Creo `/home/blackmamba/.forward` con el siguiente contenido:
 
 ```console
 adristudy@gmail.com
@@ -254,7 +282,7 @@ Veo en gmail que me están llegando:
 
 ### Tarea 8
 
-#### Parte 1
+#### 8.1
 
 > Borrar el fichero `.forward` anteriormente creado
 
@@ -270,7 +298,7 @@ Es **obligatorio** que borremos este fichero para que lo que hagamos durante est
 
 Es decir, **si tenemos un fichero `.forward` no podremos recibir ningún correo en usuarios locales**.
 
-#### Parte 2
+#### 8.2
 
 > Configurar postfix con buzón Maildir
 
@@ -286,11 +314,11 @@ Reinicio postfix:
 sudo systemctl restart postfix
 ```
 
-#### Parte 3
+#### 8.3
 
-> Enviar un correo a tu usuario
+> Enviar un correo a `blackmamba`
 
-Me envío un correo a mí mismo para hacer la prueba:
+Hago la prueba:
 
 ```console
 blackmamba@kampe:~$ mail -r blackmamba@localhost blackmamba@localhost
@@ -300,7 +328,7 @@ Mensaje
 
 ```
 
-#### Parte 4
+#### 8.4
 
 > Comprobar que el correo se ha guardado en el buzón Maildir
 
@@ -325,7 +353,7 @@ Maildir/
 
 **¡Atención! NO TENEMOS que crear esta estructura de directorios manualmente para que funcione, lo hace postfix.**
 
-#### Parte 5
+#### 8.5
 
 > Visualizar el correo recibido en `Maildir`
 
@@ -369,7 +397,259 @@ Muestro el man de `mail` para un mejor entendimiento:
 
 ### Tarea 9
 
+#### 9.1
 
+> Instalar Dovecot para ofrecer el protocolo IMAPS
 
+```console
+sudo apt install dovecot-imapd
+```
 
+Lo primero que podemos ver es que estará escuchando en el puerto que necesitamos:
 
+![dovecot ports](https://i.imgur.com/XOEPZJ5.png)
+
+Tenemos que permitir ese tráfico en el firewall de la vps:
+
+![993 firewall vps](https://i.imgur.com/Y9siAwo.png)
+
+Hacemos una primera prueba de comunicación con el puerto desde nuestro host:
+
+```console
+atlas@olympus:~$ telnet 87.106.228.149 993
+Trying 87.106.228.149...
+Connected to 87.106.228.149.
+Escape character is '^]'.
+
+```
+
+#### 9.2
+
+> Configurar Dovecot para que use el buzón Maildir
+
+Modifico `/etc/dovecot/conf.d/10-mail.conf`:
+
+```console
+mail_location = maildir:~/Maildir
+```
+
+Reinicio dovecot:
+
+```console
+sudo systemctl restart dovecot
+```
+
+#### 9.3
+
+> Configurar el cifrado de la comunicación por IMAPS en Dovecot con certificado. Usar el wildcard `*.adrianjaramillo.tk` que ya teníamos.
+
+Modifico `/etc/dovecot/conf.d/10-ssl.conf`:
+
+```console
+##
+## SSL settings
+##
+
+# SSL/TLS support: yes, no, required. <doc/wiki/SSL.txt>
+ssl = yes
+
+# PEM encoded X.509 SSL/TLS certificate and private key. They're opened before
+# dropping root privileges, so keep the key file unreadable by anyone but
+# root. Included doc/mkcert.sh can be used to easily generate self-signed
+# certificate, just make sure to update the domains in dovecot-openssl.cnf
+ssl_cert = </etc/letsencrypt/live/adrianjaramillo.tk/fullchain.pem
+ssl_key = </etc/letsencrypt/live/adrianjaramillo.tk/privkey.pem
+```
+
+Sólo muestro el principio del fichero, porque es lo que he modificado.
+
+Reinicio dovecot:
+
+```console
+sudo systemctl restart dovecot
+```
+
+#### 9.4
+
+> Configurar evolution para recibir los correos del vps
+
+Abro la configuración para una nueva cuenta de mail:
+
+![evolution recibir 1](https://i.postimg.cc/sD7S1bkL/evolution-inicio-config-cuenta-mail.gif)
+
+Indico mi cuenta de correo y un nombre *(podrá ser cualquiera, evolution sólo lo usa para identificar la conexión)*:
+
+![evolution recibir 2](https://i.imgur.com/0SLprAF.png)
+
+Configuro la recepción de correos:
+
+![evolution recibir 3](https://i.imgur.com/TElH0SV.png)
+
+La autenticación se va a realizar con usuarios del sistema, por eso escribo `blackmamba`. Para que funcione la autenticación en Dovecot no he tenido que configurar nada, ya funciona por defecto.
+
+Mantengo las opciones de recepción por defecto:
+
+![evolution recibir 4](https://i.postimg.cc/sXNX7VnW/receiving-options-evolution.png)
+
+Relleno las opciones de envío para que me deje terminar la configuración, pero **ESTE NO ES el objetivo de este apartado, así que la configuración estará incompleta y por supuesto, no funcional**:
+
+![evolution recibir 5](https://i.postimg.cc/wMzwgppC/sending-evolution-nope.png)
+
+El envío se configurará en la tarea 11.
+
+Muestro el resumen final de la configuración, y de nuevo ignoramos la parte referente al envío:
+
+![evolution recibir 6](https://i.postimg.cc/6QkwXYpk/account-summary-evolution-receiving.png)
+
+Por último se nos pregunta la contraseña del usuario que hemos indicado anteriormente:
+
+![evolution recibir 7](https://i.postimg.cc/FzjnLxmJ/authentication-evolution-receiving.png)
+
+Compruebo que puedo leer el correo de `Maildir` que envié en la tarea anterior:
+
+![evolution recibir 8](https://i.postimg.cc/dtBDRkqb/prueba-mostrado-maildir.gif)
+
+Evolution se sincroniza con Dovecot de forma live, así que podríamos enviar un correo y Evolution lo recibiría automáticamente.  
+Muestro la prueba:
+
+![evolution recibir 9](https://i.postimg.cc/GhjcyWcz/evolution-dovecot-live.gif)
+
+### Tarea 11
+
+#### 11.1
+
+> Configurar postfix para ofrecer el protocolo SMTPS
+
+Descomento el siguiente bloque en `/etc/postfix/master.cf`:
+
+```console
+smtps     inet  n       -       y       -       -       smtpd
+  -o syslog_name=postfix/smtps
+  -o smtpd_tls_wrappermode=yes
+  -o smtpd_sasl_auth_enable=yes
+  -o smtpd_reject_unlisted_recipient=no
+  -o smtpd_client_restrictions=$mua_client_restrictions
+  -o smtpd_helo_restrictions=$mua_helo_restrictions
+  -o smtpd_sender_restrictions=$mua_sender_restrictions
+  -o smtpd_recipient_restrictions=
+  -o smtpd_relay_restrictions=permit_sasl_authenticated,reject
+  -o milter_macro_daemon_name=ORIGINATING
+```
+
+Reinicio postfix:
+
+```console
+sudo systemctl restart postfix
+```
+
+Compruebo que ahora funciona el puerto SMTPS 465:
+
+![puerto 465 abierto](https://i.imgur.com/ZrF26R9.png)
+
+Tenemos que permitir ese tráfico en el firewall de la vps:
+
+![465 firewall vps](https://i.imgur.com/klheTIh.png)
+
+Hago una primera prueba de comunicación con el puerto desde nuestro host:
+
+```console
+atlas@olympus:~$ telnet 87.106.228.149 465
+Trying 87.106.228.149...
+Connected to 87.106.228.149.
+Escape character is '^]'.
+
+```
+
+#### 11.2
+
+> Usar certificados para cifrar el envío de correos
+
+Modifico lo siguiente en `/etc/postfix/main.cf`:
+
+```console
+smtpd_tls_cert_file=/etc/letsencrypt/live/adrianjaramillo.tk/fullchain.pem
+smtpd_tls_key_file=/etc/letsencrypt/live/adrianjaramillo.tk/privkey.pem
+```
+
+Reinicio postfix:
+
+```console
+sudo systemctl restart postfix
+```
+
+#### 11.3
+
+> Configurar autenticación SASL tanto en Postfix como en Dovecot
+
+Añado lo siguiente a `/etc/postfix/main.cf`:
+
+```console
+# Authentication
+
+smtpd_sasl_type = dovecot
+smtpd_sasl_path = private/auth
+smtpd_sasl_auth_enable = yes
+```
+
+Reinicio postfix:
+
+```console
+sudo systemctl restart postfix
+```
+
+Descomento el siguiente bloque en `/etc/dovecot/conf.d/10-master.conf`:
+
+```console
+  # Postfix smtp-auth
+  unix_listener /var/spool/postfix/private/auth {
+    mode = 0666
+  }
+```
+
+Reinicio dovecot:
+
+```console
+sudo systemctl restart dovecot
+```
+
+#### 11.4
+
+> Configurar evolution para enviar correos y mostrar una prueba de envío
+
+Borro la conexión anterior para poder crear una nueva:
+
+![evolution enviar 1](https://i.postimg.cc/4NkrLBPj/borrar-conexion-evolution.gif)
+
+Creo una nueva conexión, y muestro directamente la configuración de envío:
+
+![evolution enviar 2](https://i.imgur.com/ZNVSYnR.png)
+
+En el resumen final compruebo que la información de envío sea correcta:
+
+![evolution enviar 3](https://i.imgur.com/NEFWz6b.png)
+
+Envío un correo:
+
+![evolution enviar 4](https://i.imgur.com/KjKcfQP.png)
+
+Antes de que se realice el envío, se pide autenticación:
+
+![evolution enviar 5](https://i.imgur.com/ZIHcSug.png)
+
+Compruebo que me ha llegado el correo a gmail:  
+
+![evolution enviar 6](https://i.imgur.com/z71mbM4.png)
+
+Si queremos estar incluso más seguros de que este correo efectivamente se ha enviado desde Evolution y algún detalle más, podemos abrir el original y mostrar sus cabeceras:
+
+![evolution enviar 7](https://i.imgur.com/R70kffQ.png)
+
+## Tarea 13: comprobación final
+
+> Enviar un correo a [esta página](https://www.mail-tester.com/) para obtener una puntuación. Mostrar el resultado.
+
+Este es el correo que enviaremos:
+
+![correo prueba calidad](https://i.imgur.com/YTpGKT2.png)
+
+[Haz click aquí](https://www.mail-tester.com/test-0oeev9pyl) para ver mis resultados.
