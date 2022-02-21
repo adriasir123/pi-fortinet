@@ -42,6 +42,7 @@ nav:
             - Correo:
                 - 'Ejercicios en escenario libvirt': 'ejercicios-correo.md'
                 - 'Práctica: Servidor de correos en VPS': 'practica-servidor-correo.md'
+            - 'Práctica: Cluster HA': 'practica-cluster-ha.md'
         - IAW:
             - 'ej1-pull-request': '2021-09-22-ej1-pull-request.md'
             - 'app-web-estatica': '2021-10-5-implantacion-despliegue-aplicacion-web-estatica.md'
