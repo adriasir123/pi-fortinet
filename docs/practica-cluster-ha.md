@@ -152,19 +152,22 @@ Compruebo que ahora mariadb acepta peticiones desde todas las IPs:
 
 > Configuraciones de Galera MariaDB en nodo1
 
-Añado el siguiente bloque al final de `/etc/mysql/mariadb.conf.d/50-server.cnf`:
+Modifico `/etc/mysql/mariadb.conf.d/60-galera.cnf`:
 
 ```console
 [galera]
-wsrep_on=ON
-wsrep_provider=/usr/lib/galera/libgalera_smm.so
-wsrep_cluster_address=gcomm://
-binlog_format=row
-default_storage_engine=InnoDB
-innodb_autoinc_lock_mode=2
-bind-address=0.0.0.0
-wsrep_cluster_name="galera_cluster"
-wsrep_node_address="nodo1"
+# Mandatory settings
+wsrep_on                 = ON
+wsrep_cluster_name       = "MariaDB Galera Cluster"
+wsrep_provider           = /usr/lib/galera/libgalera_smm.so
+wsrep_cluster_address    = "gcomm://nodo1,nodo2"
+binlog_format            = row
+default_storage_engine   = InnoDB
+innodb_autoinc_lock_mode = 2
+
+# Allow server to accept connections on all interfaces.
+bind-address             = 0.0.0.0
+wsrep_node_address       = "nodo1"
 ```
 
 Inicializo el cluster y reinicio:
@@ -178,19 +181,22 @@ sudo systemctl restart mariadb
 
 > Configuraciones de Galera MariaDB en nodo2
 
-Añado el siguiente bloque al final de `/etc/mysql/mariadb.conf.d/50-server.cnf`:
+Modifico `/etc/mysql/mariadb.conf.d/60-galera.cnf`:
 
 ```console
 [galera]
-wsrep_on=ON
-wsrep_provider=/usr/lib/galera/libgalera_smm.so
-wsrep_cluster_address="gcomm://nodo1,nodo2"
-binlog_format=row
-default_storage_engine=InnoDB
-innodb_autoinc_lock_mode=2
-bind-address=0.0.0.0
-wsrep_cluster_name="galera_cluster"
-wsrep_node_address="nodo2"
+# Mandatory settings
+wsrep_on                 = ON
+wsrep_cluster_name       = "MariaDB Galera Cluster"
+wsrep_provider           = /usr/lib/galera/libgalera_smm.so
+wsrep_cluster_address    = "gcomm://nodo1,nodo2"
+binlog_format            = row
+default_storage_engine   = InnoDB
+innodb_autoinc_lock_mode = 2
+
+# Allow server to accept connections on all interfaces.
+bind-address             = 0.0.0.0
+wsrep_node_address       = "nodo2"
 ```
 
 Reinicio:
