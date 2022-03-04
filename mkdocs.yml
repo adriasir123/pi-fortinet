@@ -39,6 +39,7 @@ nav:
                 - 'Práctica: DNS+Web+BD en escenario': 'practica-web-bd-dns-escenario.md'
             - HTTPS:
                 - 'Práctica: HTTPS en VPS': 'practica-https-vps.md'
+            - 'Práctica: Aumento rendimiento web': 'practica-aumento-rendimiento-web.md'
             - Correo:
                 - 'Ejercicios en escenario libvirt': 'ejercicios-correo.md'
                 - 'Práctica: Servidor de correos en VPS': 'practica-servidor-correo.md'
