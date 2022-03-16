@@ -278,6 +278,273 @@ Veo en gmail que me están llegando:
 
 ![correos cron a gmail](https://i.imgur.com/CV4QGD4.png)
 
+## Tarea 4: Para asegurar el envío (opcional)
+
+Configurar postfix con opendkim para firmar los correos que envía.
+
+### 4.1 Pasos iniciales
+
+Instalo los paquetes:
+
+```console
+sudo apt install opendkim opendkim-tools
+```
+
+Añado el usuario postfix al grupo opendkim:
+
+```console
+sudo gpasswd -a postfix opendkim
+```
+
+### 4.2 Configuración OpenDKIM
+
+`/etc/opendkim.conf`:
+
+```console
+# This is a basic configuration for signing and verifying. It can easily be
+# adapted to suit a basic installation. See opendkim.conf(5) and
+# /usr/share/doc/opendkim/examples/opendkim.conf.sample for complete
+# documentation of available configuration parameters.
+
+Syslog		                yes
+SyslogSuccess	        yes
+#LogWhy	        no
+
+# Common signing and verification parameters. In Debian, the "From" header is
+# oversigned, because it is often the identity key used by reputation systems
+# and thus somewhat security sensitive.
+Canonicalization	relaxed/simple
+Mode		                s
+SubDomains	        no
+OversignHeaders	From
+
+# Signing domain, selector, and key (required). For example, perform signing
+# for domain "example.com" with selector "2020" (2020._domainkey.example.com),
+# using the private key stored in /etc/dkimkeys/example.private. More granular
+# setup options can be found in /usr/share/doc/opendkim/README.opendkim.
+#Domain	        example.com
+#Selector	        2020
+#KeyFile	        /etc/dkimkeys/example.private
+
+# In Debian, opendkim runs as user "opendkim". A umask of 007 is required when
+# using a local socket with MTAs that access the socket as a non-privileged
+# user (for example, Postfix). You may need to add user "postfix" to group
+# "opendkim" in that case.
+UserID		                opendkim
+UMask		                007
+
+# Socket for the MTA connection (required). If the MTA is inside a chroot jail,
+# it must be ensured that the socket is accessible. In Debian, Postfix runs in
+# a chroot in /var/spool/postfix, therefore a Unix socket would have to be
+# configured as shown on the last line below.
+#Socket	        local:/run/opendkim/opendkim.sock
+#Socket	        inet:8891@localhost
+#Socket	        inet:8891
+Socket		                local:/var/spool/postfix/opendkim/opendkim.sock
+
+PidFile	        /run/opendkim/opendkim.pid
+
+# Hosts for which to sign rather than verify, default is 127.0.0.1. See the
+# OPERATION section of opendkim(8) for more information.
+#InternalHosts	        192.168.0.0/16, 10.0.0.0/8, 172.16.0.0/12
+
+# The trust anchor enables DNSSEC. In Debian, the trust anchor file is provided
+# by the package dns-root-data.
+TrustAnchorFile	/usr/share/dns/root.key
+#Nameservers	        127.0.0.1
+
+# Map domains in From addresses to keys used to sign messages
+KeyTable           refile:/etc/opendkim/key.table
+SigningTable       refile:/etc/opendkim/signing.table
+```
+
+### 4.3 Creación de Signing y Key Table
+
+Creo la estructura de directorios para las claves:
+
+```console
+sudo mkdir -p /etc/opendkim/keys
+```
+
+Modifico propietarios y permisos:
+
+```console
+sudo chown -R opendkim:opendkim /etc/opendkim
+sudo chmod go-rw /etc/opendkim/keys
+```
+
+Creo la signing table...
+
+```console
+sudo touch /etc/opendkim/signing.table
+```
+
+...con el siguiente contenido:
+
+```console
+*@adrianjaramillo.tk      default._domainkey.adrianjaramillo.tk
+```
+
+Creo la key table...
+
+```console
+sudo touch /etc/opendkim/key.table
+```
+
+...con el siguiente contenido:
+
+```console
+default._domainkey.adrianjaramillo.tk     adrianjaramillo.tk:default:/etc/opendkim/keys/adrianjaramillo.tk/default.private
+```
+
+### 4.4 Generación de claves
+
+Creo un directorio para las claves del dominio:
+
+```console
+sudo mkdir /etc/opendkim/keys/adrianjaramillo.tk
+```
+
+Genero las claves...
+
+```console
+sudo opendkim-genkey -b 2048 -d adrianjaramillo.tk -D /etc/opendkim/keys/adrianjaramillo.tk -s default -v
+```
+
+...y este es el output:
+
+```console
+opendkim-genkey: generating private key
+opendkim-genkey: private key written to default.private
+opendkim-genkey: extracting public key
+opendkim-genkey: DNS TXT record written to default.txt
+```
+
+Cambio los propietarios de la clave privada:
+
+```console
+sudo chown opendkim:opendkim /etc/opendkim/keys/adrianjaramillo.tk/default.private
+```
+
+Compruebo que los permisos de la clave privada son correctos:
+
+```console
+-rw------- 1 opendkim opendkim 1679 Mar  7 19:57 /etc/opendkim/keys/adrianjaramillo.tk/default.private
+```
+
+### 4.5 Publicación de la clave pública en mi DNS
+
+La clave pública generada se encuentra en el fichero `/etc/opendkim/keys/adrianjaramillo.tk/default.txt`.:
+
+```console
+default._domainkey	IN	TXT	( "v=DKIM1; h=sha256; k=rsa; "
+	  "p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA66vm0/BhAdiyHkYz/AcaWPkUbnTXOlxCxKZQP3skWmCI5fZSBfwJpndYg1C05UyiCh3qsVXXnOZsiRoKK09vzDobKFw2ngRA5y3vTPKufY/Va/VNfNRdXd8fhUjffnAbxQ231WyTqHNrb2XjXoTY8/QBy/2Hexg1f7zZ4PqcM5+L6kzCGtzPJ0m7MfWCL6HQCbg82JX0aywITl"
+	  "sKhieEJg0WXHnzX/wYD4rreOxG05QCfIT7zWMamJdaDfEuua8qLMdPnb714MnTq1zPizBQ+YEDkFKwSDkaeKRq44CBYjjZ+ma9yI7PMwYQ+LEkA0kKtFm8IaQMoAyMQQcF0dzIwQIDAQAB" )  ; ----- DKIM key default for adrianjaramillo.tk
+```
+
+La string que aparece después de la p es mi clave pública.
+
+*¿Cómo la publicamos?*
+
+En nuestro DNS tenemos que crear un registro TXT con nombre `default._domainkey` y valor todo lo que haya entre paréntesis del fichero que acabo de mostrar.
+
+**IMPORTANTE: tenemos que eliminar todas las comillas dobles y espacios no necesarios. La string de la clave pública por alguna razón la parte en 2, pero hay que unirla**.
+
+Es decir, el valor final se nos quedaría así:
+
+```console
+v=DKIM1; h=sha256; k=rsa; p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA66vm0/BhAdiyHkYz/AcaWPkUbnTXOlxCxKZQP3skWmCI5fZSBfwJpndYg1C05UyiCh3qsVXXnOZsiRoKK09vzDobKFw2ngRA5y3vTPKufY/Va/VNfNRdXd8fhUjffnAbxQ231WyTqHNrb2XjXoTY8/QBy/2Hexg1f7zZ4PqcM5+L6kzCGtzPJ0m7MfWCL6HQCbg82JX0aywITlsKhieEJg0WXHnzX/wYD4rreOxG05QCfIT7zWMamJdaDfEuua8qLMdPnb714MnTq1zPizBQ+YEDkFKwSDkaeKRq44CBYjjZ+ma9yI7PMwYQ+LEkA0kKtFm8IaQMoAyMQQcF0dzIwQIDAQAB
+```
+
+Muestro que he creado dicho registro en mi DNS:
+
+![dkim dns](https://i.imgur.com/Z8Vm8Ml.png)
+
+### 4.6 Testeo de la clave pública
+
+Uso el siguiente comando:
+
+```console
+sudo opendkim-testkey -d adrianjaramillo.tk -s default -vvv
+```
+
+Si todo funciona, deberíamos de obtener un "Key OK":
+
+```console
+opendkim-testkey: using default configfile /etc/opendkim.conf
+opendkim-testkey: checking key 'default._domainkey.adrianjaramillo.tk'
+opendkim-testkey: key not secure
+opendkim-testkey: key OK
+```
+
+Este comando lo que hace realmente es una consulta DNS. Se compara la clave privada que tenemos configurada con la pública que aparece en el DNS, y se verifica si efectivamente ambas claves son del mismo par.
+
+Aparece "key not secure" pero de esto no tenemos que preocuparnos, simplemente significa que no tenemos habilitado DNSSEC en nuestro dominio. Por lo que he investigado, freenom no lo soporta.
+
+También podemos usar la web https://mxtoolbox.com/dkim.aspx para comprobar el registro DKIM. Importante que escribamos nuestro selector correctamente:
+
+![web comprobar clave dkim publica](https://i.imgur.com/2kQZwFC.png)
+
+Vemos que el registro DKIM publicado en mi DNS es válido:
+
+![dkim válido](https://i.imgur.com/l7jkPmL.png)
+
+### 4.7 Configuración de Postfix con OpenDKIM
+
+Creo el directorio donde se creará el socket de OpenDKIM:
+
+```console
+sudo mkdir /var/spool/postfix/opendkim
+```
+
+Modifico los propietarios:
+
+```console
+sudo chown opendkim:postfix /var/spool/postfix/opendkim
+```
+
+Modifico `/etc/opendkim.conf` para cambiar el socket que utiliza. Comento la línea:
+
+```console
+Socket                  local:/run/opendkim/opendkim.sock
+```
+
+Y descomento la línea:
+
+```console
+Socket                  local:/var/spool/postfix/opendkim/opendkim.sock
+```
+
+Por último, añado lo siguiente al final de `/etc/postfix/main.cf`:
+
+```console
+# Milter configuration
+smtpd_milters = local:opendkim/opendkim.sock
+non_smtpd_milters = $smtpd_milters
+milter_default_action = accept
+milter_protocol = 6
+```
+
+### 4.8 Reinicio de servicios
+
+```console
+sudo systemctl restart opendkim postfix
+```
+
+### 4.9 Comprobaciones
+
+Tras haberme enviado un correo a gmail, muestro el original para ver que haya pasado el chequeo DKIM:
+
+![dkim pass](https://i.imgur.com/wdXXNRa.png)
+
+En el correo en crudo vemos que tenemos un campo de firma DKIM:
+
+![dkim bloque firma](https://i.imgur.com/DPGzssz.png)
+
+También podemos mirar `/var/log/mail.log` filtrando por dkim para ver que se realiza la firma:
+
+![firma dkim mail.log](https://i.imgur.com/dcFFEyB.png)
+
 ## Gestión de correos desde un cliente
 
 ### Tarea 8
