@@ -610,48 +610,52 @@ Es el método más popular y recomendado. Funciona así:
 > Explicar la función del fichero `~/.ssh/known_hosts`
 
 Es un fichero de cliente que contiene todas las claves públicas de los servidores a los que nos conectamos.
-  
+
 El cliente SSH usa este fichero para autenticar los servidores a los que se conecta.
 
+### 5.4
 
+> Explicar el significado del siguiente mensaje que aparece la primera vez que nos conectamos a un servidor
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-### Parte 4
-> ¿Qué significa este mensaje que aparece la primera vez que nos conectamos a un servidor?
-```
+```console
 $ ssh debian@172.22.200.74
 The authenticity of host '172.22.200.74 (172.22.200.74)' can't be established.
 ECDSA key fingerprint is SHA256:7ZoNZPCbQTnDso1meVSNoKszn38ZwUI4i6saebbfL4M.
 Are you sure you want to continue connecting (yes/no)?
 ```
 
+Nos indica que, al ser la primera vez que nos estamos conectando a este servidor, aún no tenemos su clave pública almacenada en el fichero `~/.ssh/known_hosts`. Por lo tanto, aún "no podemos" verificar la autenticidad del mismo.
+
+Si estamos seguros de su autenticidad, diremos que sí, y eso almacenará su clave pública en `~/.ssh/known_hosts`.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 ### Parte 5
+
 > En ocasiones cuando estamos trabajando en el cloud, y reutilizamos una ip flotante nos aparece este mensaje:
 
 ```
@@ -673,7 +677,21 @@ ECDSA host key for 172.22.200.74 has changed and you have requested strict check
 ```
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 ### Parte 6
+
 > ¿Qué guardamos y para qué sirve el fichero en el servidor ~/.ssh/authorized_keys?
 
 
