@@ -20,9 +20,9 @@ nav:
     - 2º ASIR 21/22:
         - SRI:
             - Vagrant y Ansible:
-                - 'Ejercicio 1: Playbook sencillo': '2021-09-22-ej1-playbook-sencillo.md'
-                - 'Ejercicio 2: router NAT vagrant': '2021-10-1-ej2-router-nat-vagrant.md'
-                - 'Ejercicio 3: Configuración escenario router NAT': '2021-10-3-ej3-config-escenario-router-nat.md'
+                - 'Ejercicio 1: Playbook sencillo': 'ej1-playbook-sencillo.md'
+                - 'Ejercicio 2: router NAT vagrant': 'ej2-router-nat-vagrant.md'
+                - 'Ejercicio 3: Configuración escenario router NAT': 'ej3-config-escenario-router-nat.md'
             - DHCP:
                 - 'Ejercicio 1': 'ej1-instalar-configurar-dhcp.md'
                 - 'Ejercicio 2: reservas': 'ej2-reserva-dhcp.md'
@@ -48,7 +48,7 @@ nav:
                 - 'Ejercicios en escenario libvirt': 'ejercicios-correo.md'
                 - 'Práctica: Servidor de correos en VPS': 'practica-servidor-correo.md'
             - HA Clusters:
-                - 'Práctica: Cluster HA': 'practica-cluster-ha.md'
+                - 'Práctica': 'practica-cluster-ha.md'
         - IAW:
             - 'ej1-pull-request': '2021-09-22-ej1-pull-request.md'
             - 'app-web-estatica': '2021-10-5-implantacion-despliegue-aplicacion-web-estatica.md'
