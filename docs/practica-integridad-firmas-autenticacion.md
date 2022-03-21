@@ -603,7 +603,15 @@ Es el método más popular y recomendado. Funciona así:
 6. El cliente combina el número desencriptado con la clave compartida de sesión que se está usando para encriptar la comunicación, y calcula el hash MD5 de este valor.
 7. El cliente envía este hash de vuelta al servidor como respuesta al mensaje del número encriptado.
 8. El servidor usa la misma clave compartida de sesión junto con el número original que envió al cliente, y calcula el hash MD5 él también.
-8. El servidor compara el hash que él mismo generó con el que el cliente le envió. Si estos valores son iguales, se prueba que el cliente tiene la clave privada correcta y finalmente, este cliente es autenticado correctamente.
+9. El servidor compara el hash que él mismo generó con el que el cliente le envió. Si estos valores son iguales, se prueba que el cliente tiene la clave privada correcta y finalmente, este cliente es autenticado correctamente.
+
+### 5.3
+
+> Explicar la función del fichero `~/.ssh/known_hosts`
+
+Es un fichero de cliente que contiene todas las claves públicas de los servidores a los que nos conectamos.
+  
+El cliente SSH usa este fichero para autenticar los servidores a los que se conecta.
 
 
 
@@ -620,8 +628,7 @@ Es el método más popular y recomendado. Funciona así:
 
 
 
-### Parte 3
-> ¿Qué función tiene el fichero `~/.ssh/know_hosts` en el cliente?
+
 
 
 
