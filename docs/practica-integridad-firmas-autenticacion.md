@@ -317,6 +317,7 @@ Eso significa que se ha encriptado correctamente.
 ## Tarea 3: Integridad de ficheros
 
 ### Parte 1
+
 > Descargar la ISO de Debian
 
 ```
@@ -544,27 +545,25 @@ echo "deb [arch=amd64] http://download.virtualbox.org/virtualbox/debian bullseye
 
 ## Tarea 5: Autenticación en SSH
 
-### Parte 1
-> Explica los pasos que se producen entre el cliente y el servidor para que el protocolo cifre la información que se transmite
+### 5.1
+
+> Explicar qué sucede entre el cliente y el servidor para que se cifre la comunicación
 
 Una sesión SSH tiene 2 fases antes de que se pueda cifrar la comunicación. Las explicaré a continuación.
 
-**CONEXIÓN**
-
-1. El cliente establece una conexión TCP con el servidor, y este responde con las versiones del protocolo que soporta.
-2. Si el cliente usa una versión del protocolo que coincida con las que acepta el servidor, la conexión continúa.
-3. El servidor comparte su clave pública con el cliente, para que este compruebe si efectivamente es la máquina a la que quería conectarse.
-4. A partir de ahora, ambas partes están preparadas para la negociación de una clave de sesión usando Diffie-Hellman.
-
-**NEGOCIACIÓN DE LA ENCRIPTACIÓN PARA LA SESIÓN**
-
-1. Ambas partes se ponen de acuerdo en un número primo alto, que servirá como "seed value".
-2. Ambas partes se ponen de acuerdo en un tipo de cifrado (normalmente AES).
-3. Ambas partes generan otro número primo por separado, que mantienen en secreto de la otra parte. Se usará como clave privada durante esta fase de negociación *(esta clave privada NO es la misma que se usa para la autenticación)*.
-4. La clave privada generada + el tipo de cifrado + el número primo compartido, se usarán para generar una clave pública que estará derivada de la clave privada.
-5. Ambas partes intercambian sus claves públicas generadas *(estas claves públicas NO son las mismas que se usan para la autenticación)*.
-6. Cada parte usará su clave privada + la clave pública de la otra parte + el número primo compartido original, para calcular una clave compartida "shared secret". Aunque este proceso lo realiza cada parte por separado, mientras se usen claves públicas y privadas opuestas, se llegará al mismo "shared secret".
-7. Este "shared secret" se usará para encriptar toda comunicación a partir de ahora. Es una clave simétrica.
+* **CONEXIÓN**
+  1. El cliente establece una conexión TCP con el servidor, y este responde con las versiones del protocolo que soporta.
+  2. Si el cliente usa una versión del protocolo que coincida con las que acepta el servidor, la conexión continúa.
+  3. El servidor comparte su clave pública con el cliente, para que este compruebe si efectivamente es la máquina a la que quería conectarse.
+  4. A partir de ahora, ambas partes están preparadas para la negociación de una clave de sesión usando Diffie-Hellman.
+* **NEGOCIACIÓN DE LA ENCRIPTACIÓN PARA LA SESIÓN**
+  1. Ambas partes se ponen de acuerdo en un número primo alto, que servirá como "seed value".
+  2. Ambas partes se ponen de acuerdo en un tipo de cifrado (normalmente AES).
+  3. Ambas partes generan otro número primo por separado, que mantienen en secreto de la otra parte. Se usará como clave privada durante esta fase de negociación *(esta clave privada NO es la misma que se usa para la autenticación)*.
+  4. La clave privada generada + el tipo de cifrado + el número primo compartido, se usarán para generar una clave pública que estará derivada de la clave privada.
+  5. Ambas partes intercambian sus claves públicas generadas *(estas claves públicas NO son las mismas que se usan para la autenticación)*.
+  6. Cada parte usará su clave privada + la clave pública de la otra parte + el número primo compartido original, para calcular una clave compartida "shared secret". Aunque este proceso lo realiza cada parte por separado, mientras se usen claves públicas y privadas opuestas, se llegará al mismo "shared secret".
+  7. Este "shared secret" se usará para encriptar toda comunicación a partir de ahora. Es una clave simétrica.
 
 > ¿Para qué se utiliza la criptografía simétrica?
 
@@ -577,13 +576,34 @@ En cuanto ambas partes la sepan, el resto de la sesión se encriptará usando es
 > ¿Y la asimétrica?
 
 Se usa:
+
 * Durante el intercambio de clave para la encriptación simétrica. Ambas partes generan un par de claves temporal e intercambian la clave pública para poder generar el "shared secret" (clave simétrica) que se usará posteriormente.
 * En la autenticación del cliente con el servidor.
 
 
 
-### Parte 2
-> Explica los dos métodos de autenticación que existen
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### 5.2
+
+> Explicar los dos métodos de autenticación que existen
 
 **CON CONTRASEÑA**
 
@@ -678,4 +698,4 @@ ECDSA host key for 172.22.200.74 has changed and you have requested strict check
 
 
 
-end
+
