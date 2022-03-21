@@ -580,39 +580,18 @@ Se usa:
 * Durante el intercambio de clave para la encriptación simétrica. Ambas partes generan un par de claves temporal e intercambian la clave pública para poder generar el "shared secret" (clave simétrica) que se usará posteriormente.
 * En la autenticación del cliente con el servidor.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ### 5.2
 
-> Explicar los dos métodos de autenticación que existen
+Explicar los dos métodos de autenticación que existen.
 
-**CON CONTRASEÑA**
+#### Con contraseña
 
 Es el método más simple. Funciona así:
 
 1. El servidor pide al cliente que introduzca la contraseña del usuario con el que se están intentando conectar.
 2. Esta contraseña se envía usando la encriptación previamente negociada, para que se mantenga en secreto frente a terceros.
 
-**CON PAR DE CLAVES**
+#### Con par de claves
 
 Es el método más popular y recomendado. Funciona así:
 
@@ -625,6 +604,21 @@ Es el método más popular y recomendado. Funciona así:
 7. El cliente envía este hash de vuelta al servidor como respuesta al mensaje del número encriptado.
 8. El servidor usa la misma clave compartida de sesión junto con el número original que envió al cliente, y calcula el hash MD5 él también.
 8. El servidor compara el hash que él mismo generó con el que el cliente le envió. Si estos valores son iguales, se prueba que el cliente tiene la clave privada correcta y finalmente, este cliente es autenticado correctamente.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ### Parte 3
 > ¿Qué función tiene el fichero `~/.ssh/know_hosts` en el cliente?
