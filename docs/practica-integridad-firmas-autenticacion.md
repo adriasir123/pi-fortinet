@@ -628,93 +628,36 @@ Nos indica que, al ser la primera vez que nos estamos conectando a este servidor
 
 Si estamos seguros de su autenticidad, diremos que sí, y eso almacenará su clave pública en `~/.ssh/known_hosts`.
 
+### 5.5
 
+> ¿Qué significa el siguiente mensaje que aparece cuando reutilizamos una ip?
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-### Parte 5
-
-> En ocasiones cuando estamos trabajando en el cloud, y reutilizamos una ip flotante nos aparece este mensaje:
-
-```
-$ ssh debian@172.22.200.74
-@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-@    WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!     @
-@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!
-Someone could be eavesdropping on you right now (man-in-the-middle attack)!
-It is also possible that a host key has just been changed.
-The fingerprint for the ECDSA key sent by the remote host is
-SHA256:W05RrybmcnJxD3fbwJOgSNNWATkVftsQl7EzfeKJgNc.
-Please contact your system administrator.
-Add correct host key in /home/jose/.ssh/known_hosts to get rid of this message.
-Offending ECDSA key in /home/jose/.ssh/known_hosts:103
- remove with:
- ssh-keygen -f "/home/jose/.ssh/known_hosts" -R "172.22.200.74"
-ECDSA host key for 172.22.200.74 has changed and you have requested strict checking.
+```console
+ $ ssh debian@172.22.200.74
+ @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+ @    WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!     @
+ @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+ IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!
+ Someone could be eavesdropping on you right now (man-in-the-middle attack)!
+ It is also possible that a host key has just been changed.
+ The fingerprint for the ECDSA key sent by the remote host is
+ SHA256:W05RrybmcnJxD3fbwJOgSNNWATkVftsQl7EzfeKJgNc.
+ Please contact your system administrator.
+ Add correct host key in /home/jose/.ssh/known_hosts to get rid of this message.
+ Offending ECDSA key in /home/jose/.ssh/known_hosts:103
+   remove with:
+   ssh-keygen -f "/home/jose/.ssh/known_hosts" -R "172.22.200.74"
+ ECDSA host key for 172.22.200.74 has changed and you have requested strict checking.
 ```
 
+Este mensaje simplemente indica que la clave pública del servidor al que nos estamos intentando conectar ha cambiado con respecto a la clave que teníamos guardada para esa IP en nuestro `known_hosts` previamente.
 
+Se nos avisa porque es una forma de ataque man-in-the-middle, pero si estamos seguros de que somos nosotros mismos reutilizando una IP, simplemente borraremos la línea correspondiente en nuestro `known_hosts` sobre la antigua conexión y volveremos a conectarnos.
 
+### 5.6
 
+> ¿Qué guardamos y para qué sirve el fichero en el servidor `~/.ssh/authorized_keys`?
 
+Este es un fichero de servidor, diferente por cada usuario del sistema, y guarda todas las claves públicas de clientes permitidos para conectarse.
 
-
-
-
-
-
-
-
-
-
-### Parte 6
-
-> ¿Qué guardamos y para qué sirve el fichero en el servidor ~/.ssh/authorized_keys?
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Sirve para que el servidor verifique que los clientes conectándose sean legítimos (que tengan la clave privada correspondiente).
