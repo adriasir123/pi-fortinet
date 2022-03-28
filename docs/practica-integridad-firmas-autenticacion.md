@@ -401,21 +401,16 @@ Primary key fingerprint: DF9B 9C49 EAA9 2984 3258  9D76 DA87 E80D 6294 BE9B
 
 Se ha podido verificar correctamente, `SHA512SUMS` es legítimo.
 
-
-
-
-
-
 ## Tarea 4: Integridad y autenticidad (apt-secure)
 
-### Parte 1
+### 4.1
+
 > ¿Qué herramienta utiliza apt-secure para firmar y verificar firmas?
 
 GPG.
 
+### 4.2
 
-
-### Parte 2
 > ¿Para qué sirve `apt-key`?
 
 Se usa para gestionar la lista de claves que mantiene apt para autenticar paquetes.  
@@ -427,7 +422,8 @@ Los paquetes que sean autenticados usando estas claves se considerarán "trusted
 Lista las claves públicas en las que confiamos.  
 
 Muestro mi output de `apt-key list`:
-```
+
+```console
 Warning: apt-key is deprecated. Manage keyring files in trusted.gpg.d instead (see apt-key(8)).
 /etc/apt/trusted.gpg.d/debian-archive-bullseye-automatic.gpg
 ------------------------------------------------------------
@@ -490,31 +486,28 @@ pub   rsa4096 2017-05-20 [SC] [expires: 2025-05-18]
 uid           [ unknown] Debian Stable Release Key (9/stretch) <debian-release@lists.debian.org>
 ```
 
+### 4.3
 
-
-### Parte 3
 > ¿Dónde se encuentran los distintos keyrings que usa `apt-key`?
 
 En `/etc/apt/trusted.gpg.d/`.
 
+### 4.4
 
-
-### Parte 4
 > ¿Qué contiene el fichero `Release` de un repositorio?
 
 En otros datos, contiene los checksums de los ficheros que hay en el repositorio.
 
-Ejemplo: http://ftp.debian.org/debian/dists/Debian11.2/Release
+Ejemplo: <http://ftp.debian.org/debian/dists/Debian11.2/Release>
 
 > ¿Y `Release.gpg`?
 
 Contiene la firma detached ascii-armored del fichero `Release`.
 
-Ejemplo: http://ftp.debian.org/debian/dists/Debian11.2/Release.gpg
+Ejemplo: <http://ftp.debian.org/debian/dists/Debian11.2/Release.gpg>
 
+### 4.5
 
-
-### Parte 5
 > Explicar el proceso por el cual apt nos asegura que los ficheros que estamos descargando son legítimos
 
 1. Se descargan los ficheros `Release`, `Release.gpg`, y el fichero `Packages` que corresponda.
@@ -522,26 +515,22 @@ Ejemplo: http://ftp.debian.org/debian/dists/Debian11.2/Release.gpg
 3. Apt compara el checksum del fichero `Packages` con el que encuentra en el fichero `Release`; si coinciden, quiere decir que se descargó el fichero correcto.
 4. Al descargarnos un paquete individual se compara su checksum con el que aparece en `Packages`; si coinciden, quiere decir que se descargó el paquete correcto.
 
+### 4.6
 
-
-### Parte 6
 > Añadir el repositorio de VirtualBox
 
 Añado las claves gpg necesarias:
-```
+
+```console
 wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo apt-key add -
 wget -q https://www.virtualbox.org/download/oracle_vbox.asc -O- | sudo apt-key add -
 ```
 
 Añado el repositorio:
-```
+
+```console
 echo "deb [arch=amd64] http://download.virtualbox.org/virtualbox/debian bullseye contrib" | sudo tee /etc/apt/sources.list.d/virtualbox.list
 ```
-
-
-
-
-
 
 ## Tarea 5: Autenticación en SSH
 
