@@ -2,324 +2,571 @@
 
 ## Tarea 1: Firmas electrónicas
 
-### Ejercicio 1
+### 1.1
+
 > Enviar un fichero y la firma del mismo a Carlos
 
 Enviaré:
-```
--rw-r--r-- 1 vagrant vagrant   17 Nov 25 12:13 paracarlos.txt
+
+```console
+-rw-r--r-- 1 vagrant vagrant 28 Apr 28 01:03 paracarlos.txt
 ```
 
-Genero su firma:
-```
+Genero la firma:
+
+```console
 gpg --detach-sign paracarlos.txt
 ```
 
 Obtengo:
+
+```console
+-rw-r--r-- 1 vagrant vagrant       438 Apr 28 01:12 paracarlos.txt.sig
 ```
--rw-r--r-- 1 vagrant vagrant  438 Nov 25 12:14 paracarlos.txt.sig
-```
+
+Esta firma también la enviaré.  
+Ambos ficheros enviados por scp.
 
 > Verificar la firma recibida
 
-Recibo:
-```
--rw-r--r-- 1 vagrant vagrant    4 Nov 25 12:18 taninonino.txt
--rw-r--r-- 1 vagrant vagrant  438 Nov 25 12:18 taninonino.txt.sig
+Recibo por scp:
+
+```console
+-rw-r--r-- 1 vagrant vagrant        28 May 15 11:02 paraadrian.txt
+-rw-r--r-- 1 vagrant vagrant       438 May 15 11:02 paraadrian.txt.sig
 ```
 
-Verifico:
-```
-gpg --verify taninonino.txt.sig taninonino.txt
-```
-```
-gpg: Signature made Thu Nov 25 12:12:20 2021 UTC
-gpg:                using RSA key B446862585616A3FBC935F9A4DFDE0A4BA1C00D5
-gpg: Good signature from "Carlos Rivero <carlosrivero1988@gmail.com>" [unknown]
+Verifico la firma:
+
+```console
+vagrant@practicafirmas:~$ gpg --verify paraadrian.txt.sig paraadrian.txt
+gpg: Signature made Sun May 15 10:44:25 2022 UTC
+gpg:                using RSA key 4E8FF10EDF312F43014B7AE13F6189C8E59B7714
+gpg: Good signature from "Carlos Rivero <carlosrivero198@gmail.com>" [unknown]
 gpg: WARNING: This key is not certified with a trusted signature!
 gpg:          There is no indication that the signature belongs to the owner.
-Primary key fingerprint: B446 8625 8561 6A3F BC93  5F9A 4DFD E0A4 BA1C 00D5
+Primary key fingerprint: 4E8F F10E DF31 2F43 014B  7AE1 3F61 89C8 E59B 7714
 ```
 
-### Ejercicio 2
-> ¿Qué significa el mensaje que aparece en el momento de verificar la firma?
+La verificación ha sido correcta.
 
-```
+### 1.2
+
+> ¿Qué significa este mensaje al verificar la firma?
+
+```console
  gpg: Firma correcta de "Pepe D <josedom24@gmail.com>" [desconocido]
  gpg: ATENCIÓN: ¡Esta clave no está certificada por una firma de confianza!
  gpg:          No hay indicios de que la firma pertenezca al propietario.
  Huellas dactilares de la clave primaria: E8DD 5DA9 3B88 F08A DA1D  26BF 5141 3DDB 0C99 55FC
 ```
 
+Significa que la clave pública con la que se ha verificado la firma, no es una clave en la que yo confíe / haya firmado.
 
+Por ejemplo, puede suceder cuando la trust es "unknown", como ha sido el caso del apartado anterior.
 
+### 1.3
 
+En este apartado crearemos un anillo de confianza entre varios compañeros.
 
-### Ejercicio 3
-> Crearemos un anillo de confianza entre los compañeros
+#### 1.3.1
 
-#### Parte 1
-> Subir clave pública a `pgp.rediris.es`
+> Subir tu clave pública a `pgp.rediris.es`
 
+```console
+vagrant@practicafirmas:~$ gpg --keyserver pgp.rediris.es --send-keys 69172731E9645F6ACB60CCBA0C3C966CD1DC1A62
+gpg: sending key 0C3C966CD1DC1A62 to hkp://pgp.rediris.es
 ```
-gpg --keyserver pgp.rediris.es --send-key F0B9E3109E86B53F6C0791E43A110CF1BEBCA39E
+
+Compruebo que se ha subido correctamente:
+
+```console
+vagrant@practicafirmas:~$ gpg --keyserver pgp.rediris.es --search-keys 69172731E9645F6ACB60CCBA0C3C966CD1DC1A62
+gpg: data source: http://130.206.1.8:11371
+(1)	Adrian Jaramillo <adristudy@gmail.com>
+	  3072 bit RSA key 0C3C966CD1DC1A62, created: 2022-05-16, expires: 2024-05-15
+Keys 1-1 of 1 for "69172731E9645F6ACB60CCBA0C3C966CD1DC1A62".  Enter number(s), N)ext, or Q)uit >
 ```
 
-#### Parte 2
-> Pasar el fingerprint a tus compañeros para que puedan descargarse tu clave pública
+#### 1.3.2
+
+> Pasar el fingerprint de tu clave subida a tus compañeros para que la puedan descargar
 
 Hecho.
 
-#### Parte 3
-> Bajar tres claves públicas de compañeros. Firmar estas claves.
+#### 1.3.3
+
+> Bajar y firmar tres claves públicas de compañeros
 
 Me bajo la de Carlos:
-```
-gpg --keyserver pgp.rediris.es --recv-keys 4DFDE0A4BA1C00D5
-```
 
-Firmo la de Carlos:
-```
-gpg --sign-key B446862585616A3FBC935F9A4DFDE0A4BA1C00D5
-```
-
-Muestro mi firma en la clave de Carlos:
-
-![](https://i.imgur.com/uAaPgyo.png)
-
-
-Me bajo la de María Jesús:
-```
-gpg --keyserver pgp.rediris.es --recv-keys BE770D0718D1F998
+```console
+vagrant@practicafirmas:~$ gpg --keyserver pgp.rediris.es --receive-keys 3F6189C8E59B7714
+gpg: key 3F6189C8E59B7714: public key "Carlos Rivero <carlosrivero198@gmail.com>" imported
+gpg: Total number processed: 1
+gpg:               imported: 1
 ```
 
-Firmo la de María Jesús:
+La firmo:
+
+```console
+vagrant@practicafirmas:~$ gpg --sign-key 3F6189C8E59B7714
+
+pub  rsa3072/3F6189C8E59B7714
+     created: 2022-05-15  expires: 2024-05-14  usage: SC
+     trust: unknown       validity: unknown
+sub  rsa3072/1707D1A73D4578B2
+     created: 2022-05-15  expires: 2024-05-14  usage: E
+[ unknown] (1). Carlos Rivero <carlosrivero198@gmail.com>
+
+
+pub  rsa3072/3F6189C8E59B7714
+     created: 2022-05-15  expires: 2024-05-14  usage: SC
+     trust: unknown       validity: unknown
+ Primary key fingerprint: 4E8F F10E DF31 2F43 014B  7AE1 3F61 89C8 E59B 7714
+
+     Carlos Rivero <carlosrivero198@gmail.com>
+
+This key is due to expire on 2024-05-14.
+Are you sure that you want to sign this key with your
+key "Adrian Jaramillo <adristudy@gmail.com>" (0C3C966CD1DC1A62)
+
+Really sign? (y/N) y
 ```
-gpg --sign-key bpmariajesus20@gmail.com
+
+Muestro que se aplicó correctamente:
+
+```console
+vagrant@practicafirmas:~$ gpg --list-sig 4E8FF10EDF312F43014B7AE13F6189C8E59B7714
+pub   rsa3072 2022-05-15 [SC] [expires: 2024-05-14]
+      4E8FF10EDF312F43014B7AE13F6189C8E59B7714
+uid           [  full  ] Carlos Rivero <carlosrivero198@gmail.com>
+sig 3        3F6189C8E59B7714 2022-05-15  Carlos Rivero <carlosrivero198@gmail.com>
+sig          0C3C966CD1DC1A62 2022-05-16  Adrian Jaramillo <adristudy@gmail.com>
+sub   rsa3072 2022-05-15 [E] [expires: 2024-05-14]
+sig          3F6189C8E59B7714 2022-05-15  Carlos Rivero <carlosrivero198@gmail.com>
 ```
 
-Muestro mi firma en la clave de María Jesús:
+Me bajo la de Daniel:
 
-![](https://i.imgur.com/rXHWWeX.png)
-
-
-Me bajo la de Miguel:
-```
-gpg --keyserver pgp.rediris.es --recv-keys 93E00F9A8C74FBC0
-```
-
-Firmo la de Miguel:
-```
-gpg --sign-key miguelcor.rrss@gmail.com
+```console
+vagrant@practicafirmas:~$ gpg --keyserver pgp.rediris.es --receive-keys 82805738F5FF4457
+gpg: key 82805738F5FF4457: public key "Daniel Parrales <daniparrales1@gmail.com>" imported
+gpg: Total number processed: 1
+gpg:               imported: 1
 ```
 
-Muestro mi firma en la clave de Miguel:
+La firmo:
 
-![](https://i.imgur.com/J1YYQ9r.png)
+```console
+vagrant@practicafirmas:~$ gpg --sign-key 82805738F5FF4457
 
-#### Parte 4
+pub  rsa3072/82805738F5FF4457
+     created: 2022-05-16  expires: 2024-05-15  usage: SC
+     trust: unknown       validity: unknown
+sub  rsa3072/408742D95A6657E5
+     created: 2022-05-16  expires: 2024-05-15  usage: E
+[ unknown] (1). Daniel Parrales <daniparrales1@gmail.com>
+
+
+pub  rsa3072/82805738F5FF4457
+     created: 2022-05-16  expires: 2024-05-15  usage: SC
+     trust: unknown       validity: unknown
+ Primary key fingerprint: 8595 30FB 6525 B22C 5F36  8117 8280 5738 F5FF 4457
+
+     Daniel Parrales <daniparrales1@gmail.com>
+
+This key is due to expire on 2024-05-15.
+Are you sure that you want to sign this key with your
+key "Adrian Jaramillo <adristudy@gmail.com>" (0C3C966CD1DC1A62)
+
+Really sign? (y/N) y
+```
+
+Muestro que se aplicó correctamente:
+
+```console
+vagrant@practicafirmas:~$ gpg --list-sig 82805738F5FF4457
+pub   rsa3072 2022-05-16 [SC] [expires: 2024-05-15]
+      859530FB6525B22C5F36811782805738F5FF4457
+uid           [  full  ] Daniel Parrales <daniparrales1@gmail.com>
+sig 3        82805738F5FF4457 2022-05-16  Daniel Parrales <daniparrales1@gmail.com>
+sig          0C3C966CD1DC1A62 2022-06-07  Adrian Jaramillo <adristudy@gmail.com>
+sub   rsa3072 2022-05-16 [E] [expires: 2024-05-15]
+sig          82805738F5FF4457 2022-05-16  Daniel Parrales <daniparrales1@gmail.com>
+```
+
+Me bajo la de Lara:
+
+```console
+vagrant@practicafirmas:~$ gpg --keyserver pgp.rediris.es --receive-keys EB5FEF455BD986A0
+gpg: key EB5FEF455BD986A0: public key "Lara Pruna Ternero <laraprute@gmail.com>" imported
+gpg: Total number processed: 1
+gpg:               imported: 1
+```
+
+La firmo:
+
+```console
+vagrant@practicafirmas:~$ gpg --sign-key EB5FEF455BD986A0
+
+pub  rsa3072/EB5FEF455BD986A0
+     created: 2022-06-07  expires: 2024-06-06  usage: SC
+     trust: unknown       validity: unknown
+sub  rsa3072/C1F92F5A0AEA093D
+     created: 2022-06-07  expires: 2024-06-06  usage: E
+[ unknown] (1). Lara Pruna Ternero <laraprute@gmail.com>
+
+
+pub  rsa3072/EB5FEF455BD986A0
+     created: 2022-06-07  expires: 2024-06-06  usage: SC
+     trust: unknown       validity: unknown
+ Primary key fingerprint: 8317 2CA2 F8FC 2124 94CB  677D EB5F EF45 5BD9 86A0
+
+     Lara Pruna Ternero <laraprute@gmail.com>
+
+This key is due to expire on 2024-06-06.
+Are you sure that you want to sign this key with your
+key "Adrian Jaramillo <adristudy@gmail.com>" (0C3C966CD1DC1A62)
+
+Really sign? (y/N) y
+```
+
+Muestro que se aplicó correctamente:
+
+```console
+vagrant@practicafirmas:~$ gpg --list-sig EB5FEF455BD986A0
+pub   rsa3072 2022-06-07 [SC] [expires: 2024-06-06]
+      83172CA2F8FC212494CB677DEB5FEF455BD986A0
+uid           [  full  ] Lara Pruna Ternero <laraprute@gmail.com>
+sig 3        EB5FEF455BD986A0 2022-06-07  Lara Pruna Ternero <laraprute@gmail.com>
+sig          0C3C966CD1DC1A62 2022-06-07  Adrian Jaramillo <adristudy@gmail.com>
+sub   rsa3072 2022-06-07 [E] [expires: 2024-06-06]
+sig          EB5FEF455BD986A0 2022-06-07  Lara Pruna Ternero <laraprute@gmail.com>
+```
+
+#### 1.3.4
+
 > Tu clave pública tiene que tener 3 firmas
 
-En mi keybox:
-```
-gpg --list-sigs adristudy@gmail.com
-```
-```
-pub   rsa3072 2021-11-25 [SC] [expires: 2023-11-25]
-      F0B9E3109E86B53F6C0791E43A110CF1BEBCA39E
-uid           [ultimate] Adrián Jaramillo Rodríguez <adristudy@gmail.com>
-sig 3        3A110CF1BEBCA39E 2021-11-25  Adrián Jaramillo Rodríguez <adristudy@gmail.com>
-sig          4DFDE0A4BA1C00D5 2021-11-25  Carlos Rivero <carlosrivero1988@gmail.com>
-sig          0A3D7E065504F64B 2021-11-25  Daniel Parrales Garcia (Para ASIR) <daniparrales16@gmail.com>
-sig          51D0DEC846173F6A 2021-11-25  Lara Pruna Ternero <larapruter@gmail.com>
-sub   rsa3072 2021-11-25 [E] [expires: 2023-11-25]
-sig          3A110CF1BEBCA39E 2021-11-25  Adrián Jaramillo Rodríguez <adristudy@gmail.com>
+```console
+vagrant@practicafirmas:~$ gpg --list-sigs adristudy@gmail.com
+pub   rsa3072 2022-05-16 [SC] [expires: 2024-05-15]
+      69172731E9645F6ACB60CCBA0C3C966CD1DC1A62
+uid           [ultimate] Adrian Jaramillo <adristudy@gmail.com>
+sig 3        0C3C966CD1DC1A62 2022-05-16  Adrian Jaramillo <adristudy@gmail.com>
+sig          3F6189C8E59B7714 2022-06-07  Carlos Rivero <carlosrivero198@gmail.com>
+sig          82805738F5FF4457 2022-06-07  Daniel Parrales <daniparrales1@gmail.com>
+sig          EB5FEF455BD986A0 2022-06-07  Lara Pruna Ternero <laraprute@gmail.com>
+sub   rsa3072 2022-05-16 [E] [expires: 2024-05-15]
+sig          0C3C966CD1DC1A62 2022-05-16  Adrian Jaramillo <adristudy@gmail.com>
 ```
 
-En `pgp.rediris.es`:
+#### 1.3.5
 
-![](https://i.imgur.com/Y59vjg0.png)
-
-#### Parte 5
 > Al firmar claves, devolverlas a su dueño
 
-Las exporto de esta manera:
-```
-gpg --armor --output carlos_rivero_firmado_adri.asc --export carlosrivero1988@gmail.com
+Todas las exporto de esta manera:
+
+```console
+gpg --export -a carlosrivero198@gmail.com > publiccarlos.key
 ```
 
-#### Parte 6
-> Subir a `pgp.rediris.es` la clave cuando tenga tres firmas
+#### 1.3.6
 
-```
-gpg --keyserver pgp.rediris.es --send-key F0B9E3109E86B53F6C0791E43A110CF1BEBCA39E
+> Subir a `pgp.rediris.es` tu clave cuando tenga tres firmas
+
+```console
+vagrant@practicafirmas:~$ gpg --keyserver pgp.rediris.es --send-key 69172731E9645F6ACB60CCBA0C3C966CD1DC1A62
+gpg: sending key 0C3C966CD1DC1A62 to hkp://pgp.rediris.es
 ```
 
 Muestro las 3 firmas en el keyserver:
 
-![](https://i.imgur.com/rWPO617.png)
+![miclaveconfirmas](https://i.postimg.cc/rp2cHB9p/3-firmas-miclave.png)
 
 > Rellenar datos de tu clave pública [aquí](https://dit.gonzalonazareno.org/redmine/projects/asir2/wiki/Claves_p%C3%BAblicas_PGP_2021-2022)
 
-![](https://i.imgur.com/v3FHprc.png)
+![miclavedeclase](https://i.imgur.com/ceSgH9c.png)
 
-#### Parte 7
+#### 1.3.7
+
 > Bajar las claves públicas de tus compañeros con tres firmas
 
-Daniel:
-```
-gpg --keyserver pgp.rediris.es --recv-key 0A3D7E065504F64B
+Todas se bajarán de la misma manera:
+
+```console
+gpg --keyserver pgp.rediris.es --recv-key 3F6189C8E59B7714
 ```
 
-Lara:
-```
-gpg --keyserver pgp.rediris.es --recv-key 51D0DEC846173F6A
-```
+**IMPORTANTE: AL BAJAR DIRECTAMENTE LAS CLAVES DE ESTA MANERA LAS FIRMAS SE ELIMINAN, ASÍ QUE ES MEJOR IMPORTAR LAS CLAVES DESDE UN FICHERO Y ASÍ MANTENDREMOS LAS FIRMAS**
 
-Carlos:
-```
-gpg --keyserver pgp.rediris.es --recv-key 4DFDE0A4BA1C00D5
-```
+### 1.4
 
-*(todas esas claves tienen 3 firmas originalmente en el servidor, pero al intentar descargarlas gpg borra las firmas)*
-
-### Ejercicio 4
 > Mostrar las firmas de tu clave pública
 
-```
-gpg --list-sigs adristudy@gmail.com
-```
-```
-pub   rsa3072 2021-11-25 [SC] [expires: 2023-11-25]
-      F0B9E3109E86B53F6C0791E43A110CF1BEBCA39E
-uid           [ultimate] Adrián Jaramillo Rodríguez <adristudy@gmail.com>
-sig 3        3A110CF1BEBCA39E 2021-11-25  Adrián Jaramillo Rodríguez <adristudy@gmail.com>
-sig          4DFDE0A4BA1C00D5 2021-11-25  Carlos Rivero <carlosrivero1988@gmail.com>
-sig          0A3D7E065504F64B 2021-11-25  Daniel Parrales Garcia (Para ASIR) <daniparrales16@gmail.com>
-sig          51D0DEC846173F6A 2021-11-25  Lara Pruna Ternero <larapruter@gmail.com>
-sub   rsa3072 2021-11-25 [E] [expires: 2023-11-25]
-sig          3A110CF1BEBCA39E 2021-11-25  Adrián Jaramillo Rodríguez <adristudy@gmail.com>
+```console
+vagrant@practicafirmas:~$ gpg --list-sigs adristudy@gmail.com
+pub   rsa3072 2022-05-16 [SC] [expires: 2024-05-15]
+      69172731E9645F6ACB60CCBA0C3C966CD1DC1A62
+uid           [ultimate] Adrian Jaramillo <adristudy@gmail.com>
+sig 3        0C3C966CD1DC1A62 2022-05-16  Adrian Jaramillo <adristudy@gmail.com>
+sig          3F6189C8E59B7714 2022-06-07  Carlos Rivero <carlosrivero198@gmail.com>
+sig          82805738F5FF4457 2022-06-07  Daniel Parrales <daniparrales1@gmail.com>
+sig          EB5FEF455BD986A0 2022-06-07  Lara Pruna Ternero <laraprute@gmail.com>
+sub   rsa3072 2022-05-16 [E] [expires: 2024-05-15]
+sig          0C3C966CD1DC1A62 2022-05-16  Adrian Jaramillo <adristudy@gmail.com>
 ```
 
-### Ejercicio 5
+### 1.5
+
 > Comprobar que se puede verificar "sin problemas” la firma de Carlos, porque ya se confía
 
-```
-gpg --verify taninonino.txt.sig taninonino.txt
-```
-```
-gpg: Signature made Thu Nov 25 12:12:20 2021 UTC
-gpg:                using RSA key B446862585616A3FBC935F9A4DFDE0A4BA1C00D5
-gpg: Good signature from "Carlos Rivero <carlosrivero1988@gmail.com>" [full]
+```console
+vagrant@practicafirmas:~$ gpg --verify paraadrian.txt.sig paraadrian.txt
+gpg: Signature made Sun May 15 10:44:25 2022 UTC
+gpg:                using RSA key 4E8FF10EDF312F43014B7AE13F6189C8E59B7714
+gpg: Good signature from "Carlos Rivero <carlosrivero198@gmail.com>" [full]
 ```
 
-### Ejercicio 6
-> Comprueba que puedes verificar con confianza una firma de una persona en las que no confías, pero sin embargo si confía otra persona en la que tu tienes confianza total.
+### 1.6
 
-mirar mi documentación antigua
+> Comprobar que puedes verificar con confianza una firma de una persona en la que no confías, pero sin embargo si confía otra persona en la que tu tienes confianza total
 
+En este apartado vamos a intentar verificar una firma de Miguel:
 
-
-
-
-
-## Tarea 2: Correo seguro con evolution
-
-Ahora vamos a configurar nuestro cliente de correo electrónico para poder mandar correos cifrados, para ello:
-
-### Parte 1
-> Configurar el cliente de correo evolution con tu cuenta de correo habitual
-
+```console
+-rw-r--r-- 1 vagrant vagrant        16 Jun  8 06:17 paraadriandemiguel.txt
+-rw-r--r-- 1 vagrant vagrant       438 Jun  8 06:18 paraadriandemiguel.txt.sig
 ```
+
+Tenemos su clave pública firmada por Carlos (en el que confiamos), pero la propia clave de Miguel nosotros no la hemos firmado, por lo que no confiamos:
+
+```console
+vagrant@practicafirmas:~$ gpg --list-sigs miguelcor.rrs@gmail.com
+pub   rsa3072 2022-06-07 [SC] [expires: 2024-06-06]
+      5173B9123875E25C833A855307F879A05A4147C3
+uid           [  undef ] Miguel Cordoba <miguelcor.rrs@gmail.com>
+sig 3        07F879A05A4147C3 2022-06-07  Miguel Cordoba <miguelcor.rrs@gmail.com>
+sig          3F6189C8E59B7714 2022-06-07  Carlos Rivero <carlosrivero198@gmail.com>
+sub   rsa3072 2022-06-07 [E] [expires: 2024-06-06]
+sig          07F879A05A4147C3 2022-06-07  Miguel Cordoba <miguelcor.rrs@gmail.com>
+```
+
+Bien, si intentamos verificar la firma de Miguel, ¿debería de no haber errores verdad? Porque como dijimos, Carlos firmó la de Miguel, y yo confío en Carlos.
+
+Hagamos la prueba:
+
+```console
+vagrant@practicafirmas:~$ gpg --verify paraadriandemiguel.txt.sig paraadriandemiguel.txt
+gpg: Signature made Wed Jun  8 06:15:58 2022 UTC
+gpg:                using RSA key 5173B9123875E25C833A855307F879A05A4147C3
+gpg: Good signature from "Miguel Cordoba <miguelcor.rrs@gmail.com>" [undefined]
+gpg: WARNING: This key is not certified with a trusted signature!
+gpg:          There is no indication that the signature belongs to the owner.
+Primary key fingerprint: 5173 B912 3875 E25C 833A  8553 07F8 79A0 5A41 47C3
+```
+
+Error. ¿Por qué ha sucedido esto?
+
+Pues bien, debemos explicar antes 2 conceptos fundamentales, **trust y validity**:
+
+* **TRUST**: la trust se configura manualmente. Describe si una clave puede firmar otras claves, y que se confíen en ellas aunque yo directamente no confíe (permite la confianza en terceros). Ej: Si se confía completamente en una persona "A", y esa persona firma la clave de una persona "B", automáticamente veremos la clave de "B" como válida.
+* **VALIDITY**: la validez en diferencia con la trust, sí puede ser automática. Describe si una clave tiene las suficientes firmas para que se pruebe que es la clave correcta (cuando nosotros firmamos una clave, automáticamente la validez pasa a "full")
+
+Habiendo dicho esto, entonces lo que ha debido pasar es que no tenemos confianza en la clave de Carlos, aunque la validez esté a full porque la firmamos en su momento. Es decir, sabemos que la clave de Carlos es de verdad de Carlos, pero no confiamos en que Carlos firme otras claves, y luego nos creamos que esas otras son verdaderas.
+
+Vamos a mostrar los datos de la clave de Carlos para comprobar lo ya dicho:
+
+```console
+vagrant@practicafirmas:~$ gpg --edit-key carlosrivero198@gmail.com
+gpg (GnuPG) 2.2.27; Copyright (C) 2021 Free Software Foundation, Inc.
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+
+pub  rsa3072/3F6189C8E59B7714
+     created: 2022-05-15  expires: 2024-05-14  usage: SC
+     trust: unknown       validity: full
+sub  rsa3072/1707D1A73D4578B2
+     created: 2022-05-15  expires: 2024-05-14  usage: E
+[  full  ] (1). Carlos Rivero <carlosrivero198@gmail.com>
+
+gpg>
+```
+
+Está ocurriendo tal y como hemos explicado antes, la trust es "unknown" y la validity es "full". No estamos confiando en las firmas a terceros de Carlos.
+
+¿Entonces qué debemos hacer?
+
+Cambiar la trust en la clave de Carlos para que confiemos en sus firmas a terceros. Debemos configurar el nivel de trust a 4, o full. Lo hacemos así:
+
+```console
+vagrant@practicafirmas:~$ gpg --edit-key 4E8FF10EDF312F43014B7AE13F6189C8E59B7714 trust
+gpg (GnuPG) 2.2.27; Copyright (C) 2021 Free Software Foundation, Inc.
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+
+pub  rsa3072/3F6189C8E59B7714
+     created: 2022-05-15  expires: 2024-05-14  usage: SC
+     trust: unknown       validity: full
+sub  rsa3072/1707D1A73D4578B2
+     created: 2022-05-15  expires: 2024-05-14  usage: E
+[  full  ] (1). Carlos Rivero <carlosrivero198@gmail.com>
+
+pub  rsa3072/3F6189C8E59B7714
+     created: 2022-05-15  expires: 2024-05-14  usage: SC
+     trust: unknown       validity: full
+sub  rsa3072/1707D1A73D4578B2
+     created: 2022-05-15  expires: 2024-05-14  usage: E
+[  full  ] (1). Carlos Rivero <carlosrivero198@gmail.com>
+
+Please decide how far you trust this user to correctly verify other users' keys
+(by looking at passports, checking fingerprints from different sources, etc.)
+
+  1 = I don't know or won't say
+  2 = I do NOT trust
+  3 = I trust marginally
+  4 = I trust fully
+  5 = I trust ultimately
+  m = back to the main menu
+
+Your decision? 4
+
+pub  rsa3072/3F6189C8E59B7714
+     created: 2022-05-15  expires: 2024-05-14  usage: SC
+     trust: full          validity: full
+sub  rsa3072/1707D1A73D4578B2
+     created: 2022-05-15  expires: 2024-05-14  usage: E
+[  full  ] (1). Carlos Rivero <carlosrivero198@gmail.com>
+Please note that the shown key validity is not necessarily correct
+unless you restart the program.
+
+gpg> quit
+```
+
+Ahora la trust está a full como podemos observar.
+
+Pues bien, ahora sí podremos verificar correctamente la firma de Miguel, porque ahora confiamos en las firmas de Carlos a terceros. Por esto, en nuestro listado de claves, ahora la clave de Miguel es confiada de forma full:
+
+```console
+pub   rsa3072 2022-06-07 [SC] [expires: 2024-06-06]
+      5173B9123875E25C833A855307F879A05A4147C3
+uid           [  full  ] Miguel Cordoba <miguelcor.rrs@gmail.com>
+sub   rsa3072 2022-06-07 [E] [expires: 2024-06-06]
+```
+
+Podremos ahora verificar su firma correctamente:
+
+```console
+vagrant@practicafirmas:~$ gpg --verify paraadriandemiguel.txt.sig paraadriandemiguel.txt
+gpg: Signature made Wed Jun  8 06:15:58 2022 UTC
+gpg:                using RSA key 5173B9123875E25C833A855307F879A05A4147C3
+gpg: Good signature from "Miguel Cordoba <miguelcor.rrs@gmail.com>" [full]
+```
+
+## Tarea 2: Correo seguro con Evolution
+
+### 2.1
+
+> Configurar una cuenta de correo
+
+```console
 sudo apt install evolution
 ```
 
-![](https://i.imgur.com/S75Ga85.png)
+Después de instalarlo y configurarlo, muestro que funciona:
 
-En gnome previamente había añadido adristudy@gmail.com como mi cuenta de correo, así que Evolution se ha autoconfigurado con esa cuenta al instalarse.
+![evolution funcionando](https://i.imgur.com/xdvQd42.png)
 
+### 2.2
 
+> Configurar el firmado de correos con nuestra clave privada
 
+Primero tenemos que llegar al menú correspondiente:
 
+![evolution config firmas](https://i.postimg.cc/prBYF7b5/llegar-config-firmado-evolution.gif)
 
+Una vez ahí, indicamos el fingerprint del par de claves con el que queremos firmar:
 
+![config evolution firmado](https://i.imgur.com/1owmbRJ.png)
 
+Para que los correos de verdad se firmen al enviarse, tenemos que marcar la siguiente opción antes de enviarlos:
 
+![marcar correos para firmado](https://i.imgur.com/sQ7B3iT.png)
 
+### 2.3
 
-### Parte 2
-> Añade a la cuenta las opciones de seguridad para poder enviar correos firmados con tu clave privada
+> Configurar el cifrado de correos para otros destinatarios
 
+Para el cifrado no hace falta que configuremos en Evolution las claves públicas, ya que las toma de nuestro keybox automáticamente según la dirección que escribamos en el *"To:"*.
 
-Indico mi clave privada para firmar:
+Para que los correos de verdad se cifren al enviarse, tenemos que marcar la siguiente opción antes de enviarlos:
 
-![](https://i.imgur.com/EzbBEeH.png)
+![marcar correos para cifrado](https://i.imgur.com/rhWfSdx.png)
 
+### 2.4
 
-> Configurar opciones de seguridad para poder cifrar correos para otros destinatarios
+> Enviar un correo firmado y cifrado a Carlos
 
+Este es el correo que enviaré:
 
+![firmado/cifrado para carlos](https://i.imgur.com/Yxc5hAX.png)
 
+Si yo lo intento abrir, no podré ver el contenido ya que no tengo la clave privada de Carlos para desencriptarlo:
 
-### Parte 3
-> Enviar un correo con tus compañeros y comprueba el funcionamiento adecuado de GPG
+![intento abrir correo para carlos](https://i.imgur.com/znoJDqT.png)
 
-Envío un correo a Carlos:
-![](https://i.imgur.com/Yxc5hAX.png)
+Este es el correo que le ha llegado a Carlos, desde su punto de vista, y vemos que todo es correcto:
 
-Este es el correo enviado:
-![](https://i.imgur.com/znoJDqT.png)
+![correo que carlos ha recibido](https://i.imgur.com/5Yq8DNm.png)
 
-No lo puedo ver, porque está cifrado con la clave de Carlos, y yo no lo puedo descifrar porque no tengo su privada.
+### 2.5
 
-Este es el correo que le ha llegado a Carlos:
-![](https://i.imgur.com/5Yq8DNm.png)
+> Recibir un correo firmado y cifrado de Carlos
 
-> Recibir un correo de Carlos y comprobar el funcionamiento adecuado de GPG
+Vemos que todo es correcto:
 
-Este es el correo que he recibido:
+![correo que he recibido de Carlos](https://i.imgur.com/sEaWbLf.png)
 
-![](https://i.imgur.com/sEaWbLf.png)
+### 2.6
 
-Se ha desencriptado correctamente, y la firma se ha verificado.
-
-
-
-### Parte X
 > Mandar a Raúl un correo cifrado y firmado
 
-Me bajo la clave de Raúl a mi keybox:
-```
-gpg --keyserver pgp.rediris.es --recv-key A036DF623D608DE0
-```
-```
+Busco la clave pública de Raúl en RedIRIS y me la bajo (se necesitará para encriptar):
+
+```console
+atlas@olympus:~$ gpg --keyserver pgp.rediris.es --search-key rruizp@gmail.com
+gpg: data source: http://130.206.1.8:11371
+(1)	Raúl Ruiz Padilla <rruizp@gmail.com>
+	  3072 bit RSA key A036DF623D608DE0, created: 2021-11-10, expires: 2023-11-10
+(2)	Raúl Ruiz (Claves para clase) <rruizp@gmail.com>
+	  4096 bit RSA key 334BEE7E18D37DEA, created: 2017-12-16
+(3)	Raul Ruiz Padilla (Clave para SAD 1617) <rruizp@gmail.com>
+	  4096 bit RSA key F6C88DC57C2FA472, created: 2016-12-11, expires: 2018-12-10 (expired)
+Keys 1-3 of 3 for "rruizp@gmail.com".  Enter number(s), N)ext, or Q)uit > 1
 gpg: key A036DF623D608DE0: public key "Raúl Ruiz Padilla <rruizp@gmail.com>" imported
 gpg: Total number processed: 1
 gpg:               imported: 1
 ```
 
-Si dejo marcada esa opción, no será necesario firmar las claves públicas de las personas a quienes queramos enviar correos:
-![](https://i.imgur.com/AdGK5p7.png)
+Antes de enviar el correo es importante que dejemos marcada esta opción, para evitar el tener que firmar las claves públicas de las personas a quienes queramos enviar:
 
-Prueba de que he enviado el correo:
+![confiar en claves al encriptar](https://i.imgur.com/zT4Rliu.png)
 
-![](https://i.imgur.com/oq8629Y.png)
+Este es el correo que enviaré:
 
-Me aparece ese error porque está encriptado con la clave pública de Raúl, y como no tengo la privada asociada no prueba desencriptarlo.
+![correo enviado a raúl](https://i.imgur.com/tNZWIHq.png)
 
-Eso significa que se ha encriptado correctamente.
+La parte marcada en rojo quiere decir que el correo se encriptará y firmará.
 
+**¿QUÉ TENDRÁ QUE HACER RAÚL PARA LEER ESTE CORREO CORRECTAMENTE?**
 
+Necesitará 2 cosas:
 
-
-
-
-
-
-
-
-
-
+* La clave privada correspondiente a la pública con la que se encriptó el correo para descifrarlo correctamente.
+* Mi clave pública para poder verificar la firma. La podrá obtener con el comando `gpg --keyserver pgp.rediris.es --search-key adristudy@gmail.com`, eligiendo la de fingerprint CA350E4C295E2EF4.
 
 ## Tarea 3: Integridad de ficheros
 
