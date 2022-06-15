@@ -2564,10 +2564,14 @@ Processing triggers for libc-bin (2.31-0ubuntu9.9) ...
 
 Muestro la configuración de red de `u1`:
 
-[![asciicast](https://www.dataquest.io/wp-content/uploads/2019/07/command-line-courses-dataquest-1000x520-1-1.gif)](https://asciinema.org/a/OYKnsP6PL81gtiyzhEVispzkx)
+<https://asciinema.org/a/OYKnsP6PL81gtiyzhEVispzkx>
 
+<a href="https://asciinema.org/a/OYKnsP6PL81gtiyzhEVispzkx" target="_blank"><img src="https://asciinema.org/a/OYKnsP6PL81gtiyzhEVispzkx.svg" /></a>
 
-<a href="https://asciinema.org/a/OYKnsP6PL81gtiyzhEVispzkx"><img src="https://asciinema.org/a/14.png" width="836"/></a>
+[![asciicast](https://asciinema.org/a/OYKnsP6PL81gtiyzhEVispzkx.svg)](https://asciinema.org/a/OYKnsP6PL81gtiyzhEVispzkx)
+
+<script id="asciicast-OYKnsP6PL81gtiyzhEVispzkx" src="https://asciinema.org/a/OYKnsP6PL81gtiyzhEVispzkx.js" async></script>
+
 
 
 
