@@ -82,6 +82,8 @@ nav:
         - 'Escenario libvirt': 'practica-escenario-libvirt.md'
 extra:
   disqus: conocimiento-en-bits-neocities-org
+extra_css:
+  - stylesheets/asciinema-player.css
 extra_javascript:
   - javascripts/asciinema-player.min.js
 markdown_extensions:
