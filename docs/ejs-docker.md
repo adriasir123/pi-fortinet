@@ -2564,9 +2564,7 @@ Processing triggers for libc-bin (2.31-0ubuntu9.9) ...
 
 Muestro la configuración de red de `u1`:
 
-<https://asciinema.org/a/OYKnsP6PL81gtiyzhEVispzkx>
 
-<a href="https://asciinema.org/a/OYKnsP6PL81gtiyzhEVispzkx" target="_blank"><img src="https://asciinema.org/a/OYKnsP6PL81gtiyzhEVispzkx.svg" /></a>
 
 [![asciicast](https://asciinema.org/a/OYKnsP6PL81gtiyzhEVispzkx.svg)](https://asciinema.org/a/OYKnsP6PL81gtiyzhEVispzkx)
 
