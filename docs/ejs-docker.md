@@ -2566,11 +2566,9 @@ Muestro la configuración de red de `u1`:
 
 [![asciicast](https://www.dataquest.io/wp-content/uploads/2019/07/command-line-courses-dataquest-1000x520-1-1.gif)](https://asciinema.org/a/OYKnsP6PL81gtiyzhEVispzkx)
 
-https://asciinema.org/a/OYKnsP6PL81gtiyzhEVispzkx
 
-<https://asciinema.org/a/OYKnsP6PL81gtiyzhEVispzkx>
+<a href="https://asciinema.org/a/OYKnsP6PL81gtiyzhEVispzkx"><img src="https://asciinema.org/a/14.png" width="836"/></a>
 
-<script src="https://asciinema.org/a/OYKnsP6PL81gtiyzhEVispzkx" id="asciicast-14" async></script>
 
 
 Lanzo el segundo contenedor e instalo ping:
