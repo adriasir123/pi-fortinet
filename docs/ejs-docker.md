@@ -2566,7 +2566,7 @@ Muestro la configuración de red de `u1`:
 
 <script id="asciicast-OYKnsP6PL81gtiyzhEVispzkx" src="https://asciinema.org/a/OYKnsP6PL81gtiyzhEVispzkx.js" async></script>
 
-<script id="asciicast-OYKnsP6PL81gtiyzhEVispzkx" src="/asciinema/501769.cast" async></script>
+[![asciicast](https://asciinema.org/a/OYKnsP6PL81gtiyzhEVispzkx.svg)](https://asciinema.org/a/OYKnsP6PL81gtiyzhEVispzkx)
 
 Lanzo el segundo contenedor e instalo ping:
 
