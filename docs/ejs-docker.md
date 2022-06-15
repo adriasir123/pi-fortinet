@@ -2562,7 +2562,7 @@ Setting up inetutils-ping (2:1.9.4-11ubuntu0.1) ...
 Processing triggers for libc-bin (2.31-0ubuntu9.9) ...
 ```
 
-Pantallazo de la configuración de red de `u1`:
+Muestro la configuración de red de `u1`:
 
 [![asciicast](https://www.dataquest.io/wp-content/uploads/2019/07/command-line-courses-dataquest-1000x520-1-1.gif)](https://asciinema.org/a/OYKnsP6PL81gtiyzhEVispzkx)
 
