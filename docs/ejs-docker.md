@@ -2568,6 +2568,9 @@ Muestro la configuración de red de `u1`:
 
 [![asciicast](https://asciinema.org/a/OYKnsP6PL81gtiyzhEVispzkx.svg)](https://asciinema.org/a/OYKnsP6PL81gtiyzhEVispzkx)
 
+<asciinema-player src="https://asciinema.org/a/OYKnsP6PL81gtiyzhEVispzkx"></asciinema-player>
+
+
 Lanzo el segundo contenedor e instalo ping:
 
 ```console
