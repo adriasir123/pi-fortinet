@@ -67,6 +67,8 @@ nav:
                 - 'Práctica: CMS Python': 'practica-cms-python.md'
             - Java:
                 - 'Práctica: CMS Java': 'practica-cms-java.md'
+            - Docker:
+                - 'Ejercicios': 'ejs-docker.md'
         - SAD:
             - 'Criptografía 1: Cifrado asímetrico': 'practica-cifrado-asimetrico-gpg-openssl.md'
             - 'Criptografía 2: Firmas': 'practica-integridad-firmas-autenticacion.md'
