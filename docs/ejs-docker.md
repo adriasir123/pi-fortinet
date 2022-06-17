@@ -2562,28 +2562,2271 @@ Setting up inetutils-ping (2:1.9.4-11ubuntu0.1) ...
 Processing triggers for libc-bin (2.31-0ubuntu9.9) ...
 ```
 
-Muestro la configuración de red de `u1`:
+Mostrar la configuración de red de `u1`:
 
-<script id="asciicast-OYKnsP6PL81gtiyzhEVispzkx" src="https://asciinema.org/a/OYKnsP6PL81gtiyzhEVispzkx.js" async></script>
+```console
+docker inspect u1
+```
 
-[![asciicast](https://asciinema.org/a/OYKnsP6PL81gtiyzhEVispzkx.svg)](https://asciinema.org/a/OYKnsP6PL81gtiyzhEVispzkx)
-
-<asciinema-player src="https://asciinema.org/a/OYKnsP6PL81gtiyzhEVispzkx"></asciinema-player>
-
+![redu1](https://i.imgur.com/ibRoGod.png)
 
 Lanzo el segundo contenedor e instalo ping:
 
 ```console
-
+atlas@olympus:~$ docker run -it --name u2 --network red2 --hostname host2 ubuntu:20.04
+root@host2:/# apt update
+Get:1 http://archive.ubuntu.com/ubuntu focal InRelease [265 kB]
+Get:2 http://security.ubuntu.com/ubuntu focal-security InRelease [114 kB]
+Get:3 http://archive.ubuntu.com/ubuntu focal-updates InRelease [114 kB]
+Get:4 http://archive.ubuntu.com/ubuntu focal-backports InRelease [108 kB]
+Get:5 http://archive.ubuntu.com/ubuntu focal/multiverse amd64 Packages [177 kB]
+Get:6 http://archive.ubuntu.com/ubuntu focal/main amd64 Packages [1275 kB]
+Get:7 http://security.ubuntu.com/ubuntu focal-security/universe amd64 Packages [880 kB]
+Get:8 http://archive.ubuntu.com/ubuntu focal/restricted amd64 Packages [33.4 kB]
+Get:9 http://archive.ubuntu.com/ubuntu focal/universe amd64 Packages [11.3 MB]
+Get:10 http://security.ubuntu.com/ubuntu focal-security/main amd64 Packages [1931 kB]
+Get:11 http://security.ubuntu.com/ubuntu focal-security/multiverse amd64 Packages [27.5 kB]
+Get:12 http://security.ubuntu.com/ubuntu focal-security/restricted amd64 Packages [1286 kB]
+Get:13 http://archive.ubuntu.com/ubuntu focal-updates/universe amd64 Packages [1169 kB]
+Get:14 http://archive.ubuntu.com/ubuntu focal-updates/restricted amd64 Packages [1365 kB]
+Get:15 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 Packages [2364 kB]
+Get:16 http://archive.ubuntu.com/ubuntu focal-updates/multiverse amd64 Packages [30.2 kB]
+Get:17 http://archive.ubuntu.com/ubuntu focal-backports/main amd64 Packages [53.8 kB]
+Get:18 http://archive.ubuntu.com/ubuntu focal-backports/universe amd64 Packages [27.1 kB]
+Fetched 22.6 MB in 25s (905 kB/s)
+Reading package lists... Done
+Building dependency tree
+Reading state information... Done
+7 packages can be upgraded. Run 'apt list --upgradable' to see them.
+root@host2:/# apt install inetutils-ping
+Reading package lists... Done
+Building dependency tree
+Reading state information... Done
+The following additional packages will be installed:
+  libidn11 netbase
+The following NEW packages will be installed:
+  inetutils-ping libidn11 netbase
+0 upgraded, 3 newly installed, 0 to remove and 7 not upgraded.
+Need to get 120 kB of archives.
+After this operation, 657 kB of additional disk space will be used.
+Do you want to continue? [Y/n] y
+Get:1 http://archive.ubuntu.com/ubuntu focal/main amd64 netbase all 6.1 [13.1 kB]
+Get:2 http://archive.ubuntu.com/ubuntu focal/main amd64 libidn11 amd64 1.33-2.2ubuntu2 [46.2 kB]
+Get:3 http://archive.ubuntu.com/ubuntu focal-updates/universe amd64 inetutils-ping amd64 2:1.9.4-11ubuntu0.1 [60.7 kB]
+Fetched 120 kB in 0s (3242 kB/s)
+debconf: delaying package configuration, since apt-utils is not installed
+Selecting previously unselected package netbase.
+(Reading database ... 4126 files and directories currently installed.)
+Preparing to unpack .../archives/netbase_6.1_all.deb ...
+Unpacking netbase (6.1) ...
+Selecting previously unselected package libidn11:amd64.
+Preparing to unpack .../libidn11_1.33-2.2ubuntu2_amd64.deb ...
+Unpacking libidn11:amd64 (1.33-2.2ubuntu2) ...
+Selecting previously unselected package inetutils-ping.
+Preparing to unpack .../inetutils-ping_2%3a1.9.4-11ubuntu0.1_amd64.deb ...
+Unpacking inetutils-ping (2:1.9.4-11ubuntu0.1) ...
+Setting up libidn11:amd64 (1.33-2.2ubuntu2) ...
+Setting up netbase (6.1) ...
+Setting up inetutils-ping (2:1.9.4-11ubuntu0.1) ...
+Processing triggers for libc-bin (2.31-0ubuntu9.9) ...
 ```
 
+Mostrar la configuración de red de `u2`:
 
+```console
+docker inspect u2
+```
 
+![redu2](https://i.postimg.cc/jjZS6Xmc/red2u2.png)
 
+Compruebo que el ping IP `u1` &rarr; `u2` no funciona:
 
+![nopingipu1u2](https://i.imgur.com/S1G7qRP.png)
 
+Compruebo que el ping por nombre `u1` &rarr; `u2` no funciona:
 
+![nopingnombreu1u2](https://i.imgur.com/B3GsOG9.png)
 
+Compruebo que el ping IP `u2` &rarr; `u1` no funciona:
 
+![nopingipu2u1](https://i.imgur.com/PIng3pl.png)
 
+Compruebo que el ping por nombre `u2` &rarr; `u1` no funciona:
 
+![nopingnombreu2u1](https://i.imgur.com/C2YRHTm.png)
+
+Conectamos ahora `u1` a `red2`:
+
+![u1conectadored2](https://i.imgur.com/kw5FxLr.png)
+
+Comprobamos que ahora el ping IP/nombre `u1` &rarr; `u2` funciona:
+
+![u1u2funciona](https://i.imgur.com/an6k4cm.png)
+
+## Escenarios multicontenedor
+
+### Instalación de docker-compose
+
+```console
+sudo apt install docker-compose
+```
+
+### El fichero docker-compose.yml
+
+`docker-compose` se ejecuta en el mismo directorio donde esté el `docker-compose.yml`, por lo que acabaremos teniendo un directorio por cada `docker-compose.yml`.
+
+Por ejemplo, para `Let’s Chat`, podríamos tener este `docker-compose.yml` dentro de un directorio:
+
+```console
+version: '3.1'
+services:
+  app:
+    container_name: letschat
+    image: sdelements/lets-chat
+    restart: always
+    environment:
+      LCB_DATABASE_URI: mongodb://mongo/letschat
+    ports:
+      - 80:8080
+    depends_on:
+      - db
+  db:
+    container_name: mongo
+    image: mongo
+    restart: always
+    volumes:
+      - /opt/mongo:/data/db
+```
+
+Cada `service` crea un contenedor.
+
+`depends_on` obliga a que X contenedor no se inicie hasta que otro esté iniciado.
+
+Por cada escenario `docker-compose` se crea un bridge de usuario. Existirá resolución DNS para nombre de contenedor y de servicio.
+
+### El comando docker-compose
+
+Creo la estructura de directorios `/home/atlas/docker/letschat` con el siguiente `docker-compose.yml` dentro:
+
+```console
+version: '3.1'
+services:
+  app:
+    container_name: letschat
+    image: sdelements/lets-chat
+    restart: always
+    environment:
+      LCB_DATABASE_URI: mongodb://mongo/letschat
+    ports:
+      - 80:8080
+    depends_on:
+      - db
+  db:
+    container_name: mongo
+    image: mongo
+    restart: always
+    volumes:
+      - /opt/mongo:/data/db
+```
+
+Lanzo el escenario:
+
+```console
+atlas@olympus:~/docker/letschat$ docker-compose up -d
+Creating mongo ... done
+Creating letschat ... done
+```
+
+Comprobamos que los contenedores se están ejecutando:
+
+```console
+atlas@olympus:~/docker/letschat$ docker-compose ps
+  Name               Command             State               Ports
+-------------------------------------------------------------------------------
+letschat   npm start                     Up      5222/tcp, 0.0.0.0:80->8080/tcp
+mongo      docker-entrypoint.sh mongod   Up      27017/tcp
+```
+
+Comprobamos que funciona:
+
+![letschatcompose](https://i.imgur.com/WVRmAXI.jpg)
+
+Para eliminar el escenario:
+
+```console
+atlas@olympus:~/docker/letschat$ docker-compose down
+Stopping letschat ... done
+Stopping mongo    ... done
+Removing letschat ... done
+Removing mongo    ... done
+Removing network letschat_default
+```
+
+### Almacenamiento con docker-compose
+
+#### Volúmenes docker-compose
+
+Ejemplo:
+
+```console
+version: '3.1'
+services:
+  db:
+    container_name: contenedor_mariadb
+    image: mariadb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: asdasd
+    volumes:
+      - mariadb_data:/var/lib/mysql
+volumes:
+    mariadb_data:
+```
+
+Lanzo el escenario:
+
+```console
+atlas@olympus:~/docker/volumenes$ docker-compose up -d
+Creating network "volumenes_default" with the default driver
+Creating volume "volumenes_mariadb_data" with default driver
+Creating contenedor_mariadb ... done
+```
+
+Compruebo que está activo:
+
+```console
+atlas@olympus:~/docker/volumenes$ docker-compose ps
+       Name                     Command              State    Ports
+---------------------------------------------------------------------
+contenedor_mariadb   docker-entrypoint.sh mariadbd   Up      3306/tcp
+```
+
+Compruebo que se ha creado el volumen:
+
+```console
+atlas@olympus:~/docker/volumenes$ docker volume ls
+DRIVER    VOLUME NAME
+local     3f39653a3a30f881672c01433725daeb04ab6ba632a723b1af18b093f50e06ae
+local     04e463e496d920db4b021cd270aa770d27abaaf32a08d0d035d1fe03356f87b3
+local     7df3bfbe82aaf633a16cafb30628c3d0384d48404851b99dc892cb337d530950
+local     7e6492fdc4515b59e4d3e86d9c69f31b6e771d78e3c8231dbb0a3eed24bed33c
+local     07c295fb652fc3ec7f0f51a3df2d13849aac8795b44e4b55e22e371dea84022d
+local     19b03e7f9608f78aac80ee1284c4fa4c5f78afb723499cc664f7753971639753
+local     65eb5fc7fc9f541f1dd35effc2e456e615f6ef51670ef07a9971d2278c9dd4ee
+local     76c389c617b86588b5950575e9bfbb3f9a17316c491880f30621d3e3bcbe251f
+local     256e88e1d29e428176b13909592ca4f124845226dec90aae73f9ddfd26021c9c
+local     582b8ad89272ee7607a9e56dfaeae28c1eba9a7263a8052d64e82e6361b4ef1c
+local     972306d6e9955703c733bd57d9e270d953e8a028760fd6d3af13c2085af8d1f8
+local     d13dcfcda6c5bcbb2b75fdce9f7b74136b88d82d8d4c2e08e6b957840273b0b4
+local     da9451ceb333f905d8a8fbe4e764ab2a057139f1641a024ffae408b81cfb72d7
+local     datos_compartidos
+local     e6c217e966db3c2491c2b6989789f6c7488aaa1222313415722e3d06aaedca03
+local     f108fc0c5812145adaa6d4987a0afd9748876ff8bd7b5520e916eb530a3d35c3
+local     f9783771ca7c6480508aab09a722d746803e0955cd6b0e8cadcebfd7f1aff44a
+local     nextcloud
+local     volumen_web
+local     volumenes_mariadb_data
+local     wwwroot
+```
+
+Compruebo que el montaje del volumen se ha realizado en el contenedor:
+
+```console
+docker inspect contenedor_mariadb
+```
+
+```console
+        "Mounts": [
+            {
+                "Type": "volume",
+                "Name": "volumenes_mariadb_data",
+                "Source": "/var/lib/docker/volumes/volumenes_mariadb_data/_data",
+                "Destination": "/var/lib/mysql",
+                "Driver": "local",
+                "Mode": "rw",
+                "RW": true,
+                "Propagation": ""
+            }
+        ],
+```
+
+Elimino escenario + posibles volúmenes:
+
+```console
+atlas@olympus:~/docker/volumenes$ docker-compose down -v
+Stopping contenedor_mariadb ... done
+Removing contenedor_mariadb ... done
+Removing network volumenes_default
+Removing volume volumenes_mariadb_data
+```
+
+#### Bind mount docker-compose
+
+Ejemplo:
+
+```console
+version: '3.1'
+services:
+  db:
+    container_name: contenedor_mariadb
+    image: mariadb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: asdasd
+    volumes:
+      - ./data:/var/lib/mysql
+```
+
+Lanzo el escenario
+
+```console
+atlas@olympus:~/docker/bindmount$ docker-compose up -d
+Creating network "bindmount_default" with the default driver
+Creating contenedor_mariadb ... done
+```
+
+Compruebo que se ha creado el directorio `data`:
+
+```console
+atlas@olympus:~/docker/bindmount$ cd data
+atlas@olympus:~/docker/bindmount/data$ ls -la
+total 139260
+drwxr-xr-x 5 systemd-coredump systemd-coredump      4096 Jun 15 21:57 .
+drwxr-xr-x 3 atlas            atlas                 4096 Jun 15 21:57 ..
+-rw-rw---- 1 systemd-coredump systemd-coredump  16719872 Jun 15 21:57 aria_log.00000001
+-rw-rw---- 1 systemd-coredump systemd-coredump        52 Jun 15 21:57 aria_log_control
+-rw-rw---- 1 systemd-coredump systemd-coredump         9 Jun 15 21:57 ddl_recovery.log
+-rw-rw---- 1 systemd-coredump systemd-coredump       868 Jun 15 21:57 ib_buffer_pool
+-rw-rw---- 1 systemd-coredump systemd-coredump  12582912 Jun 15 21:57 ibdata1
+-rw-rw---- 1 systemd-coredump systemd-coredump 100663296 Jun 15 21:57 ib_logfile0
+-rw-rw---- 1 systemd-coredump systemd-coredump  12582912 Jun 15 21:57 ibtmp1
+-rw-rw---- 1 systemd-coredump systemd-coredump         0 Jun 15 21:57 multi-master.info
+drwx------ 2 systemd-coredump systemd-coredump      4096 Jun 15 21:57 mysql
+-rw-r--r-- 1 systemd-coredump systemd-coredump        14 Jun 15 21:57 mysql_upgrade_info
+drwx------ 2 systemd-coredump systemd-coredump      4096 Jun 15 21:57 performance_schema
+drwx------ 2 systemd-coredump systemd-coredump     12288 Jun 15 21:57 sys
+```
+
+### Redes con docker-compose
+
+Ejemplo:
+
+```console
+version: '3.1'
+services:
+  app:
+    container_name: servidor_web
+    image: httpd:2.4
+    restart: always
+    ports:
+      - 8080:80
+    networks:
+      red_web:
+        ipv4_address: 192.168.10.10
+      red_interna:
+        ipv4_address: 192.168.20.10
+    hostname: servidor_web
+
+  db:
+    container_name: servidor_mariadb
+    image: mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: asdasd
+    restart: always
+    networks:
+      red_interna:
+        ipv4_address: 192.168.20.20
+    hostname: servidor_mariadb
+networks:
+    red_web:
+        ipam:
+            config:
+              - subnet: 192.168.10.0/24
+    red_interna:
+        ipam:
+            config:
+              - subnet: 192.168.20.0/24
+```
+
+Lanzo el escenario:
+
+```console
+atlas@olympus:~/docker/redes$ docker-compose up -d
+Creating network "redes_red_web" with the default driver
+Creating network "redes_red_interna" with the default driver
+Creating servidor_web     ... done
+Creating servidor_mariadb ... done
+```
+
+Compruebo que los contenedores se están ejecutando:
+
+```console
+atlas@olympus:~/docker/redes$ docker-compose ps
+      Name                    Command              State          Ports
+-------------------------------------------------------------------------------
+servidor_mariadb   docker-entrypoint.sh mariadbd   Up      3306/tcp
+servidor_web       httpd-foreground                Up      0.0.0.0:8080->80/tcp
+```
+
+Accedo a `servidor_web` e instalo paquetes para comprobaciones:
+
+```console
+atlas@olympus:~/docker/redes$ docker-compose exec app bash
+root@servidor_web:/usr/local/apache2# apt-get update && apt-get install -y inetutils-ping iproute2 dnsutils
+Get:1 http://deb.debian.org/debian bullseye InRelease [116 kB]
+Get:2 http://security.debian.org/debian-security bullseye-security InRelease [44.1 kB]
+Get:3 http://deb.debian.org/debian bullseye-updates InRelease [39.4 kB]
+Get:4 http://deb.debian.org/debian bullseye/main amd64 Packages [8182 kB]
+Get:5 http://security.debian.org/debian-security bullseye-security/main amd64 Packages [154 kB]
+Get:6 http://deb.debian.org/debian bullseye-updates/main amd64 Packages [2592 B]
+Fetched 8539 kB in 4s (2245 kB/s)
+Reading package lists... Done
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+The following additional packages will be installed:
+  bind9-dnsutils bind9-host bind9-libs libatm1 libbpf0 libbsd0 libcap2 libcap2-bin libedit2 libelf1 libfstrm0 libjson-c5 liblmdb0 libmaxminddb0 libmd0 libmnl0 libpam-cap
+  libprotobuf-c1 libuv1 libxtables12 netbase
+Suggested packages:
+  iproute2-doc mmdb-bin
+The following NEW packages will be installed:
+  bind9-dnsutils bind9-host bind9-libs dnsutils inetutils-ping iproute2 libatm1 libbpf0 libbsd0 libcap2 libcap2-bin libedit2 libelf1 libfstrm0 libjson-c5 liblmdb0
+  libmaxminddb0 libmd0 libmnl0 libpam-cap libprotobuf-c1 libuv1 libxtables12 netbase
+0 upgraded, 24 newly installed, 0 to remove and 1 not upgraded.
+Need to get 4565 kB of archives.
+After this operation, 11.6 MB of additional disk space will be used.
+Get:1 http://deb.debian.org/debian bullseye/main amd64 libelf1 amd64 0.183-1 [165 kB]
+Get:2 http://deb.debian.org/debian bullseye/main amd64 libbpf0 amd64 1:0.3-2 [98.3 kB]
+Get:3 http://deb.debian.org/debian bullseye/main amd64 libmd0 amd64 1.0.3-3 [28.0 kB]
+Get:4 http://deb.debian.org/debian bullseye/main amd64 libbsd0 amd64 0.11.3-1 [108 kB]
+Get:5 http://deb.debian.org/debian bullseye/main amd64 libcap2 amd64 1:2.44-1 [23.6 kB]
+Get:6 http://deb.debian.org/debian bullseye/main amd64 libmnl0 amd64 1.0.4-3 [12.5 kB]
+Get:7 http://deb.debian.org/debian bullseye/main amd64 libxtables12 amd64 1.8.7-1 [45.1 kB]
+Get:8 http://deb.debian.org/debian bullseye/main amd64 libcap2-bin amd64 1:2.44-1 [32.6 kB]
+Get:9 http://deb.debian.org/debian bullseye/main amd64 iproute2 amd64 5.10.0-4 [930 kB]
+Get:10 http://deb.debian.org/debian bullseye/main amd64 netbase all 6.3 [19.9 kB]
+Get:11 http://deb.debian.org/debian bullseye/main amd64 libfstrm0 amd64 0.6.0-1+b1 [21.5 kB]
+Get:12 http://deb.debian.org/debian bullseye/main amd64 libjson-c5 amd64 0.15-2 [42.8 kB]
+Get:13 http://deb.debian.org/debian bullseye/main amd64 liblmdb0 amd64 0.9.24-1 [45.0 kB]
+Get:14 http://deb.debian.org/debian bullseye/main amd64 libmaxminddb0 amd64 1.5.2-1 [29.8 kB]
+Get:15 http://deb.debian.org/debian bullseye/main amd64 libprotobuf-c1 amd64 1.3.3-1+b2 [27.0 kB]
+Get:16 http://deb.debian.org/debian bullseye/main amd64 libuv1 amd64 1.40.0-2 [132 kB]
+Get:17 http://deb.debian.org/debian bullseye/main amd64 bind9-libs amd64 1:9.16.27-1~deb11u1 [1413 kB]
+Get:18 http://deb.debian.org/debian bullseye/main amd64 bind9-host amd64 1:9.16.27-1~deb11u1 [302 kB]
+Get:19 http://deb.debian.org/debian bullseye/main amd64 libedit2 amd64 3.1-20191231-2+b1 [96.7 kB]
+Get:20 http://deb.debian.org/debian bullseye/main amd64 bind9-dnsutils amd64 1:9.16.27-1~deb11u1 [398 kB]
+Get:21 http://deb.debian.org/debian bullseye/main amd64 dnsutils all 1:9.16.27-1~deb11u1 [262 kB]
+Get:22 http://deb.debian.org/debian bullseye/main amd64 inetutils-ping amd64 2:2.0-1 [245 kB]
+Get:23 http://deb.debian.org/debian bullseye/main amd64 libatm1 amd64 1:2.5.1-4 [71.3 kB]
+Get:24 http://deb.debian.org/debian bullseye/main amd64 libpam-cap amd64 1:2.44-1 [15.4 kB]
+Fetched 4565 kB in 2s (2995 kB/s)
+debconf: delaying package configuration, since apt-utils is not installed
+Selecting previously unselected package libelf1:amd64.
+(Reading database ... 6833 files and directories currently installed.)
+Preparing to unpack .../00-libelf1_0.183-1_amd64.deb ...
+Unpacking libelf1:amd64 (0.183-1) ...
+Selecting previously unselected package libbpf0:amd64.
+Preparing to unpack .../01-libbpf0_1%3a0.3-2_amd64.deb ...
+Unpacking libbpf0:amd64 (1:0.3-2) ...
+Selecting previously unselected package libmd0:amd64.
+Preparing to unpack .../02-libmd0_1.0.3-3_amd64.deb ...
+Unpacking libmd0:amd64 (1.0.3-3) ...
+Selecting previously unselected package libbsd0:amd64.
+Preparing to unpack .../03-libbsd0_0.11.3-1_amd64.deb ...
+Unpacking libbsd0:amd64 (0.11.3-1) ...
+Selecting previously unselected package libcap2:amd64.
+Preparing to unpack .../04-libcap2_1%3a2.44-1_amd64.deb ...
+Unpacking libcap2:amd64 (1:2.44-1) ...
+Selecting previously unselected package libmnl0:amd64.
+Preparing to unpack .../05-libmnl0_1.0.4-3_amd64.deb ...
+Unpacking libmnl0:amd64 (1.0.4-3) ...
+Selecting previously unselected package libxtables12:amd64.
+Preparing to unpack .../06-libxtables12_1.8.7-1_amd64.deb ...
+Unpacking libxtables12:amd64 (1.8.7-1) ...
+Selecting previously unselected package libcap2-bin.
+Preparing to unpack .../07-libcap2-bin_1%3a2.44-1_amd64.deb ...
+Unpacking libcap2-bin (1:2.44-1) ...
+Selecting previously unselected package iproute2.
+Preparing to unpack .../08-iproute2_5.10.0-4_amd64.deb ...
+Unpacking iproute2 (5.10.0-4) ...
+Selecting previously unselected package netbase.
+Preparing to unpack .../09-netbase_6.3_all.deb ...
+Unpacking netbase (6.3) ...
+Selecting previously unselected package libfstrm0:amd64.
+Preparing to unpack .../10-libfstrm0_0.6.0-1+b1_amd64.deb ...
+Unpacking libfstrm0:amd64 (0.6.0-1+b1) ...
+Selecting previously unselected package libjson-c5:amd64.
+Preparing to unpack .../11-libjson-c5_0.15-2_amd64.deb ...
+Unpacking libjson-c5:amd64 (0.15-2) ...
+Selecting previously unselected package liblmdb0:amd64.
+Preparing to unpack .../12-liblmdb0_0.9.24-1_amd64.deb ...
+Unpacking liblmdb0:amd64 (0.9.24-1) ...
+Selecting previously unselected package libmaxminddb0:amd64.
+Preparing to unpack .../13-libmaxminddb0_1.5.2-1_amd64.deb ...
+Unpacking libmaxminddb0:amd64 (1.5.2-1) ...
+Selecting previously unselected package libprotobuf-c1:amd64.
+Preparing to unpack .../14-libprotobuf-c1_1.3.3-1+b2_amd64.deb ...
+Unpacking libprotobuf-c1:amd64 (1.3.3-1+b2) ...
+Selecting previously unselected package libuv1:amd64.
+Preparing to unpack .../15-libuv1_1.40.0-2_amd64.deb ...
+Unpacking libuv1:amd64 (1.40.0-2) ...
+Selecting previously unselected package bind9-libs:amd64.
+Preparing to unpack .../16-bind9-libs_1%3a9.16.27-1~deb11u1_amd64.deb ...
+Unpacking bind9-libs:amd64 (1:9.16.27-1~deb11u1) ...
+Selecting previously unselected package bind9-host.
+Preparing to unpack .../17-bind9-host_1%3a9.16.27-1~deb11u1_amd64.deb ...
+Unpacking bind9-host (1:9.16.27-1~deb11u1) ...
+Selecting previously unselected package libedit2:amd64.
+Preparing to unpack .../18-libedit2_3.1-20191231-2+b1_amd64.deb ...
+Unpacking libedit2:amd64 (3.1-20191231-2+b1) ...
+Selecting previously unselected package bind9-dnsutils.
+Preparing to unpack .../19-bind9-dnsutils_1%3a9.16.27-1~deb11u1_amd64.deb ...
+Unpacking bind9-dnsutils (1:9.16.27-1~deb11u1) ...
+Selecting previously unselected package dnsutils.
+Preparing to unpack .../20-dnsutils_1%3a9.16.27-1~deb11u1_all.deb ...
+Unpacking dnsutils (1:9.16.27-1~deb11u1) ...
+Selecting previously unselected package inetutils-ping.
+Preparing to unpack .../21-inetutils-ping_2%3a2.0-1_amd64.deb ...
+Unpacking inetutils-ping (2:2.0-1) ...
+Selecting previously unselected package libatm1:amd64.
+Preparing to unpack .../22-libatm1_1%3a2.5.1-4_amd64.deb ...
+Unpacking libatm1:amd64 (1:2.5.1-4) ...
+Selecting previously unselected package libpam-cap:amd64.
+Preparing to unpack .../23-libpam-cap_1%3a2.44-1_amd64.deb ...
+Unpacking libpam-cap:amd64 (1:2.44-1) ...
+Setting up liblmdb0:amd64 (0.9.24-1) ...
+Setting up libmaxminddb0:amd64 (1.5.2-1) ...
+Setting up libfstrm0:amd64 (0.6.0-1+b1) ...
+Setting up libatm1:amd64 (1:2.5.1-4) ...
+Setting up libprotobuf-c1:amd64 (1.3.3-1+b2) ...
+Setting up libcap2:amd64 (1:2.44-1) ...
+Setting up libcap2-bin (1:2.44-1) ...
+Setting up libuv1:amd64 (1.40.0-2) ...
+Setting up libmnl0:amd64 (1.0.4-3) ...
+Setting up libxtables12:amd64 (1.8.7-1) ...
+Setting up libmd0:amd64 (1.0.3-3) ...
+Setting up netbase (6.3) ...
+Setting up libbsd0:amd64 (0.11.3-1) ...
+Setting up libelf1:amd64 (0.183-1) ...
+Setting up libpam-cap:amd64 (1:2.44-1) ...
+debconf: unable to initialize frontend: Dialog
+debconf: (No usable dialog-like program is installed, so the dialog based frontend cannot be used. at /usr/share/perl5/Debconf/FrontEnd/Dialog.pm line 78.)
+debconf: falling back to frontend: Readline
+debconf: unable to initialize frontend: Readline
+debconf: (Can't locate Term/ReadLine.pm in @INC (you may need to install the Term::ReadLine module) (@INC contains: /etc/perl /usr/local/lib/x86_64-linux-gnu/perl/5.32.1 /usr/local/share/perl/5.32.1 /usr/lib/x86_64-linux-gnu/perl5/5.32 /usr/share/perl5 /usr/lib/x86_64-linux-gnu/perl-base /usr/lib/x86_64-linux-gnu/perl/5.32 /usr/share/perl/5.32 /usr/local/lib/site_perl) at /usr/share/perl5/Debconf/FrontEnd/Readline.pm line 7.)
+debconf: falling back to frontend: Teletype
+Setting up libjson-c5:amd64 (0.15-2) ...
+Setting up bind9-libs:amd64 (1:9.16.27-1~deb11u1) ...
+Setting up libedit2:amd64 (3.1-20191231-2+b1) ...
+Setting up inetutils-ping (2:2.0-1) ...
+Setting up libbpf0:amd64 (1:0.3-2) ...
+Setting up bind9-host (1:9.16.27-1~deb11u1) ...
+Setting up iproute2 (5.10.0-4) ...
+debconf: unable to initialize frontend: Dialog
+debconf: (No usable dialog-like program is installed, so the dialog based frontend cannot be used. at /usr/share/perl5/Debconf/FrontEnd/Dialog.pm line 78.)
+debconf: falling back to frontend: Readline
+debconf: unable to initialize frontend: Readline
+debconf: (Can't locate Term/ReadLine.pm in @INC (you may need to install the Term::ReadLine module) (@INC contains: /etc/perl /usr/local/lib/x86_64-linux-gnu/perl/5.32.1 /usr/local/share/perl/5.32.1 /usr/lib/x86_64-linux-gnu/perl5/5.32 /usr/share/perl5 /usr/lib/x86_64-linux-gnu/perl-base /usr/lib/x86_64-linux-gnu/perl/5.32 /usr/share/perl/5.32 /usr/local/lib/site_perl) at /usr/share/perl5/Debconf/FrontEnd/Readline.pm line 7.)
+debconf: falling back to frontend: Teletype
+Setting up bind9-dnsutils (1:9.16.27-1~deb11u1) ...
+Setting up dnsutils (1:9.16.27-1~deb11u1) ...
+Processing triggers for libc-bin (2.31-13+deb11u3) ...
+```
+
+Compruebo que el hostname es correcto:
+
+```console
+root@servidor_web:/usr/local/apache2# cat /etc/hostname
+servidor_web
+```
+
+Compruebo que `servidor_web` está conectado a las dos redes:
+
+```console
+root@servidor_web:/usr/local/apache2# ip a
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+30: eth0@if31: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default
+    link/ether 02:42:c0:a8:14:0a brd ff:ff:ff:ff:ff:ff link-netnsid 0
+    inet 192.168.20.10/24 brd 192.168.20.255 scope global eth0
+       valid_lft forever preferred_lft forever
+32: eth1@if33: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default
+    link/ether 02:42:c0:a8:0a:0a brd ff:ff:ff:ff:ff:ff link-netnsid 0
+    inet 192.168.10.10/24 brd 192.168.10.255 scope global eth1
+       valid_lft forever preferred_lft forever
+```
+
+Compruebo que hay resolución DNS al nombre de servicio/contenedor `servidor_web` &rarr; `servidor_mariadb`:
+
+```console
+root@servidor_web:/usr/local/apache2# dig servidor_mariadb
+
+; <<>> DiG 9.16.27-Debian <<>> servidor_mariadb
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 38120
+;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 0
+
+;; QUESTION SECTION:
+;servidor_mariadb.	        IN	A
+
+;; ANSWER SECTION:
+servidor_mariadb.	600	IN	A	192.168.20.20
+
+;; Query time: 0 msec
+;; SERVER: 127.0.0.11#53(127.0.0.11)
+;; WHEN: Wed Jun 15 21:08:40 UTC 2022
+;; MSG SIZE  rcvd: 66
+
+root@servidor_web:/usr/local/apache2# dig db
+
+; <<>> DiG 9.16.27-Debian <<>> db
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 32469
+;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 0
+
+;; QUESTION SECTION:
+;db.		                        IN	A
+
+;; ANSWER SECTION:
+db.		                600	IN	A	192.168.20.20
+
+;; Query time: 0 msec
+;; SERVER: 127.0.0.11#53(127.0.0.11)
+;; WHEN: Wed Jun 15 21:09:29 UTC 2022
+;; MSG SIZE  rcvd: 38
+```
+
+Compruebo que hay ping `servidor_web` &rarr; `servidor_mariadb`:
+
+```console
+root@servidor_web:/usr/local/apache2# ping servidor_mariadb
+PING servidor_mariadb (192.168.20.20): 56 data bytes
+64 bytes from 192.168.20.20: icmp_seq=0 ttl=64 time=0.222 ms
+64 bytes from 192.168.20.20: icmp_seq=1 ttl=64 time=0.132 ms
+^C--- servidor_mariadb ping statistics ---
+2 packets transmitted, 2 packets received, 0% packet loss
+round-trip min/avg/max/stddev = 0.132/0.177/0.222/0.045 ms
+```
+
+### Ejemplo 1: Despliegue de la aplicación guestbook
+
+Creo el directorio y entro:
+
+```console
+atlas@olympus:~/docker$ mkdir guestbook
+atlas@olympus:~/docker$ cd guestbook
+atlas@olympus:~/docker/guestbook$
+```
+
+Creo el siguiente `docker-compose.yml`:
+
+```console
+version: '3.1'
+services:
+  app:
+    container_name: guestbook
+    image: iesgn/guestbook
+    restart: always
+    ports:
+      - 80:5000
+  db:
+    container_name: redis
+    image: redis
+    restart: always
+```
+
+Lanzo el escenario:
+
+```console
+atlas@olympus:~/docker/guestbook$ docker-compose up -d
+Creating network "guestbook_default" with the default driver
+Creating redis     ... done
+Creating guestbook ... done
+```
+
+Listo los contenedores:
+
+```console
+atlas@olympus:~/docker/guestbook$ docker-compose ps
+  Name                 Command               State          Ports
+-------------------------------------------------------------------------
+guestbook   python3 app.py                   Up      0.0.0.0:80->5000/tcp
+redis       docker-entrypoint.sh redis ...   Up      6379/tcp
+```
+
+Pruebo que funciona:
+
+![guestbookcompose](https://i.imgur.com/WDrh3W2.png)
+
+Paro los contenedores:
+
+```console
+atlas@olympus:~/docker/guestbook$ docker-compose stop
+Stopping guestbook ... done
+Stopping redis     ... done
+```
+
+Elimino el escenario:
+
+```console
+atlas@olympus:~/docker/guestbook$ docker-compose down
+Removing guestbook ... done
+Removing redis     ... done
+Removing network guestbook_default
+```
+
+### Ejemplo 2: Despliegue de la aplicación temperaturas
+
+Creo el directorio y entro:
+
+```console
+atlas@olympus:~/docker$ mkdir temperaturas
+atlas@olympus:~/docker$ cd temperaturas/
+atlas@olympus:~/docker/temperaturas$
+```
+
+Creo el siguiente `docker-compose.yml`:
+
+```console
+version: '3.1'
+services:
+  frontend:
+    container_name: temperaturas-frontend
+    image: iesgn/temperaturas_frontend
+    restart: always
+    ports:
+      - 80:3000
+    depends_on:
+      - backend
+  backend:
+    container_name: temperaturas-backend
+    image: iesgn/temperaturas_backend
+    restart: always
+```
+
+Lanzo el escenario:
+
+```console
+atlas@olympus:~/docker/temperaturas$ docker-compose up -d
+Creating network "temperaturas_default" with the default driver
+Creating temperaturas-backend ... done
+Creating temperaturas-frontend ... done
+```
+
+Listo los contenedores:
+
+```console
+atlas@olympus:~/docker/temperaturas$ docker-compose ps
+        Name               Command       State          Ports
+---------------------------------------------------------------------
+temperaturas-backend    python3 app.py   Up      5000/tcp
+temperaturas-frontend   python3 app.py   Up      0.0.0.0:80->3000/tcp
+```
+
+Pruebo que funciona:
+
+![temperaturascompose](https://i.imgur.com/9j2Vfft.png)
+
+Elimino el escenario:
+
+```console
+atlas@olympus:~/docker/temperaturas$ docker-compose down
+Stopping temperaturas-frontend ... done
+Stopping temperaturas-backend  ... done
+Removing temperaturas-frontend ... done
+Removing temperaturas-backend  ... done
+Removing network temperaturas_default
+```
+
+### Ejemplo 3: Despliegue de WordPress + MariaDB
+
+#### WP con volúmenes
+
+Creo el directorio y entro:
+
+```console
+atlas@olympus:~/docker$ mkdir wp_vol
+atlas@olympus:~/docker$ cd wp_vol
+atlas@olympus:~/docker/wp_vol$
+```
+
+Creo el siguiente `docker-compose.yml`:
+
+```console
+version: '3.1'
+services:
+  wordpress:
+    container_name: servidor_wp
+    image: wordpress
+    restart: always
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: user_wp
+      WORDPRESS_DB_PASSWORD: asdasd
+      WORDPRESS_DB_NAME: bd_wp
+    ports:
+      - 80:80
+    volumes:
+      - wordpress_data:/var/www/html/wp-content
+  db:
+    container_name: servidor_mysql
+    image: mariadb
+    restart: always
+    environment:
+      MYSQL_DATABASE: bd_wp
+      MYSQL_USER: user_wp
+      MYSQL_PASSWORD: asdasd
+      MYSQL_ROOT_PASSWORD: asdasd
+    volumes:
+      - mariadb_data:/var/lib/mysql
+volumes:
+    wordpress_data:
+    mariadb_data:
+```
+
+Lanzo el escenario:
+
+```console
+atlas@olympus:~/docker/wp_vol$ docker-compose up -d
+Creating network "wp_vol_default" with the default driver
+Creating volume "wp_vol_wordpress_data" with default driver
+Creating volume "wp_vol_mariadb_data" with default driver
+Creating servidor_wp    ... done
+Creating servidor_mysql ... done
+```
+
+Listo los contenedores:
+
+```console
+atlas@olympus:~/docker/wp_vol$ docker-compose ps
+     Name                   Command               State         Ports
+----------------------------------------------------------------------------
+servidor_mysql   docker-entrypoint.sh mariadbd    Up      3306/tcp
+servidor_wp      docker-entrypoint.sh apach ...   Up      0.0.0.0:80->80/tcp
+```
+
+Pruebo que funciona:
+
+![wpvolcompose](https://i.imgur.com/ZCRrRW2.png)
+
+Paro los contenedores:
+
+```console
+atlas@olympus:~/docker/wp_vol$ docker-compose stop
+Stopping servidor_mysql ... done
+Stopping servidor_wp    ... done
+```
+
+Borro los contenedores:
+
+```console
+atlas@olympus:~/docker/wp_vol$ docker-compose rm
+Going to remove servidor_mysql, servidor_wp
+Are you sure? [yN] y
+Removing servidor_mysql ... done
+Removing servidor_wp    ... done
+```
+
+Elimino el escenario:
+
+```console
+atlas@olympus:~/docker/wp_vol$ docker-compose down -v
+Removing network wp_vol_default
+Removing volume wp_vol_wordpress_data
+Removing volume wp_vol_mariadb_data
+```
+
+#### WP con bind mount
+
+Creo el directorio y entro:
+
+```console
+atlas@olympus:~/docker$ mkdir wp_bind_mount
+atlas@olympus:~/docker$ cd wp_bind_mount
+atlas@olympus:~/docker/wp_bind_mount$
+```
+
+Creo el siguiente `docker-compose.yml`:
+
+```console
+version: '3.1'
+services:
+  wordpress:
+    container_name: servidor_wp
+    image: wordpress
+    restart: always
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: user_wp
+      WORDPRESS_DB_PASSWORD: asdasd
+      WORDPRESS_DB_NAME: bd_wp
+    ports:
+      - 80:80
+    volumes:
+      - ./wordpress:/var/www/html/wp-content
+  db:
+    container_name: servidor_mysql
+    image: mariadb
+    restart: always
+    environment:
+      MYSQL_DATABASE: bd_wp
+      MYSQL_USER: user_wp
+      MYSQL_PASSWORD: asdasd
+      MYSQL_ROOT_PASSWORD: asdasd
+    volumes:
+      - ./mysql:/var/lib/mysql
+```
+
+Lanzo el escenario:
+
+```console
+atlas@olympus:~/docker/wp_bind_mount$ docker-compose up -d
+Creating network "wp_bind_mount_default" with the default driver
+Creating servidor_wp    ... done
+Creating servidor_mysql ... done
+```
+
+Listo los contenedores:
+
+```console
+atlas@olympus:~/docker/wp_bind_mount$ docker-compose ps
+     Name                   Command               State         Ports
+----------------------------------------------------------------------------
+servidor_mysql   docker-entrypoint.sh mariadbd    Up      3306/tcp
+servidor_wp      docker-entrypoint.sh apach ...   Up      0.0.0.0:80->80/tcp
+```
+
+Pruebo que funciona:
+
+![wpbindmountcompose](https://i.imgur.com/z5HoUdk.png)
+
+Elimino el escenario:
+
+```console
+atlas@olympus:~/docker/wp_bind_mount$ docker-compose down -v
+Stopping servidor_mysql ... done
+Stopping servidor_wp    ... done
+Removing servidor_mysql ... done
+Removing servidor_wp    ... done
+Removing network wp_bind_mount_default
+```
+
+### Ejemplo 4: Despliegue de tomcat + nginx
+
+Creo el directorio y entro:
+
+```console
+atlas@olympus:~/docker$ mkdir tomcat
+atlas@olympus:~/docker$ cd tomcat
+atlas@olympus:~/docker/tomcat$
+```
+
+Creo el siguiente `docker-compose.yml`:
+
+```console
+version: '3.1'
+services:
+  aplicacionjava:
+    container_name: tomcat
+    image: tomcat:9.0
+    restart: always
+    volumes:
+      - ./sample.war:/usr/local/tomcat/webapps/sample.war:ro
+  proxy:
+    container_name: nginx
+    image: nginx
+    ports:
+      - 80:80
+    volumes:
+      - ./default.conf:/etc/nginx/conf.d/default.conf:ro
+```
+
+Obtengo los 2 ficheros que necesito:
+
+```console
+atlas@olympus:~/docker/tomcat$ wget https://raw.githubusercontent.com/iesgn/curso_docker_2021/main/ejemplos/sesion5/ejemplo4/default.conf
+--2022-06-16 09:27:24--  https://raw.githubusercontent.com/iesgn/curso_docker_2021/main/ejemplos/sesion5/ejemplo4/default.conf
+Resolving raw.githubusercontent.com (raw.githubusercontent.com)... 185.199.109.133, 185.199.111.133, 185.199.108.133, ...
+Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|185.199.109.133|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 387 [text/plain]
+Saving to: ‘default.conf’
+
+default.conf                                100%[=========================================================================================>]     387  --.-KB/s    in 0s
+
+2022-06-16 09:27:24 (16.0 MB/s) - ‘default.conf’ saved [387/387]
+
+atlas@olympus:~/docker/tomcat$ wget https://github.com/iesgn/curso_docker_2021/raw/main/ejemplos/sesion5/ejemplo4/sample.war
+--2022-06-16 09:28:18--  https://github.com/iesgn/curso_docker_2021/raw/main/ejemplos/sesion5/ejemplo4/sample.war
+Resolving github.com (github.com)... 140.82.121.4
+Connecting to github.com (github.com)|140.82.121.4|:443... connected.
+HTTP request sent, awaiting response... 302 Found
+Location: https://raw.githubusercontent.com/iesgn/curso_docker_2021/main/ejemplos/sesion5/ejemplo4/sample.war [following]
+--2022-06-16 09:28:18--  https://raw.githubusercontent.com/iesgn/curso_docker_2021/main/ejemplos/sesion5/ejemplo4/sample.war
+Resolving raw.githubusercontent.com (raw.githubusercontent.com)... 185.199.109.133, 185.199.108.133, 185.199.110.133, ...
+Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|185.199.109.133|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 4606 (4.5K) [application/octet-stream]
+Saving to: ‘sample.war’
+
+sample.war                                  100%[=========================================================================================>]   4.50K  --.-KB/s    in 0s
+
+2022-06-16 09:28:19 (30.0 MB/s) - ‘sample.war’ saved [4606/4606]
+```
+
+Lanzo el escenario:
+
+```console
+atlas@olympus:~/docker/tomcat$ docker-compose up -d
+Creating network "tomcat_default" with the default driver
+Creating tomcat ... done
+Creating nginx  ... done
+```
+
+Compruebo que los contenedores están activos:
+
+```console
+atlas@olympus:~/docker/tomcat$ docker-compose ps
+ Name               Command               State         Ports
+--------------------------------------------------------------------
+nginx    /docker-entrypoint.sh ngin ...   Up      0.0.0.0:80->80/tcp
+tomcat   catalina.sh run                  Up      8080/tcp
+```
+
+Pruebo que funciona:
+
+![tomcatcompose](https://i.imgur.com/4ah43NP.png)
+
+Elimino el escenario:
+
+```console
+atlas@olympus:~/docker/tomcat$ docker-compose down -v
+Stopping nginx  ... done
+Stopping tomcat ... done
+Removing nginx  ... done
+Removing tomcat ... done
+Removing network tomcat_default
+```
+
+### Ejemplos reales de despliegues usando docker-compose
+
+* Jitsi
+* Bitnami
+* Guacamole
+
+### Ejercicios multicontenedor
+
+Creo el directorio y entro:
+
+```console
+atlas@olympus:~/docker$ mkdir prestashop
+atlas@olympus:~/docker$ cd prestashop
+atlas@olympus:~/docker/prestashop$
+```
+
+Descargo el `docker-compose.yml` oficial de bitnami:
+
+```console
+curl -sSL https://raw.githubusercontent.com/bitnami/bitnami-docker-prestashop/master/docker-compose.yml > docker-compose.yml
+```
+
+Lo muestro sin modificar:
+
+```console
+atlas@olympus:~/docker/prestashop$ cat docker-compose.yml
+version: '2'
+services:
+  mariadb:
+    image: docker.io/bitnami/mariadb:10.6
+    environment:
+      # ALLOW_EMPTY_PASSWORD is recommended only for development.
+      - ALLOW_EMPTY_PASSWORD=yes
+      - MARIADB_USER=bn_prestashop
+      - MARIADB_DATABASE=bitnami_prestashop
+    volumes:
+      - 'mariadb_data:/bitnami/mariadb'
+  prestashop:
+    image: docker.io/bitnami/prestashop:1.7
+    ports:
+      - '80:8080'
+      - '443:8443'
+    environment:
+      - PRESTASHOP_HOST=localhost
+      - PRESTASHOP_DATABASE_HOST=mariadb
+      - PRESTASHOP_DATABASE_PORT_NUMBER=3306
+      - PRESTASHOP_DATABASE_USER=bn_prestashop
+      - PRESTASHOP_DATABASE_NAME=bitnami_prestashop
+      # ALLOW_EMPTY_PASSWORD is recommended only for development.
+      - ALLOW_EMPTY_PASSWORD=yes
+    volumes:
+      - 'prestashop_data:/bitnami/prestashop'
+    depends_on:
+      - mariadb
+volumes:
+  mariadb_data:
+    driver: local
+  prestashop_data:
+    driver: local
+```
+
+Lo muestro modificado:
+
+![prestashopmodificadocompose](https://i.imgur.com/9PSPhPy.png)
+
+Lanzo el escenario:
+
+```console
+atlas@olympus:~/docker/prestashop$ docker-compose up -d
+Creating network "prestashop_default" with the default driver
+Creating volume "prestashop_mariadb_data" with local driver
+Creating volume "prestashop_prestashop_data" with local driver
+Creating prestashop_mariadb_1 ... done
+Creating prestashop_prestashop_1 ... done
+```
+
+Muestro los contenedores funcionando:
+
+![prestashopcontenedores](https://i.imgur.com/0oVJrWK.png)
+
+Muestro la web funcionando:
+
+![prestashopfuncionando](https://i.imgur.com/Tv1Fwim.png)
+
+## Creación de imágenes
+
+### Creación de imágenes a partir de un contenedor
+
+Lanzo un contenedor:
+
+```console
+atlas@olympus:~/docker$ docker run -it --name contenedor debian bash
+root@d42a140c8da0:/#
+```
+
+Hago modificaciones:
+
+```console
+root@d42a140c8da0:/# apt update
+Get:1 http://security.debian.org/debian-security bullseye-security InRelease [44.1 kB]
+Get:2 http://deb.debian.org/debian bullseye InRelease [116 kB]
+Get:3 http://deb.debian.org/debian bullseye-updates InRelease [39.4 kB]
+Get:4 http://security.debian.org/debian-security bullseye-security/main amd64 Packages [154 kB]
+Get:5 http://deb.debian.org/debian bullseye/main amd64 Packages [8182 kB]
+Get:6 http://deb.debian.org/debian bullseye-updates/main amd64 Packages [2592 B]
+Fetched 8539 kB in 6s (1401 kB/s)
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+1 package can be upgraded. Run 'apt list --upgradable' to see it.
+root@d42a140c8da0:/# apt install apache2 -y
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+The following additional packages will be installed:
+  apache2-bin apache2-data apache2-utils bzip2 ca-certificates file libapr1 libaprutil1 libaprutil1-dbd-sqlite3 libaprutil1-ldap libbrotli1 libcurl4 libexpat1
+  libgdbm-compat4 libgdbm6 libgpm2 libicu67 libjansson4 libldap-2.4-2 libldap-common liblua5.3-0 libmagic-mgc libmagic1 libncurses6 libncursesw6 libnghttp2-14 libperl5.32
+  libprocps8 libpsl5 librtmp1 libsasl2-2 libsasl2-modules libsasl2-modules-db libsqlite3-0 libssh2-1 libxml2 mailcap media-types mime-support netbase openssl perl
+  perl-modules-5.32 procps psmisc publicsuffix ssl-cert xz-utils
+Suggested packages:
+  apache2-doc apache2-suexec-pristine | apache2-suexec-custom www-browser bzip2-doc gdbm-l10n gpm sensible-utils libsasl2-modules-gssapi-mit
+  | libsasl2-modules-gssapi-heimdal libsasl2-modules-ldap libsasl2-modules-otp libsasl2-modules-sql perl-doc libterm-readline-gnu-perl | libterm-readline-perl-perl make
+  libtap-harness-archive-perl
+The following NEW packages will be installed:
+  apache2 apache2-bin apache2-data apache2-utils bzip2 ca-certificates file libapr1 libaprutil1 libaprutil1-dbd-sqlite3 libaprutil1-ldap libbrotli1 libcurl4 libexpat1
+  libgdbm-compat4 libgdbm6 libgpm2 libicu67 libjansson4 libldap-2.4-2 libldap-common liblua5.3-0 libmagic-mgc libmagic1 libncurses6 libncursesw6 libnghttp2-14 libperl5.32
+  libprocps8 libpsl5 librtmp1 libsasl2-2 libsasl2-modules libsasl2-modules-db libsqlite3-0 libssh2-1 libxml2 mailcap media-types mime-support netbase openssl perl
+  perl-modules-5.32 procps psmisc publicsuffix ssl-cert xz-utils
+0 upgraded, 49 newly installed, 0 to remove and 1 not upgraded.
+Need to get 24.6 MB of archives.
+After this operation, 111 MB of additional disk space will be used.
+Get:1 http://security.debian.org/debian-security bullseye-security/main amd64 libldap-2.4-2 amd64 2.4.57+dfsg-3+deb11u1 [232 kB]
+Get:2 http://security.debian.org/debian-security bullseye-security/main amd64 libxml2 amd64 2.9.10+dfsg-6.7+deb11u2 [692 kB]
+Get:3 http://deb.debian.org/debian bullseye/main amd64 perl-modules-5.32 all 5.32.1-4+deb11u2 [2823 kB]
+Get:4 http://security.debian.org/debian-security bullseye-security/main amd64 openssl amd64 1.1.1n-0+deb11u2 [852 kB]
+Get:5 http://security.debian.org/debian-security bullseye-security/main amd64 xz-utils amd64 5.2.5-2.1~deb11u1 [220 kB]
+Get:6 http://security.debian.org/debian-security bullseye-security/main amd64 libldap-common all 2.4.57+dfsg-3+deb11u1 [95.8 kB]
+Get:7 http://deb.debian.org/debian bullseye/main amd64 libgdbm6 amd64 1.19-2 [64.9 kB]
+Setting up libgdbm-compat4:amd64 (1.19-2) ...
+Setting up libperl5.32:amd64 (5.32.1-4+deb11u2) ...
+Setting up procps (2:3.3.17-5) ...
+Setting up libcurl4:amd64 (7.74.0-1.3+deb11u1) ...
+Setting up apache2-utils (2.4.53-1~deb11u1) ...
+Setting up perl (5.32.1-4+deb11u2) ...
+Setting up mailcap (3.69) ...
+Setting up mime-support (3.66) ...
+Setting up apache2-bin (2.4.53-1~deb11u1) ...
+Setting up apache2 (2.4.53-1~deb11u1) ...
+Enabling module mpm_event.
+Enabling module authz_core.
+Enabling module authz_host.
+Enabling module authn_core.
+Enabling module auth_basic.
+Enabling module access_compat.
+Enabling module authn_file.
+Enabling module authz_user.
+Enabling module alias.
+Enabling module dir.
+Enabling module autoindex.
+Enabling module env.
+Enabling module mime.
+Enabling module negotiation.
+Enabling module setenvif.
+Enabling module filter.
+Enabling module deflate.
+Enabling module status.
+Enabling module reqtimeout.
+Enabling conf charset.
+Enabling conf localized-error-pages.
+Enabling conf other-vhosts-access-log.
+Enabling conf security.
+Enabling conf serve-cgi-bin.
+Enabling site 000-default.
+invoke-rc.d: could not determine current runlevel
+invoke-rc.d: policy-rc.d denied execution of start.
+Processing triggers for libc-bin (2.31-13+deb11u3) ...
+Processing triggers for ca-certificates (20210119) ...
+Updating certificates in /etc/ssl/certs...
+0 added, 0 removed; done.
+Running hooks in /etc/ca-certificates/update.d...
+done.
+root@d42a140c8da0:/# echo "<h1>Curso Docker</h1>" > /var/www/html/index.html
+root@d42a140c8da0:/# exit
+exit
+```
+
+Creo una nueva imagen partiendo de los cambios en el contenedor. Esta imagen será el resultado de las capas base + cambios:
+
+```console
+atlas@olympus:~$ docker commit contenedor adrianjaramillo/myapache2:v1
+sha256:4d7daf41fb1034a6667c2464ac9bcf809d3c6460af908120f755672d66bc6433
+```
+
+Muestro que ya la tengo localmente:
+
+![debianmodificado](https://i.imgur.com/ObCrzY4.png)
+
+Al lanzar contenedores desde la imagen modificada **estamos obligados a indicar el proceso a iniciar**, ya que por defecto se ejecuta el de la imagen base y no podemos cambiarlo *(por ahora)*:
+
+```console
+atlas@olympus:~$ docker run -d -p 8080:80 \
+             --name servidor_web \
+             adrianjaramillo/myapache2:v1 \
+             bash -c "apache2ctl -D FOREGROUND"
+fed43969a4a81ddfe4473097201a271fdd10aa7ee0053caf11193c12e540e321
+```
+
+Muestro que funciona:
+
+![imagenmodificadacontenedor](https://i.imgur.com/epmOg1K.png)
+
+### Creación de imágenes a partir de un Dockerfile
+
+Creo un directorio donde estará el Dockerfile y lo que se necesite:
+
+```console
+atlas@olympus:~/docker$ mkdir build1
+atlas@olympus:~/docker$ cd build1
+atlas@olympus:~/docker/build1$
+```
+
+El Dockerfile será:
+
+```console
+FROM debian:buster-slim
+MAINTAINER Adrián Jaramillo Rodríguez "adristudy@gmail.com"
+RUN apt-get update && apt-get install -y apache2
+COPY index.html /var/www/html/
+CMD ["/usr/sbin/apache2ctl", "-D", "FOREGROUND"]
+```
+
+Me bajo un `index.html` de prueba:
+
+```console
+atlas@olympus:~/docker/build1$ wget https://gist.githubusercontent.com/chrisvfritz/bc010e6ed25b802da7eb/raw/18eaa48addae7e3021f6bcea03b7a6557e3f0132/index.html
+--2022-06-16 18:53:29--  https://gist.githubusercontent.com/chrisvfritz/bc010e6ed25b802da7eb/raw/18eaa48addae7e3021f6bcea03b7a6557e3f0132/index.html
+Resolving gist.githubusercontent.com (gist.githubusercontent.com)... 185.199.111.133, 185.199.110.133, 185.199.108.133, ...
+Connecting to gist.githubusercontent.com (gist.githubusercontent.com)|185.199.111.133|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 285 [text/plain]
+Saving to: ‘index.html’
+
+index.html                                  100%[=========================================================================================>]     285  --.-KB/s    in 0s
+
+2022-06-16 18:53:30 (11.6 MB/s) - ‘index.html’ saved [285/285]
+```
+
+Al final, acabaremos con la siguiente estructura:
+
+```console
+atlas@olympus:~/docker/build1$ ls -la
+total 16
+drwxr-xr-x  2 atlas atlas 4096 Jun 16 18:53 .
+drwxr-xr-x 13 atlas atlas 4096 Jun 16 18:37 ..
+-rw-r--r--  1 atlas atlas  216 Jun 16 18:50 Dockerfile
+-rw-r--r--  1 atlas atlas  285 Jun 16 18:53 index.html
+```
+
+Genero la imagen:
+
+```console
+atlas@olympus:~/docker/build1$ docker build -t adrianjaramillo/myapache2:v2 .
+Sending build context to Docker daemon  3.072kB
+Step 1/5 : FROM debian:buster-slim
+ ---> c2303a498941
+Step 2/5 : MAINTAINER Adrián Jaramillo Rodríguez "adristudy@gmail.com"
+ ---> Using cache
+ ---> 31ec41690e42
+Step 3/5 : RUN apt-get update && apt-get install -y apache2
+ ---> Running in 82497c561473
+Get:1 http://deb.debian.org/debian buster InRelease [122 kB]
+Get:2 http://security.debian.org/debian-security buster/updates InRelease [65.4 kB]
+Get:3 http://deb.debian.org/debian buster-updates InRelease [51.9 kB]
+Get:4 http://security.debian.org/debian-security buster/updates/main amd64 Packages [328 kB]
+Get:5 http://deb.debian.org/debian buster/main amd64 Packages [7911 kB]
+Get:6 http://deb.debian.org/debian buster-updates/main amd64 Packages [8788 B]
+Fetched 8487 kB in 1min 9s (123 kB/s)
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following additional packages will be installed:
+  apache2-bin apache2-data apache2-utils bzip2 ca-certificates file
+  krb5-locales libapr1 libaprutil1 libaprutil1-dbd-sqlite3 libaprutil1-ldap
+  libbrotli1 libcurl4 libexpat1 libgdbm-compat4 libgdbm6 libgpm2
+  libgssapi-krb5-2 libicu63 libjansson4 libk5crypto3 libkeyutils1 libkrb5-3
+  libkrb5support0 libldap-2.4-2 libldap-common liblua5.2-0 libmagic-mgc
+  libmagic1 libncurses6 libnghttp2-14 libperl5.28 libprocps7 libpsl5 librtmp1
+  libsasl2-2 libsasl2-modules libsasl2-modules-db libsqlite3-0 libssh2-1
+  libssl1.1 libxml2 lsb-base mime-support netbase openssl perl
+  perl-modules-5.28 procps psmisc publicsuffix ssl-cert xz-utils
+Suggested packages:
+  apache2-doc apache2-suexec-pristine | apache2-suexec-custom www-browser
+  bzip2-doc gdbm-l10n gpm krb5-doc krb5-user sensible-utils
+  libsasl2-modules-gssapi-mit | libsasl2-modules-gssapi-heimdal
+  libsasl2-modules-ldap libsasl2-modules-otp libsasl2-modules-sql perl-doc
+  libterm-readline-gnu-perl | libterm-readline-perl-perl make libb-debug-perl
+  liblocale-codes-perl openssl-blacklist
+The following NEW packages will be installed:
+  apache2 apache2-bin apache2-data apache2-utils bzip2 ca-certificates file
+  krb5-locales libapr1 libaprutil1 libaprutil1-dbd-sqlite3 libaprutil1-ldap
+  libbrotli1 libcurl4 libexpat1 libgdbm-compat4 libgdbm6 libgpm2
+  libgssapi-krb5-2 libicu63 libjansson4 libk5crypto3 libkeyutils1 libkrb5-3
+  libkrb5support0 libldap-2.4-2 libldap-common liblua5.2-0 libmagic-mgc
+  libmagic1 libncurses6 libnghttp2-14 libperl5.28 libprocps7 libpsl5 librtmp1
+  libsasl2-2 libsasl2-modules libsasl2-modules-db libsqlite3-0 libssh2-1
+  libssl1.1 libxml2 lsb-base mime-support netbase openssl perl
+  perl-modules-5.28 procps psmisc publicsuffix ssl-cert xz-utils
+0 upgraded, 54 newly installed, 0 to remove and 1 not upgraded.
+Need to get 25.6 MB of archives.
+After this operation, 112 MB of additional disk space will be used.
+Get:1 http://security.debian.org/debian-security buster/updates/main amd64 libssl1.1 amd64 1.1.1n-0+deb10u2 [1551 kB]
+Get:2 http://deb.debian.org/debian buster/main amd64 perl-modules-5.28 all 5.28.1-6+deb10u1 [2873 kB]
+Get:3 http://deb.debian.org/debian buster/main amd64 libgdbm6 amd64 1.18.1-4 [64.7 kB]
+Get:4 http://deb.debian.org/debian buster/main amd64 libgdbm-compat4 amd64 1.18.1-4 [44.1 kB]
+Get:5 http://deb.debian.org/debian buster/main amd64 libperl5.28 amd64 5.28.1-6+deb10u1 [3894 kB]
+Get:6 http://security.debian.org/debian-security buster/updates/main amd64 libldap-common all 2.4.47+dfsg-3+deb10u7 [90.1 kB]
+Get:7 http://security.debian.org/debian-security buster/updates/main amd64 libldap-2.4-2 amd64 2.4.47+dfsg-3+deb10u7 [224 kB]
+Get:8 http://security.debian.org/debian-security buster/updates/main amd64 libxml2 amd64 2.9.4+dfsg1-7+deb10u4 [689 kB]
+Get:9 http://security.debian.org/debian-security buster/updates/main amd64 xz-utils amd64 5.2.4-1+deb10u1 [183 kB]
+Get:10 http://security.debian.org/debian-security buster/updates/main amd64 openssl amd64 1.1.1n-0+deb10u2 [855 kB]
+Get:11 http://deb.debian.org/debian buster/main amd64 perl amd64 5.28.1-6+deb10u1 [204 kB]
+Get:12 http://deb.debian.org/debian buster/main amd64 libapr1 amd64 1.6.5-1+b1 [102 kB]
+Get:13 http://deb.debian.org/debian buster/main amd64 libexpat1 amd64 2.2.6-2+deb10u4 [108 kB]
+Get:14 http://deb.debian.org/debian buster/main amd64 libaprutil1 amd64 1.6.1-4 [91.8 kB]
+Get:15 http://deb.debian.org/debian buster/main amd64 libsqlite3-0 amd64 3.27.2-3+deb10u1 [641 kB]
+Get:16 http://deb.debian.org/debian buster/main amd64 libaprutil1-dbd-sqlite3 amd64 1.6.1-4 [18.7 kB]
+Get:17 http://deb.debian.org/debian buster/main amd64 libsasl2-modules-db amd64 2.1.27+dfsg-1+deb10u2 [69.2 kB]
+Get:18 http://deb.debian.org/debian buster/main amd64 libsasl2-2 amd64 2.1.27+dfsg-1+deb10u2 [106 kB]
+Get:19 http://deb.debian.org/debian buster/main amd64 libaprutil1-ldap amd64 1.6.1-4 [16.8 kB]
+Get:20 http://deb.debian.org/debian buster/main amd64 libbrotli1 amd64 1.0.7-2+deb10u1 [269 kB]
+Get:21 http://deb.debian.org/debian buster/main amd64 libkeyutils1 amd64 1.6-6 [15.0 kB]
+Get:22 http://deb.debian.org/debian buster/main amd64 libkrb5support0 amd64 1.17-3+deb10u3 [65.8 kB]
+Get:23 http://deb.debian.org/debian buster/main amd64 libk5crypto3 amd64 1.17-3+deb10u3 [122 kB]
+Get:24 http://deb.debian.org/debian buster/main amd64 libkrb5-3 amd64 1.17-3+deb10u3 [370 kB]
+Get:25 http://deb.debian.org/debian buster/main amd64 libgssapi-krb5-2 amd64 1.17-3+deb10u3 [158 kB]
+Get:26 http://deb.debian.org/debian buster/main amd64 libnghttp2-14 amd64 1.36.0-2+deb10u1 [85.0 kB]
+Get:27 http://deb.debian.org/debian buster/main amd64 libpsl5 amd64 0.20.2-2 [53.7 kB]
+Get:28 http://deb.debian.org/debian buster/main amd64 librtmp1 amd64 2.4+20151223.gitfa8646d.1-2 [60.5 kB]
+Get:29 http://deb.debian.org/debian buster/main amd64 libssh2-1 amd64 1.8.0-2.1 [140 kB]
+Get:30 http://deb.debian.org/debian buster/main amd64 libcurl4 amd64 7.64.0-4+deb10u2 [332 kB]
+Get:31 http://deb.debian.org/debian buster/main amd64 libjansson4 amd64 2.12-1 [38.0 kB]
+Get:32 http://deb.debian.org/debian buster/main amd64 liblua5.2-0 amd64 5.2.4-1.1+b2 [110 kB]
+Get:33 http://deb.debian.org/debian buster/main amd64 libicu63 amd64 63.1-6+deb10u3 [8293 kB]
+Get:34 http://deb.debian.org/debian buster/main amd64 apache2-bin amd64 2.4.38-3+deb10u7 [1308 kB]
+Get:35 http://deb.debian.org/debian buster/main amd64 apache2-data all 2.4.38-3+deb10u7 [165 kB]
+Get:36 http://deb.debian.org/debian buster/main amd64 apache2-utils amd64 2.4.38-3+deb10u7 [237 kB]
+Get:37 http://deb.debian.org/debian buster/main amd64 lsb-base all 10.2019051400 [28.4 kB]
+Get:38 http://deb.debian.org/debian buster/main amd64 mime-support all 3.62 [37.2 kB]
+Get:39 http://deb.debian.org/debian buster/main amd64 libncurses6 amd64 6.1+20181013-2+deb10u2 [102 kB]
+Get:40 http://deb.debian.org/debian buster/main amd64 libprocps7 amd64 2:3.3.15-2 [61.7 kB]
+Get:41 http://deb.debian.org/debian buster/main amd64 procps amd64 2:3.3.15-2 [259 kB]
+Get:42 http://deb.debian.org/debian buster/main amd64 apache2 amd64 2.4.38-3+deb10u7 [252 kB]
+Get:43 http://deb.debian.org/debian buster/main amd64 netbase all 5.6 [19.4 kB]
+Get:44 http://deb.debian.org/debian buster/main amd64 bzip2 amd64 1.0.6-9.2~deb10u1 [48.4 kB]
+Get:45 http://deb.debian.org/debian buster/main amd64 libmagic-mgc amd64 1:5.35-4+deb10u2 [242 kB]
+Get:46 http://deb.debian.org/debian buster/main amd64 libmagic1 amd64 1:5.35-4+deb10u2 [118 kB]
+Get:47 http://deb.debian.org/debian buster/main amd64 file amd64 1:5.35-4+deb10u2 [66.4 kB]
+Get:48 http://deb.debian.org/debian buster/main amd64 krb5-locales all 1.17-3+deb10u3 [95.5 kB]
+Get:49 http://deb.debian.org/debian buster/main amd64 ca-certificates all 20200601~deb10u2 [166 kB]
+Get:50 http://deb.debian.org/debian buster/main amd64 libgpm2 amd64 1.20.7-5 [35.1 kB]
+Get:51 http://deb.debian.org/debian buster/main amd64 libsasl2-modules amd64 2.1.27+dfsg-1+deb10u2 [104 kB]
+Get:52 http://deb.debian.org/debian buster/main amd64 psmisc amd64 23.2-1+deb10u1 [126 kB]
+Get:53 http://deb.debian.org/debian buster/main amd64 publicsuffix all 20211109.1735-0+deb10u1 [125 kB]
+Get:54 http://deb.debian.org/debian buster/main amd64 ssl-cert all 1.0.39 [20.8 kB]
+debconf: delaying package configuration, since apt-utils is not installed
+Fetched 25.6 MB in 1min 54s (224 kB/s)
+Selecting previously unselected package perl-modules-5.28.
+(Reading database ... 6460 files and directories currently installed.)
+Preparing to unpack .../00-perl-modules-5.28_5.28.1-6+deb10u1_all.deb ...
+Unpacking perl-modules-5.28 (5.28.1-6+deb10u1) ...
+Selecting previously unselected package libgdbm6:amd64.
+Preparing to unpack .../01-libgdbm6_1.18.1-4_amd64.deb ...
+Unpacking libgdbm6:amd64 (1.18.1-4) ...
+Selecting previously unselected package libgdbm-compat4:amd64.
+Preparing to unpack .../02-libgdbm-compat4_1.18.1-4_amd64.deb ...
+Unpacking libgdbm-compat4:amd64 (1.18.1-4) ...
+Selecting previously unselected package libperl5.28:amd64.
+Preparing to unpack .../03-libperl5.28_5.28.1-6+deb10u1_amd64.deb ...
+Unpacking libperl5.28:amd64 (5.28.1-6+deb10u1) ...
+Selecting previously unselected package perl.
+Preparing to unpack .../04-perl_5.28.1-6+deb10u1_amd64.deb ...
+Unpacking perl (5.28.1-6+deb10u1) ...
+Selecting previously unselected package libapr1:amd64.
+Preparing to unpack .../05-libapr1_1.6.5-1+b1_amd64.deb ...
+Unpacking libapr1:amd64 (1.6.5-1+b1) ...
+Selecting previously unselected package libexpat1:amd64.
+Preparing to unpack .../06-libexpat1_2.2.6-2+deb10u4_amd64.deb ...
+Unpacking libexpat1:amd64 (2.2.6-2+deb10u4) ...
+Selecting previously unselected package libssl1.1:amd64.
+Preparing to unpack .../07-libssl1.1_1.1.1n-0+deb10u2_amd64.deb ...
+Unpacking libssl1.1:amd64 (1.1.1n-0+deb10u2) ...
+Selecting previously unselected package libaprutil1:amd64.
+Preparing to unpack .../08-libaprutil1_1.6.1-4_amd64.deb ...
+Unpacking libaprutil1:amd64 (1.6.1-4) ...
+Selecting previously unselected package libsqlite3-0:amd64.
+Preparing to unpack .../09-libsqlite3-0_3.27.2-3+deb10u1_amd64.deb ...
+Unpacking libsqlite3-0:amd64 (3.27.2-3+deb10u1) ...
+Selecting previously unselected package libaprutil1-dbd-sqlite3:amd64.
+Preparing to unpack .../10-libaprutil1-dbd-sqlite3_1.6.1-4_amd64.deb ...
+Unpacking libaprutil1-dbd-sqlite3:amd64 (1.6.1-4) ...
+Selecting previously unselected package libsasl2-modules-db:amd64.
+Preparing to unpack .../11-libsasl2-modules-db_2.1.27+dfsg-1+deb10u2_amd64.deb ...
+Unpacking libsasl2-modules-db:amd64 (2.1.27+dfsg-1+deb10u2) ...
+Selecting previously unselected package libsasl2-2:amd64.
+Preparing to unpack .../12-libsasl2-2_2.1.27+dfsg-1+deb10u2_amd64.deb ...
+Unpacking libsasl2-2:amd64 (2.1.27+dfsg-1+deb10u2) ...
+Selecting previously unselected package libldap-common.
+Preparing to unpack .../13-libldap-common_2.4.47+dfsg-3+deb10u7_all.deb ...
+Unpacking libldap-common (2.4.47+dfsg-3+deb10u7) ...
+Selecting previously unselected package libldap-2.4-2:amd64.
+Preparing to unpack .../14-libldap-2.4-2_2.4.47+dfsg-3+deb10u7_amd64.deb ...
+Unpacking libldap-2.4-2:amd64 (2.4.47+dfsg-3+deb10u7) ...
+Selecting previously unselected package libaprutil1-ldap:amd64.
+Preparing to unpack .../15-libaprutil1-ldap_1.6.1-4_amd64.deb ...
+Unpacking libaprutil1-ldap:amd64 (1.6.1-4) ...
+Selecting previously unselected package libbrotli1:amd64.
+Preparing to unpack .../16-libbrotli1_1.0.7-2+deb10u1_amd64.deb ...
+Unpacking libbrotli1:amd64 (1.0.7-2+deb10u1) ...
+Selecting previously unselected package libkeyutils1:amd64.
+Preparing to unpack .../17-libkeyutils1_1.6-6_amd64.deb ...
+Unpacking libkeyutils1:amd64 (1.6-6) ...
+Selecting previously unselected package libkrb5support0:amd64.
+Preparing to unpack .../18-libkrb5support0_1.17-3+deb10u3_amd64.deb ...
+Unpacking libkrb5support0:amd64 (1.17-3+deb10u3) ...
+Selecting previously unselected package libk5crypto3:amd64.
+Preparing to unpack .../19-libk5crypto3_1.17-3+deb10u3_amd64.deb ...
+Unpacking libk5crypto3:amd64 (1.17-3+deb10u3) ...
+Selecting previously unselected package libkrb5-3:amd64.
+Preparing to unpack .../20-libkrb5-3_1.17-3+deb10u3_amd64.deb ...
+Unpacking libkrb5-3:amd64 (1.17-3+deb10u3) ...
+Selecting previously unselected package libgssapi-krb5-2:amd64.
+Preparing to unpack .../21-libgssapi-krb5-2_1.17-3+deb10u3_amd64.deb ...
+Unpacking libgssapi-krb5-2:amd64 (1.17-3+deb10u3) ...
+Selecting previously unselected package libnghttp2-14:amd64.
+Preparing to unpack .../22-libnghttp2-14_1.36.0-2+deb10u1_amd64.deb ...
+Unpacking libnghttp2-14:amd64 (1.36.0-2+deb10u1) ...
+Selecting previously unselected package libpsl5:amd64.
+Preparing to unpack .../23-libpsl5_0.20.2-2_amd64.deb ...
+Unpacking libpsl5:amd64 (0.20.2-2) ...
+Selecting previously unselected package librtmp1:amd64.
+Preparing to unpack .../24-librtmp1_2.4+20151223.gitfa8646d.1-2_amd64.deb ...
+Unpacking librtmp1:amd64 (2.4+20151223.gitfa8646d.1-2) ...
+Selecting previously unselected package libssh2-1:amd64.
+Preparing to unpack .../25-libssh2-1_1.8.0-2.1_amd64.deb ...
+Unpacking libssh2-1:amd64 (1.8.0-2.1) ...
+Selecting previously unselected package libcurl4:amd64.
+Preparing to unpack .../26-libcurl4_7.64.0-4+deb10u2_amd64.deb ...
+Unpacking libcurl4:amd64 (7.64.0-4+deb10u2) ...
+Selecting previously unselected package libjansson4:amd64.
+Preparing to unpack .../27-libjansson4_2.12-1_amd64.deb ...
+Unpacking libjansson4:amd64 (2.12-1) ...
+Selecting previously unselected package liblua5.2-0:amd64.
+Preparing to unpack .../28-liblua5.2-0_5.2.4-1.1+b2_amd64.deb ...
+Unpacking liblua5.2-0:amd64 (5.2.4-1.1+b2) ...
+Selecting previously unselected package libicu63:amd64.
+Preparing to unpack .../29-libicu63_63.1-6+deb10u3_amd64.deb ...
+Unpacking libicu63:amd64 (63.1-6+deb10u3) ...
+Selecting previously unselected package libxml2:amd64.
+Preparing to unpack .../30-libxml2_2.9.4+dfsg1-7+deb10u4_amd64.deb ...
+Unpacking libxml2:amd64 (2.9.4+dfsg1-7+deb10u4) ...
+Selecting previously unselected package apache2-bin.
+Preparing to unpack .../31-apache2-bin_2.4.38-3+deb10u7_amd64.deb ...
+Unpacking apache2-bin (2.4.38-3+deb10u7) ...
+Selecting previously unselected package apache2-data.
+Preparing to unpack .../32-apache2-data_2.4.38-3+deb10u7_all.deb ...
+Unpacking apache2-data (2.4.38-3+deb10u7) ...
+Selecting previously unselected package apache2-utils.
+Preparing to unpack .../33-apache2-utils_2.4.38-3+deb10u7_amd64.deb ...
+Unpacking apache2-utils (2.4.38-3+deb10u7) ...
+Selecting previously unselected package lsb-base.
+Preparing to unpack .../34-lsb-base_10.2019051400_all.deb ...
+Unpacking lsb-base (10.2019051400) ...
+Selecting previously unselected package mime-support.
+Preparing to unpack .../35-mime-support_3.62_all.deb ...
+Unpacking mime-support (3.62) ...
+Selecting previously unselected package libncurses6:amd64.
+Preparing to unpack .../36-libncurses6_6.1+20181013-2+deb10u2_amd64.deb ...
+Unpacking libncurses6:amd64 (6.1+20181013-2+deb10u2) ...
+Selecting previously unselected package libprocps7:amd64.
+Preparing to unpack .../37-libprocps7_2%3a3.3.15-2_amd64.deb ...
+Unpacking libprocps7:amd64 (2:3.3.15-2) ...
+Selecting previously unselected package procps.
+Preparing to unpack .../38-procps_2%3a3.3.15-2_amd64.deb ...
+Unpacking procps (2:3.3.15-2) ...
+Selecting previously unselected package apache2.
+Preparing to unpack .../39-apache2_2.4.38-3+deb10u7_amd64.deb ...
+Unpacking apache2 (2.4.38-3+deb10u7) ...
+Selecting previously unselected package netbase.
+Preparing to unpack .../40-netbase_5.6_all.deb ...
+Unpacking netbase (5.6) ...
+Selecting previously unselected package bzip2.
+Preparing to unpack .../41-bzip2_1.0.6-9.2~deb10u1_amd64.deb ...
+Unpacking bzip2 (1.0.6-9.2~deb10u1) ...
+Selecting previously unselected package libmagic-mgc.
+Preparing to unpack .../42-libmagic-mgc_1%3a5.35-4+deb10u2_amd64.deb ...
+Unpacking libmagic-mgc (1:5.35-4+deb10u2) ...
+Selecting previously unselected package libmagic1:amd64.
+Preparing to unpack .../43-libmagic1_1%3a5.35-4+deb10u2_amd64.deb ...
+Unpacking libmagic1:amd64 (1:5.35-4+deb10u2) ...
+Selecting previously unselected package file.
+Preparing to unpack .../44-file_1%3a5.35-4+deb10u2_amd64.deb ...
+Unpacking file (1:5.35-4+deb10u2) ...
+Selecting previously unselected package krb5-locales.
+Preparing to unpack .../45-krb5-locales_1.17-3+deb10u3_all.deb ...
+Unpacking krb5-locales (1.17-3+deb10u3) ...
+Selecting previously unselected package xz-utils.
+Preparing to unpack .../46-xz-utils_5.2.4-1+deb10u1_amd64.deb ...
+Unpacking xz-utils (5.2.4-1+deb10u1) ...
+Selecting previously unselected package openssl.
+Preparing to unpack .../47-openssl_1.1.1n-0+deb10u2_amd64.deb ...
+Unpacking openssl (1.1.1n-0+deb10u2) ...
+Selecting previously unselected package ca-certificates.
+Preparing to unpack .../48-ca-certificates_20200601~deb10u2_all.deb ...
+Unpacking ca-certificates (20200601~deb10u2) ...
+Selecting previously unselected package libgpm2:amd64.
+Preparing to unpack .../49-libgpm2_1.20.7-5_amd64.deb ...
+Unpacking libgpm2:amd64 (1.20.7-5) ...
+Selecting previously unselected package libsasl2-modules:amd64.
+Preparing to unpack .../50-libsasl2-modules_2.1.27+dfsg-1+deb10u2_amd64.deb ...
+Unpacking libsasl2-modules:amd64 (2.1.27+dfsg-1+deb10u2) ...
+Selecting previously unselected package psmisc.
+Preparing to unpack .../51-psmisc_23.2-1+deb10u1_amd64.deb ...
+Unpacking psmisc (23.2-1+deb10u1) ...
+Selecting previously unselected package publicsuffix.
+Preparing to unpack .../52-publicsuffix_20211109.1735-0+deb10u1_all.deb ...
+Unpacking publicsuffix (20211109.1735-0+deb10u1) ...
+Selecting previously unselected package ssl-cert.
+Preparing to unpack .../53-ssl-cert_1.0.39_all.deb ...
+Unpacking ssl-cert (1.0.39) ...
+Setting up perl-modules-5.28 (5.28.1-6+deb10u1) ...
+Setting up libexpat1:amd64 (2.2.6-2+deb10u4) ...
+Setting up lsb-base (10.2019051400) ...
+Setting up libkeyutils1:amd64 (1.6-6) ...
+Setting up libpsl5:amd64 (0.20.2-2) ...
+Setting up libgpm2:amd64 (1.20.7-5) ...
+Setting up mime-support (3.62) ...
+Setting up libmagic-mgc (1:5.35-4+deb10u2) ...
+Setting up psmisc (23.2-1+deb10u1) ...
+Setting up libssl1.1:amd64 (1.1.1n-0+deb10u2) ...
+debconf: unable to initialize frontend: Dialog
+debconf: (TERM is not set, so the dialog frontend is not usable.)
+debconf: falling back to frontend: Readline
+Setting up libprocps7:amd64 (2:3.3.15-2) ...
+Setting up libbrotli1:amd64 (1.0.7-2+deb10u1) ...
+Setting up libsqlite3-0:amd64 (3.27.2-3+deb10u1) ...
+Setting up libsasl2-modules:amd64 (2.1.27+dfsg-1+deb10u2) ...
+Setting up libnghttp2-14:amd64 (1.36.0-2+deb10u1) ...
+Setting up libmagic1:amd64 (1:5.35-4+deb10u2) ...
+Setting up libapr1:amd64 (1.6.5-1+b1) ...
+Setting up krb5-locales (1.17-3+deb10u3) ...
+Setting up file (1:5.35-4+deb10u2) ...
+Setting up bzip2 (1.0.6-9.2~deb10u1) ...
+Setting up libldap-common (2.4.47+dfsg-3+deb10u7) ...
+Setting up libicu63:amd64 (63.1-6+deb10u3) ...
+Setting up libjansson4:amd64 (2.12-1) ...
+Setting up libkrb5support0:amd64 (1.17-3+deb10u3) ...
+Setting up libsasl2-modules-db:amd64 (2.1.27+dfsg-1+deb10u2) ...
+Setting up librtmp1:amd64 (2.4+20151223.gitfa8646d.1-2) ...
+Setting up libncurses6:amd64 (6.1+20181013-2+deb10u2) ...
+Setting up xz-utils (5.2.4-1+deb10u1) ...
+update-alternatives: using /usr/bin/xz to provide /usr/bin/lzma (lzma) in auto mode
+update-alternatives: warning: skip creation of /usr/share/man/man1/lzma.1.gz because associated file /usr/share/man/man1/xz.1.gz (of link group lzma) doesn't exist
+update-alternatives: warning: skip creation of /usr/share/man/man1/unlzma.1.gz because associated file /usr/share/man/man1/unxz.1.gz (of link group lzma) doesn't exist
+update-alternatives: warning: skip creation of /usr/share/man/man1/lzcat.1.gz because associated file /usr/share/man/man1/xzcat.1.gz (of link group lzma) doesn't exist
+update-alternatives: warning: skip creation of /usr/share/man/man1/lzmore.1.gz because associated file /usr/share/man/man1/xzmore.1.gz (of link group lzma) doesn't exist
+update-alternatives: warning: skip creation of /usr/share/man/man1/lzless.1.gz because associated file /usr/share/man/man1/xzless.1.gz (of link group lzma) doesn't exist
+update-alternatives: warning: skip creation of /usr/share/man/man1/lzdiff.1.gz because associated file /usr/share/man/man1/xzdiff.1.gz (of link group lzma) doesn't exist
+update-alternatives: warning: skip creation of /usr/share/man/man1/lzcmp.1.gz because associated file /usr/share/man/man1/xzcmp.1.gz (of link group lzma) doesn't exist
+update-alternatives: warning: skip creation of /usr/share/man/man1/lzgrep.1.gz because associated file /usr/share/man/man1/xzgrep.1.gz (of link group lzma) doesn't exist
+update-alternatives: warning: skip creation of /usr/share/man/man1/lzegrep.1.gz because associated file /usr/share/man/man1/xzegrep.1.gz (of link group lzma) doesn't exist
+update-alternatives: warning: skip creation of /usr/share/man/man1/lzfgrep.1.gz because associated file /usr/share/man/man1/xzfgrep.1.gz (of link group lzma) doesn't exist
+Setting up libk5crypto3:amd64 (1.17-3+deb10u3) ...
+Setting up libsasl2-2:amd64 (2.1.27+dfsg-1+deb10u2) ...
+Setting up liblua5.2-0:amd64 (5.2.4-1.1+b2) ...
+Setting up procps (2:3.3.15-2) ...
+update-alternatives: using /usr/bin/w.procps to provide /usr/bin/w (w) in auto mode
+update-alternatives: warning: skip creation of /usr/share/man/man1/w.1.gz because associated file /usr/share/man/man1/w.procps.1.gz (of link group w) doesn't exist
+Setting up libssh2-1:amd64 (1.8.0-2.1) ...
+Setting up netbase (5.6) ...
+Setting up libkrb5-3:amd64 (1.17-3+deb10u3) ...
+Setting up apache2-data (2.4.38-3+deb10u7) ...
+Setting up openssl (1.1.1n-0+deb10u2) ...
+Setting up publicsuffix (20211109.1735-0+deb10u1) ...
+Setting up libxml2:amd64 (2.9.4+dfsg1-7+deb10u4) ...
+Setting up libgdbm6:amd64 (1.18.1-4) ...
+Setting up libaprutil1:amd64 (1.6.1-4) ...
+Setting up libldap-2.4-2:amd64 (2.4.47+dfsg-3+deb10u7) ...
+Setting up libaprutil1-ldap:amd64 (1.6.1-4) ...
+Setting up libaprutil1-dbd-sqlite3:amd64 (1.6.1-4) ...
+Setting up ca-certificates (20200601~deb10u2) ...
+debconf: unable to initialize frontend: Dialog
+debconf: (TERM is not set, so the dialog frontend is not usable.)
+debconf: falling back to frontend: Readline
+Updating certificates in /etc/ssl/certs...
+137 added, 0 removed; done.
+Setting up ssl-cert (1.0.39) ...
+debconf: unable to initialize frontend: Dialog
+debconf: (TERM is not set, so the dialog frontend is not usable.)
+debconf: falling back to frontend: Readline
+Setting up libgssapi-krb5-2:amd64 (1.17-3+deb10u3) ...
+Setting up libgdbm-compat4:amd64 (1.18.1-4) ...
+Setting up libperl5.28:amd64 (5.28.1-6+deb10u1) ...
+Setting up libcurl4:amd64 (7.64.0-4+deb10u2) ...
+Setting up apache2-utils (2.4.38-3+deb10u7) ...
+Setting up perl (5.28.1-6+deb10u1) ...
+Setting up apache2-bin (2.4.38-3+deb10u7) ...
+Setting up apache2 (2.4.38-3+deb10u7) ...
+Enabling module mpm_event.
+Enabling module authz_core.
+Enabling module authz_host.
+Enabling module authn_core.
+Enabling module auth_basic.
+Enabling module access_compat.
+Enabling module authn_file.
+Enabling module authz_user.
+Enabling module alias.
+Enabling module dir.
+Enabling module autoindex.
+Enabling module env.
+Enabling module mime.
+Enabling module negotiation.
+Enabling module setenvif.
+Enabling module filter.
+Enabling module deflate.
+Enabling module status.
+Enabling module reqtimeout.
+Enabling conf charset.
+Enabling conf localized-error-pages.
+Enabling conf other-vhosts-access-log.
+Enabling conf security.
+Enabling conf serve-cgi-bin.
+Enabling site 000-default.
+invoke-rc.d: could not determine current runlevel
+invoke-rc.d: policy-rc.d denied execution of start.
+Processing triggers for libc-bin (2.28-10+deb10u1) ...
+Processing triggers for ca-certificates (20200601~deb10u2) ...
+Updating certificates in /etc/ssl/certs...
+0 added, 0 removed; done.
+Running hooks in /etc/ca-certificates/update.d...
+done.
+Removing intermediate container 82497c561473
+ ---> 878ba4d423c6
+Step 4/5 : COPY index.html /var/www/html/
+ ---> 4a7b35abef6e
+Step 5/5 : CMD ["/usr/sbin/apache2ctl", "-D", "FOREGROUND"]
+ ---> Running in b4ea0360f338
+Removing intermediate container b4ea0360f338
+ ---> fa8b78ee9ce4
+Successfully built fa8b78ee9ce4
+Successfully tagged adrianjaramillo/myapache2:v2
+```
+
+Compruebo que tengo la nueva imagen:
+
+![imagengeneradav2](https://i.imgur.com/Gfv0Y8p.png)
+
+Lanzo un contenedor a partir de esta imagen:
+
+```console
+atlas@olympus:~/docker/build1$ docker run -d -p 8080:80 --name servidor_web adrianjaramillo/myapache2:v2
+83a16f4cd2bfe74313b38c590697c9d940c3a0d2c3e586e84975748c52e79069
+```
+
+Pruebo que funciona:
+
+![imagenv2funcionando](https://i.imgur.com/un0Eh9G.png)
+
+### Distribución de imágenes
+
+#### Por fichero
+
+Pasamos la imagen a un `.tar`:
+
+```console
+docker save adrianjaramillo/myapache2:v1 > myapache2.tar
+```
+
+El fichero generado ya podríamos pasarlo a cualquier sitio.
+
+Para añadir un `.tar` a nuestro repositorio local:
+
+```console
+atlas@olympus:~/docker$ docker load -i myapache2.tar
+e54f845af4e5: Loading layer [==================================================>]  131.7MB/131.7MB
+Loaded image: adrianjaramillo/myapache2:v1
+```
+
+#### Por Docker Hub
+
+Me autentico:
+
+```console
+atlas@olympus:~/docker$ docker login
+Login with your Docker ID to push and pull images from Docker Hub. If you don't have a Docker ID, head over to https://hub.docker.com to create one.
+Username: adrianjaramillo
+Password:
+WARNING! Your password will be stored unencrypted in /home/atlas/.docker/config.json.
+Configure a credential helper to remove this warning. See
+https://docs.docker.com/engine/reference/commandline/login/#credentials-store
+
+Login Succeeded
+```
+
+Subimos a Docker Hub:
+
+```console
+atlas@olympus:~/docker$ docker push adrianjaramillo/myapache2:v2
+The push refers to repository [docker.io/adrianjaramillo/myapache2]
+2f99db70a821: Pushed
+928f71c072df: Pushed
+10e6bc6fdee2: Mounted from library/debian
+v2: digest: sha256:f5e64a6aca0b4642827146857d52f1adf6dcfc6932ba8e844c0ded7a003959d7 size: 948
+```
+
+Cualquier persona se podría bajar nuestra imagen ahora:
+
+```console
+atlas@olympus:~/docker$ docker pull adrianjaramillo/myapache2:v2
+v2: Pulling from adrianjaramillo/myapache2
+c1ad9731b2c7: Already exists
+7b785f89fe92: Pull complete
+73b5fa52da1c: Pull complete
+Digest: sha256:f5e64a6aca0b4642827146857d52f1adf6dcfc6932ba8e844c0ded7a003959d7
+Status: Downloaded newer image for adrianjaramillo/myapache2:v2
+docker.io/adrianjaramillo/myapache2:v2
+```
+
+### Ejemplo 1: Construcción de imágenes con una página estática
+
+#### Versión 1: Desde una imagen base
+
+Parto de la siguiente estructura:
+
+```console
+atlas@olympus:~/docker/ejemplo1build/version1$ ls -la
+total 16
+drwxr-xr-x 3 atlas atlas 4096 Jun 16 20:44 .
+drwxr-xr-x 5 atlas atlas 4096 Jun 16 20:49 ..
+-rw-r--r-- 1 atlas atlas  203 Jun 16 20:44 Dockerfile
+drwxr-xr-x 4 atlas atlas 4096 Jun 16 20:44 public_html
+```
+
+Muestro el `Dockerfile`:
+
+```console
+FROM debian
+
+RUN apt-get update && apt-get install -y apache2 && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+ADD public_html /var/www/html/
+
+EXPOSE 80
+CMD ["/usr/sbin/apache2ctl", "-D", "FOREGROUND"]
+```
+
+Genero la imagen:
+
+```console
+docker build -t adrianjaramillo/ejemplo1:v1 .
+```
+
+Compruebo que la imagen se ha creado:
+
+```console
+atlas@olympus:~/docker/ejemplo1build/version1$ docker images
+REPOSITORY                    TAG           IMAGE ID       CREATED              SIZE
+adrianjaramillo/ejemplo1      v1            78598efe38b7   About a minute ago   235MB
+```
+
+Lanzo un contenedor:
+
+```console
+atlas@olympus:~/docker/ejemplo1build/version1$ docker run -d -p 80:80 --name ejemplo1 adrianjaramillo/ejemplo1:v1
+54f3831fbfba45202e6cf9019bcf6f8ca68ab557c00f573364ed55c146ec8fe2
+```
+
+Pruebo que funciona:
+
+![version1](https://i.imgur.com/UPViWuN.png)
+
+#### Versión 2: Desde una imagen con apache2
+
+Muestro el `Dockerfile`:
+
+```console
+atlas@olympus:~/docker/ejemplo1build/version2$ cat Dockerfile
+FROM httpd:2.4
+ADD public_html /usr/local/apache2/htdocs/
+EXPOSE 80
+```
+
+Genero la imagen:
+
+```console
+docker build -t adrianjaramillo/ejemplo1:v2 .
+```
+
+Lanzo un contenedor:
+
+```console
+atlas@olympus:~/docker/ejemplo1build/version2$ docker run -d -p 80:80 --name ejemplo1 adrianjaramillo/ejemplo1:v2
+c31ba3ff6a7eb6bfca1388aae222931d503f3159762c2ed1bfe387a4a977c4e6
+```
+
+Pruebo que funciona:
+
+![version2](https://i.imgur.com/F3n5h9a.png)
+
+#### Versión 3: Desde una imagen con nginx
+
+Muestro el `Dockerfile`:
+
+```console
+atlas@olympus:~/docker/ejemplo1build/version3$ cat Dockerfile
+FROM nginx
+ADD public_html /usr/share/nginx/html
+EXPOSE 80
+```
+
+Genero la imagen:
+
+```console
+docker build -t adrianjaramillo/ejemplo1:v3 .
+```
+
+Lanzo un contenedor:
+
+```console
+atlas@olympus:~/docker/ejemplo1build/version3$ docker run -d -p 80:80 --name ejemplo1 adrianjaramillo/ejemplo1:v3
+a71cf3e153588cbbc4d7b810e06a7808d2e13203fe11ab107520360abdb92ea1
+```
+
+Pruebo que funciona:
+
+![version3](https://i.imgur.com/lFq8yaZ.png)
+
+### Ejemplo 2: Construcción de imágenes con una aplicación PHP
+
+#### Versión 1: Desde una imagen base sin PHP
+
+Muestro el `Dockerfile`:
+
+```console
+FROM debian
+RUN apt-get update && apt-get install -y apache2 libapache2-mod-php php && apt-get clean && rm -rf /var/lib/apt/lists/*
+ADD app /var/www/html/
+RUN rm /var/www/html/index.html
+EXPOSE 80
+CMD ["/usr/sbin/apache2ctl", "-D", "FOREGROUND"]
+```
+
+Genero la imagen:
+
+```console
+docker build -t adrianjaramillo/ejemplo2:v1 .
+```
+
+Compruebo que la imagen está:
+
+```console
+atlas@olympus:~/docker/ejemplo2build/version1$ docker images
+REPOSITORY                    TAG           IMAGE ID       CREATED              SIZE
+adrianjaramillo/ejemplo2      v1            4deacc77ef43   About a minute ago   254MB
+```
+
+Lanzo un contenedor:
+
+```console
+atlas@olympus:~/docker/ejemplo2build/version1$ docker run -d -p 80:80 --name ejemplo2 adrianjaramillo/ejemplo2:v1
+7629bc3a4ed786025dce58351d80599a7725353d40e0a6c5edb0cb5b7f845ebd
+```
+
+Pruebo que funciona:
+
+![version1php](https://i.imgur.com/ZrnHwG7.png)
+
+Muestro el `info.php`:
+
+![version1infophp](https://i.imgur.com/loNzsGW.png)
+
+#### Versión 2: Desde una imagen con PHP instalado
+
+Muestro el `Dockerfile`:
+
+```console
+FROM php:7.4-apache
+ADD app /var/www/html/
+EXPOSE 80
+```
+
+Genero la imagen:
+
+```console
+docker build -t adrianjaramillo/ejemplo2:v2 .
+```
+
+Lanzo un contenedor:
+
+```console
+atlas@olympus:~/docker/ejemplo2build/version2$ docker run -d -p 80:80 --name ejemplo2 adrianjaramillo/ejemplo2:v2
+863fb6d27a48fbace7bf41a224ebc38db555e3cb9d9635a35506831e2268cacc
+```
+
+Pruebo que funciona:
+
+![version2php](https://i.imgur.com/ZQ6brOt.png)
+
+Muestro el `info.php`:
+
+![version2infophp](https://i.imgur.com/U2IBWYf.png)
+
+### Ejemplo 3: Construcción de imágenes con una aplicación Python
+
+Muestro el `Dockerfile`:
+
+```console
+FROM debian
+RUN apt-get update && apt-get install -y python3-pip  && apt-get clean && rm -rf /var/lib/apt/lists/*
+COPY app /usr/share/app
+WORKDIR /usr/share/app
+RUN pip3 install --no-cache-dir -r requirements.txt
+EXPOSE 3000
+CMD [ "python3", "app.py"]
+```
+
+Genero la imagen:
+
+```console
+docker build -t adrianjaramillo/ejemplo3:v1 .
+```
+
+Compruebo que la imagen está:
+
+```console
+atlas@olympus:~/docker/ejemplo3build$ docker images
+REPOSITORY                    TAG           IMAGE ID       CREATED          SIZE
+adrianjaramillo/ejemplo3      v1            5d390f9bcd8e   47 seconds ago   510MB
+```
+
+Lanzo un contenedor:
+
+```console
+atlas@olympus:~/docker/ejemplo3build$ docker run -d -p 80:3000 --name ejemplo3 adrianjaramillo/ejemplo3:v1
+24db90990b340ce8d14bf76dc5f3f6fbf08608dc31cbb3a14b751f6c843acb42
+```
+
+Pruebo que funciona:
+
+![ejemplo3python](https://i.imgur.com/95BJS05.png)
+
+### Ciclo de vida de las aplicaciones
+
+#### Paso 1: Desarrollo de nuestra aplicación
+
+Creo una estructura de página web:
+
+```console
+atlas@olympus:~/docker/ciclovida$ mkdir public_html
+atlas@olympus:~/docker/ciclovida$ cd public_html
+atlas@olympus:~/docker/ciclovida/public_html$ echo "<h1>Prueba</h1>" > index.html
+```
+
+#### Paso 2: Creación de la imagen Docker
+
+Creo el siguiente `Dockerfile`:
+
+```console
+FROM httpd:2.4
+ADD ./public_html /usr/local/apache2/htdocs/
+```
+
+Genero la imagen:
+
+```console
+atlas@olympus:~/docker/ciclovida$ docker build -t adrianjaramillo/aplicacionweb:v1 .
+Sending build context to Docker daemon  3.584kB
+Step 1/2 : FROM httpd:2.4
+ ---> acd59370d8fb
+Step 2/2 : ADD ./public_html /usr/local/apache2/htdocs/
+ ---> 4415b1fcea4e
+Successfully built 4415b1fcea4e
+Successfully tagged adrianjaramillo/aplicacionweb:v1
+```
+
+Compruebo que la imagen está:
+
+```console
+atlas@olympus:~/docker/ciclovida$ docker image ls
+REPOSITORY                      TAG           IMAGE ID       CREATED              SIZE
+adrianjaramillo/aplicacionweb   v1            4415b1fcea4e   About a minute ago   144MB
+```
+
+#### Paso 3: Probamos nuestra aplicación en el entorno de desarrollo
+
+Lanzo un contenedor:
+
+```console
+atlas@olympus:~/docker/ciclovida$ docker run --name aplweb -d -p 80:80 adrianjaramillo/aplicacionweb:v1
+39c8937b5badb9dc5f910498aeaf9380d6aa1b0e326e5ea19c527ff40a499e85
+```
+
+Compruebo que esté activo:
+
+```console
+atlas@olympus:~/docker/ciclovida$ docker ps
+CONTAINER ID   IMAGE                              COMMAND              CREATED              STATUS              PORTS                NAMES
+39c8937b5bad   adrianjaramillo/aplicacionweb:v1   "httpd-foreground"   About a minute ago   Up About a minute   0.0.0.0:80->80/tcp   aplweb
+```
+
+Pruebo que funciona:
+
+![appdesarrollo](https://i.imgur.com/JhIrFND.png)
+
+#### Paso 4: Distribuimos nuestra imagen
+
+Subo a Docker Hub:
+
+```console
+atlas@olympus:~/docker/ciclovida$ docker push adrianjaramillo/aplicacionweb:v1
+The push refers to repository [docker.io/adrianjaramillo/aplicacionweb]
+14d158b7d9db: Pushed
+2db1ee0a0f4f: Mounted from library/httpd
+857d0bc0663f: Mounted from library/httpd
+4a48959ac654: Mounted from library/httpd
+4e2b986e3da3: Mounted from library/httpd
+ad6562704f37: Mounted from library/wordpress
+v1: digest: sha256:414d9c7a3d0b84fc327da8414eb9baa8abf32ce1807dae19d3448c1e0c8f84cb size: 1572
+```
+
+#### Paso 5: Implantación de la aplicación
+
+Para simular que nuestra máquina es el entorno de producción, borramos nuestra imagen local original...
+
+```console
+atlas@olympus:~/docker/ciclovida$ docker rmi adrianjaramillo/aplicacionweb:v1
+Untagged: adrianjaramillo/aplicacionweb:v1
+Untagged: adrianjaramillo/aplicacionweb@sha256:414d9c7a3d0b84fc327da8414eb9baa8abf32ce1807dae19d3448c1e0c8f84cb
+Deleted: sha256:4415b1fcea4ef1b5adf4e912bc4f14670ea4c713b326d16c0ca4452f57852cb0
+Deleted: sha256:d2dcb5a1a671e6661428ac9e379493d6e73574bc2befa9c7027ace21ba14ed44
+```
+
+... y nos la volvemos a descargar desde Docker Hub:
+
+```console
+atlas@olympus:~/docker/ciclovida$ docker pull adrianjaramillo/aplicacionweb:v1
+v1: Pulling from adrianjaramillo/aplicacionweb
+42c077c10790: Already exists
+77a357ba66a8: Already exists
+c56c780a8904: Already exists
+ecb885e1c489: Already exists
+ba0337d73eed: Already exists
+35e5b4af3e12: Pull complete
+Digest: sha256:414d9c7a3d0b84fc327da8414eb9baa8abf32ce1807dae19d3448c1e0c8f84cb
+Status: Downloaded newer image for adrianjaramillo/aplicacionweb:v1
+docker.io/adrianjaramillo/aplicacionweb:v1
+```
+
+Lanzo un contenedor:
+
+```console
+tlas@olympus:~/docker/ciclovida$ docker run --name aplweb_prod -d -p 80:80 adrianjaramillo/aplicacionweb:v1
+c7bf2af9a3c91426a80e22edd67d72f99a1571512d5ddd7a20f7a7dea3a39134
+```
+
+Pruebo que sigue funcionando:
+
+![appproduccion](https://i.imgur.com/Gi0to0k.png)
+
+#### Paso 6: Modificación de la aplicación
+
+Si modificamos el código de la aplicación tendremos que generar una nueva imagen:
+
+```console
+atlas@olympus:~/docker/ciclovida$ cd public_html
+atlas@olympus:~/docker/ciclovida/public_html$ echo "<h1>Prueba 2</h1>" > index.html
+atlas@olympus:~/docker/ciclovida/public_html$ cd ..
+atlas@olympus:~/docker/ciclovida$ docker build -t adrianjaramillo/aplicacionweb:v2 .
+Sending build context to Docker daemon  3.584kB
+Step 1/2 : FROM httpd:2.4
+ ---> acd59370d8fb
+Step 2/2 : ADD ./public_html /usr/local/apache2/htdocs/
+ ---> 44a890a9da01
+Successfully built 44a890a9da01
+Successfully tagged adrianjaramillo/aplicacionweb:v2
+```
+
+Lanzo un contenedor en el entorno de desarrollo:
+
+```console
+atlas@olympus:~/docker/ciclovida$ docker run --name aplweb2 -d -p 80:80 adrianjaramillo/aplicacionweb:v2
+22fc8df544b24d536aa745d502ace5215d5e56ef74365e8fb92447db881606af
+```
+
+Pruebo que funciona:
+
+![appdesarrollo2](https://i.imgur.com/CLxrXRn.png)
+
+Subo la nueva imagen:
+
+```console
+atlas@olympus:~/docker/ciclovida$ docker push adrianjaramillo/aplicacionweb:v2
+The push refers to repository [docker.io/adrianjaramillo/aplicacionweb]
+aa226b1a6620: Pushed
+2db1ee0a0f4f: Layer already exists
+857d0bc0663f: Layer already exists
+4a48959ac654: Layer already exists
+4e2b986e3da3: Layer already exists
+ad6562704f37: Layer already exists
+v2: digest: sha256:78c66a668b1d4b946edc1a00594480d666fb05ff4ab799d97b5e724afd3ed3ae size: 1572
+```
+
+Elimino la imagen local original:
+
+```console
+atlas@olympus:~/docker/ciclovida$ docker rmi adrianjaramillo/aplicacionweb:v2
+Untagged: adrianjaramillo/aplicacionweb:v2
+Untagged: adrianjaramillo/aplicacionweb@sha256:78c66a668b1d4b946edc1a00594480d666fb05ff4ab799d97b5e724afd3ed3ae
+Deleted: sha256:44a890a9da01acbe029eb7ac5a57e5b2c27c114370e0a03e682739f738083f0b
+Deleted: sha256:71ba067af316ee14e14780b5ce532be1bb4fc390ae803cc8e29ccff6ae05ebe0
+```
+
+La vuelvo a descargar de Docker Hub:
+
+```console
+atlas@olympus:~/docker/ciclovida$ docker pull adrianjaramillo/aplicacionweb:v2
+v2: Pulling from adrianjaramillo/aplicacionweb
+42c077c10790: Already exists
+77a357ba66a8: Already exists
+c56c780a8904: Already exists
+ecb885e1c489: Already exists
+ba0337d73eed: Already exists
+0fb57bd0a568: Pull complete
+Digest: sha256:78c66a668b1d4b946edc1a00594480d666fb05ff4ab799d97b5e724afd3ed3ae
+Status: Downloaded newer image for adrianjaramillo/aplicacionweb:v2
+docker.io/adrianjaramillo/aplicacionweb:v2
+```
+
+Lanzo un contenedor:
+
+```console
+atlas@olympus:~/docker/ciclovida$ docker run --name aplweb2_prod -d -p 80:80 adrianjaramillo/aplicacionweb:v2
+c9be3aaf8cb31898140aeb0967a3063debd44d2587eb01dce0dcb54a8bdb7fca
+```
+
+Pruebo que sigue funcionando:
+
+![app2produccion](https://i.imgur.com/uz5lNat.png)
+
+### Ejercicios creación imágenes
+
+Muestro el directorio donde tengo la estructura de mi web y donde tendré el `Dockerfile`:
+
+```console
+atlas@olympus:~/docker/ejimagenes$ ls -la
+total 12
+drwxr-xr-x  3 atlas atlas 4096 Jun 17 18:04 .
+drwxr-xr-x 18 atlas atlas 4096 Jun 17 17:25 ..
+drwxr-xr-x  8 atlas atlas 4096 Jun 17 18:03 public_html
+```
+
+Creo el siguiente `Dockerfile`:
+
+![dockerfilemio](https://i.imgur.com/kEXh2fG.png)
+
+Genero la imagen:
+
+![miimagen](https://i.imgur.com/M9rmAwR.png)
+
+Compruebo que la tengo localmente:
+
+```console
+atlas@olympus:~/docker/ejimagenes$ docker images
+REPOSITORY                        TAG           IMAGE ID       CREATED             SIZE
+adrianjaramillo/mi_servidor_web   v1            c5533b4dd021   2 minutes ago       142MB
+```
+
+Lanzo un contenedor:
+
+```console
+atlas@olympus:~/docker/ejimagenes$ docker run -d -p 80:80 --name prueba1 adrianjaramillo/mi_servidor_web:v1
+31196fe55dc33d3f818c4c979ba570ff6569c6fde885f1cef433d16bbd2a2f1d
+```
+
+Pruebo que funciona:
+
+![miwebdesarrollo](https://i.imgur.com/4LlnK40.jpg)
+
+Subo la nueva imagen a Docker Hub:
+
+![miimagendockerhub](https://i.imgur.com/HvOgd5L.png)
+
+Compruebo que se subió correctamente:
+
+![miimagendockerhubprueba](https://i.imgur.com/DI6NNoF.png)
+
+Para simular que nuestra máquina es el entorno de producción, borramos nuestra imagen local original...
+
+```console
+atlas@olympus:~/docker/ejimagenes$ docker rmi adrianjaramillo/mi_servidor_web:v1
+Untagged: adrianjaramillo/mi_servidor_web:v1
+Untagged: adrianjaramillo/mi_servidor_web@sha256:b1ab1fd223167e4a6b5234fa6bde88ae2e677c0cfb19b38abab12a0411ead882
+Deleted: sha256:9b1fa17c1533b7f8e6596976bf1e839a9cd15e4b0f58c77008d0a62985e004c4
+Deleted: sha256:a9efe2bdee3e0d17ee5316f9eec7489e1c67fa166ed7fb780de3f848ca90380d
+Deleted: sha256:07a7bf31da7166779623897641084ec5f05bd7b1095a339ed89b17de8828ccb3
+```
+
+... y nos la volvemos a descargar desde Docker Hub:
+
+![bajadademiimagen](https://i.imgur.com/nXvi5F5.png)
+
+Lanzo otro contenedor:
+
+![miwebfinal](https://i.imgur.com/hYpZJmA.png)
+
+Pruebo que funciona de nuevo:
+
+![miwebprod](https://i.imgur.com/mP96e03.jpg)
