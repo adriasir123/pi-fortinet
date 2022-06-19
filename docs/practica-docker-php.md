@@ -817,4 +817,4 @@ Muestro mi imagen `v1_2` en Docker Hub:
 
 ![dockerhubv1-2mia](https://i.imgur.com/7cMU6By.png)
 
-Mi `v1_2` funcionando ya se ha mostrado [aquí](#-cambios-en-produccion).
+Mi `v1_2` funcionando ya se ha mostrado [aquí](#cambios-en-produccion).
