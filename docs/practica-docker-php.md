@@ -609,7 +609,37 @@ Muestro mi imagen v2 en Docker Hub:
 
 ![dockerhubv2mia](https://i.imgur.com/XJwZ0uJ.png)
 
-Mi configuración de Nginx ya se ha mostrado [aquí](###-preparacion-de-nginx).
+Mi configuración de Nginx ya se ha mostrado [aquí](#preparacion-de-nginx).
+
+BookMedik funcionando:
+
+![bookmedikfuncionandovps](https://i.imgur.com/5QVViVI.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
