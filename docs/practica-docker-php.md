@@ -1,4 +1,4 @@
-# Práctica: app web PHP en Docker
+# Práctica: BookMedik en Docker
 
 ## Info previa
 
