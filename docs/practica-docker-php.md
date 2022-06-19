@@ -384,7 +384,7 @@ Muestro que ya tengo acceso a mi web sin problemas:
 
 ### Publicación de imagen
 
-Subo la v2 a Docker Hub:
+Subo la `v2` a Docker Hub:
 
 ```console
 atlas@olympus:~$ docker push adrianjaramillo/bookmedik:v2
@@ -615,37 +615,206 @@ BookMedik funcionando:
 
 ![bookmedikfuncionandovps](https://i.imgur.com/5QVViVI.png)
 
+## Tarea 6: Modificación de la aplicación
 
+### Cambios en desarrollo
 
+En el directorio `bookmedikv1build` modificamos el fichero `core/app/view/login-view.php` de la siguiente manera:
 
+![loginmodificado](https://i.imgur.com/6PJzsHA.png)
 
+Genero la nueva imagen:
 
+```console
+atlas@olympus:~/docker/bookmedikv1build$ docker build -t adrianjaramillo/bookmedik:v1_2 .
+Sending build context to Docker daemon  5.476MB
+Step 1/9 : FROM debian
+ ---> 4eacea30377a
+Step 2/9 : MAINTAINER Adrián Jaramillo Rodríguez "adristudy@gmail.com"
+ ---> Using cache
+ ---> 377f4544c492
+Step 3/9 : RUN apt-get update && apt-get install -y apache2 libapache2-mod-php php php-mysql mariadb-client && apt-get clean && rm -rf /var/lib/apt/lists/*
+ ---> Using cache
+ ---> 3edbcee70ef0
+Step 4/9 : RUN rm /var/www/html/index.html
+ ---> Using cache
+ ---> 765311b13ccf
+Step 5/9 : ADD bookmedik /var/www/html/
+ ---> e87b936760f4
+Step 6/9 : ADD script.sh /opt/
+ ---> 914ae2687446
+Step 7/9 : RUN chmod +x /opt/script.sh
+ ---> Running in 380ed8fa6f33
+Removing intermediate container 380ed8fa6f33
+ ---> a70e0de4811d
+Step 8/9 : EXPOSE 80
+ ---> Running in 6162bc8d46b1
+Removing intermediate container 6162bc8d46b1
+ ---> 9223c78cb164
+Step 9/9 : ENTRYPOINT ["/opt/script.sh"]
+ ---> Running in 76aadabd2773
+Removing intermediate container 76aadabd2773
+ ---> 64141bbe8f9f
+Successfully built 64141bbe8f9f
+Successfully tagged adrianjaramillo/bookmedik:v1_2
+```
 
+Cambio el `docker-compose.yml` para que use esta nueva imagen:
 
+```console
+version: '3.1'
+services:
+  bookmedik:
+    container_name: bookmedik
+    image: adrianjaramillo/bookmedik:v1_2
+    restart: always
+    environment:
+      BOOKMEDIK_DB_USER: bookmedik_user
+      BOOKMEDIK_DB_PASSWORD: bookmedik_pass
+      BOOKMEDIK_DB_NAME: bookmedik
+      BOOKMEDIK_DB_HOST: mariadb
+    ports:
+      - 80:80
+    depends_on:
+      - mariadb
+    volumes:
+      - bookmedik_logs:/var/log/apache2
+  mariadb:
+    container_name: mariadb
+    image: mariadb
+    restart: always
+    environment:
+      MARIADB_DATABASE: bookmedik
+      MARIADB_USER: bookmedik_user
+      MARIADB_PASSWORD: bookmedik_pass
+      MARIADB_ROOT_PASSWORD: root
+    volumes:
+      - mariadb_data:/var/lib/mysql
+volumes:
+    bookmedik_logs:
+    mariadb_data:
+```
 
+Lanzo el escenario:
 
+```console
+atlas@olympus:~/docker/bookmedikescenario$ docker-compose up -d
+Creating network "bookmedikescenario_default" with the default driver
+Creating volume "bookmedikescenario_bookmedik_logs" with default driver
+Creating volume "bookmedikescenario_mariadb_data" with default driver
+Creating mariadb ... done
+Creating bookmedik ... done
+```
 
+Muestro que funciona:
 
+![v1_2desarrollo](https://i.imgur.com/y4bO3vr.png)
 
+Subo la `v1_2` a Docker Hub:
 
+```console
+atlas@olympus:~/docker/bookmedikescenario$ docker push adrianjaramillo/bookmedik:v1_2
+The push refers to repository [docker.io/adrianjaramillo/bookmedik]
+fe7b5820a058: Pushed
+6beeca6aa86e: Pushed
+b0e71684709a: Pushed
+67840b9e5228: Pushed
+a43bb9feb494: Pushed
+e7597c345c2e: Mounted from library/tomcat
+v1_2: digest: sha256:26b318c747464015d068c04feebc513a4a9d96c67d7d8d7fbcee5aa92a0676d1 size: 1572
+```
 
+### Cambios en producción
 
+Me bajo la imagen `v1_2`:
 
+```console
+blackmamba@kampe:~$ docker pull adrianjaramillo/bookmedik:v1_2
+v1_2: Pulling from adrianjaramillo/bookmedik
+e756f3fdd6a3: Pull complete
+1d676b04bbdd: Pull complete
+8d729c2d5900: Pull complete
+94ce319f9350: Pull complete
+9fc65713e191: Pull complete
+3553ab644f30: Pull complete
+Digest: sha256:26b318c747464015d068c04feebc513a4a9d96c67d7d8d7fbcee5aa92a0676d1
+Status: Downloaded newer image for adrianjaramillo/bookmedik:v1_2
+docker.io/adrianjaramillo/bookmedik:v1_2
+```
 
+Compruebo que la tengo:
 
+```console
+blackmamba@kampe:~$ docker images
+REPOSITORY                  TAG       IMAGE ID       CREATED          SIZE
+adrianjaramillo/bookmedik   v1_2      64141bbe8f9f   32 minutes ago   297MB
+adrianjaramillo/bookmedik   v2        64331ad6b6f9   17 hours ago     496MB
+mariadb                     latest    ea81af801379   12 days ago      383MB
+```
 
+Modifico el `docker-compose.yml` con la imagen `v1_2`:
 
+```console
+version: '3.1'
+services:
+  bookmedik:
+    container_name: bookmedik
+    image: adrianjaramillo/bookmedik:v1_2
+    restart: always
+    environment:
+      BOOKMEDIK_DB_USER: bookmedik_user
+      BOOKMEDIK_DB_PASSWORD: bookmedik_pass
+      BOOKMEDIK_DB_NAME: bookmedik
+      BOOKMEDIK_DB_HOST: mariadb
+    ports:
+      - 8081:80
+    depends_on:
+      - mariadb
+    volumes:
+      - bookmedik_logs:/var/log/apache2
+  mariadb:
+    container_name: mariadb
+    image: mariadb
+    restart: always
+    environment:
+      MARIADB_DATABASE: bookmedik
+      MARIADB_USER: bookmedik_user
+      MARIADB_PASSWORD: bookmedik_pass
+      MARIADB_ROOT_PASSWORD: root
+    volumes:
+      - mariadb_data:/var/lib/mysql
+volumes:
+    bookmedik_logs:
+    mariadb_data:
+```
 
+Tiro el escenario antiguo y levanto el nuevo:
 
+```console
+blackmamba@kampe:~/docker/bookmedik-escenario$ docker-compose down -v
+Stopping bookmedik ... done
+Stopping mariadb   ... done
+Removing bookmedik ... done
+Removing mariadb   ... done
+Removing network bookmedik-escenario_default
+Removing volume bookmedik-escenario_bookmedik_logs
+Removing volume bookmedik-escenario_mariadb_data
+blackmamba@kampe:~/docker/bookmedik-escenario$ docker-compose up -d
+Creating network "bookmedik-escenario_default" with the default driver
+Creating volume "bookmedik-escenario_bookmedik_logs" with default driver
+Creating volume "bookmedik-escenario_mariadb_data" with default driver
+Creating mariadb ... done
+Creating bookmedik ... done
+```
 
+Muestro que funciona
 
+![v12funcionandovps](https://i.postimg.cc/1tbwzrrS/v1-2-produccion-funcionando.gif)
 
+### Entregas tarea 6
 
+Muestro mi imagen `v1_2` en Docker Hub:
 
+![dockerhubv1-2mia](https://i.imgur.com/7cMU6By.png)
 
-
-
-
-
-
-
+Mi `v1_2` funcionando ya se ha mostrado [aquí](#-cambios-en-produccion).
