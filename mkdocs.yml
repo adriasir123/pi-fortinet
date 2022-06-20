@@ -70,6 +70,7 @@ nav:
             - Docker:
                 - 'Ejercicios': 'ejs-docker.md'
                 - 'Práctica: BookMedik en Docker': 'practica-docker-php.md'
+                - 'Práctica: Django tutorial en Docker': 'practica-docker-python.md'
         - SAD:
             - 'Criptografía 1: Cifrado asímetrico': 'practica-cifrado-asimetrico-gpg-openssl.md'
             - 'Criptografía 2: Firmas': 'practica-integridad-firmas-autenticacion.md'
