@@ -83,10 +83,8 @@ nav:
                 - 'Práctica iptables: perimetral escenario': 'perimetral-iptables-escenario.md'
         - 'Escenario libvirt': 'practica-escenario-libvirt.md'
     - 2º ASIR 22/23:
-        - ASO:
-        - HLC:
         - BD:
-            - 'Prueba inicial': 'prueba-inicial.md'
+            - 'Prueba inicial': 'bd/prueba-inicial.md'
 extra:
   disqus: conocimiento-en-bits-neocities-org
 markdown_extensions:
