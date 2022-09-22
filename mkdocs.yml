@@ -82,6 +82,10 @@ nav:
                 - 'Ejercicio 2 nftables: perimetral': 'ej2-nftables-perimetral.md'
                 - 'Práctica iptables: perimetral escenario': 'perimetral-iptables-escenario.md'
         - 'Escenario libvirt': 'practica-escenario-libvirt.md'
+    - 2º ASIR 22/23:
+        - ASO:
+        - HLC:
+        - BD:
 extra:
   disqus: conocimiento-en-bits-neocities-org
 markdown_extensions:
