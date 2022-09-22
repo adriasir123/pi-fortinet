@@ -86,6 +86,7 @@ nav:
         - ASO:
         - HLC:
         - BD:
+            - 'Prueba inicial': 'prueba-inicial.md'
 extra:
   disqus: conocimiento-en-bits-neocities-org
 markdown_extensions:
