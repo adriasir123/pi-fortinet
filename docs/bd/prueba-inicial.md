@@ -104,113 +104,130 @@ HAVING COUNT(*) > 3;
 
 ### Ejercicio 5
 
-> Hacer un procedimiento PL/SQL que reciba un DNI y muestre por pantalla todas sus notas. Debes controlar las siguientes excepciones: Alumno Inexistente, Alumno sin Notas.
+> Hacer un procedimiento PL/SQL que:
+>
+> - Reciba un DNI y muestre por pantalla todas sus notas
+> - Tenga las excepciones: Alumno Inexistente, Alumno sin Notas
+
+Añado el procedimiento:
 
 ```sql
-CREATE OR REPLACE PROCEDURE NOTAS_POR_DNI 
+CREATE OR REPLACE PROCEDURE NOTAS_POR_DNI
 (
   v_dni IN char
-) AS 
-BEGIN
-  SELECT Modulo, Nota INTO 
+) AS
+CURSOR c_notas IS
+  SELECT * 
   FROM Notas
   WHERE DNI = v_dni;
+
+v_reg_cursor c_notas%ROWTYPE;
+v_contador1 number(1);
+v_contador2 number(1);
+
+BEGIN
+
+  SELECT count(*)
+  INTO v_contador1
+  FROM Alumnos
+  WHERE DNI = v_dni;
+
+  SELECT count(*)
+  INTO v_contador2
+  FROM Notas
+  WHERE DNI = v_dni;
+
+  IF v_contador1 = 0 THEN
+    RAISE_APPLICATION_ERROR(-20000, 'No existe un alumno con DNI ' || v_dni);
+  ELSIF v_contador2 = 0 THEN
+    RAISE_APPLICATION_ERROR(-20001, 'No existen notas para el alumno con DNI ' || v_dni);
+  ELSE
+    OPEN c_notas;
+      FETCH c_notas INTO v_reg_cursor;
+      WHILE c_notas%FOUND LOOP
+        DBMS_OUTPUT.PUT_LINE( 'El alumno con DNI ' || v_reg_cursor.DNI || ' ha sacado una nota de ' || v_reg_cursor.Nota || ' en el módulo ' || v_reg_cursor.Modulo);
+      FETCH c_notas INTO v_reg_cursor;
+      END LOOP;
+    CLOSE c_notas;
+  END IF;
+
 END NOTAS_POR_DNI;
 /
+```
 
+![procedimiento creado](https://i.imgur.com/Sxi3fzv.png)
+
+Activo las salidas de mensajes:
+
+```sql
 SET SERVEROUTPUT ON
+```
+
+Para ejecutar el procedimiento pidiendo el DNI tengo que ejecutar lo siguiente:
+
+```sql
 BEGIN
     NOTAS_POR_DNI('&dni');
 END;
-
-
-
-
-
-
-CREATE OR REPLACE PROCEDURE NOTAS_POR_DNI AS
-CURSOR c_empleados IS
-SELECT Modulo, Nota INTO 
-FROM Notas
-WHERE DNI = v_dni;
-
-v_reg_cursor c_empleados%ROWTYPE;
-
-BEGIN
-  OPEN c_empleados;
-  FETCH c_empleados INTO v_reg_cursor;
-  WHILE c_empleados%FOUND LOOP
-    DBMS_OUTPUT.PUT_LINE(v_reg_cursor.first_name || ' ' ||v_reg_cursor.last_name);
-    FETCH c_empleados INTO v_reg_cursor;
-  END LOOP;
-  CLOSE c_empleados;
-END EMPLEADOS;
-
-
-
-
-
-
-
-
-
-
-
-
-
+/
 ```
 
+Notas de un alumno existente:
 
-EXCEPTION
-   WHEN ZERO_DIVIDE THEN  -- handles 'division by zero' error
-      INSERT INTO stats (symbol, ratio) VALUES ('XYZ', NULL);
-      COMMIT;
+![notas A](https://i.imgur.com/SYyMGpJ.png)
 
+Notas de un alumno inexistente:
 
+![notas inexistente](https://i.imgur.com/RGI2n7f.png)
 
+Alumno sin notas:
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+![sin notas](https://i.imgur.com/8z4v4gc.png)
 
 ## Sobre MongoDB
 
 ### Ejercicio 6
 
-> Crea una colección en MongoDB con varios documentos que contengan como mínimo nombre y precio de un producto.
+> Crear la colección `productos` con varios documentos que contengan:
+>
+> - Nombre
+> - Precio
 
+Creo la colección:
 
+```sql
+db.createCollection("productos")
+```
 
+![creo coleccion](https://i.imgur.com/cWakYg4.png)
 
+La muestro:
+
+![muestro coleccion](https://i.imgur.com/MIBzjMP.png)
+
+Inserto los documentos:
+
+```sql
+db.productos.insertMany( [
+  { nombre: "Tomate", precio: 5 },
+  { nombre: "Yogurt", precio: 21 }
+] )
+```
+
+![inserto documentos](https://i.imgur.com/VjvLMpV.png)
+
+Los muestro:
+
+![muestro documentos](https://i.imgur.com/Zznfwyt.png)
 
 ### Ejercicio 7
 
-> Escribe una consulta que muestre aquellos documentos correspondientes a productos cuyo precio sea superior a 20.
+> Muestra los documentos correspondientes a productos cuyo precio sea superior a 20
+
+```sql
+db.productos.find(
+  { precio: {$gt:20} }
+)
+```
+
+![productos > 20](https://i.imgur.com/971X7j6.png)
