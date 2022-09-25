@@ -84,7 +84,7 @@ nav:
         - 'Escenario libvirt': 'practica-escenario-libvirt.md'
     - 2º ASIR 22/23:
         - ASO:
-            - 'Instalación Debian': 'aso/instalacion_debian.md'
+            - 'Instalación Debian 11': 'aso/instalacion_debian11.md'
         - BD:
             - 'Prueba inicial': 'bd/prueba-inicial.md'
 extra:
