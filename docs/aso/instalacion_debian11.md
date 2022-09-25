@@ -3,7 +3,7 @@
 ## Problemas durante la instalación
 
 - **No detectaba el SSD**: durante el paso de particionamiento, sólo se reconocía el HDD. Se soluciona cambiando el modo SATA de RST a AHCI en la BIOS.
-- **Error `Unable to install GRUB in dummy`**: sucede durante el paso de instalación de GRUB, y significa que el instalador de debian no puede acceder EFI para instalar GRUB. El error ocurre cuando la partición EFI está dentro de LVM, ya que el instalador de debian parece no ser capaz de acceder a LVM para instalar GRUB. Se soluciona sacando la partición EFI como partición física fuera de LVM.
+- **Error `Unable to install GRUB in dummy`**: sucede durante el paso de instalación de GRUB, y significa que el instalador de debian no puede acceder a EFI para instalar GRUB. El error ocurre cuando la partición EFI está dentro de LVM, ya que el instalador de debian parece no ser capaz de acceder a LVM para instalar GRUB. Se soluciona sacando la partición EFI como partición física fuera de LVM.
 
 ## Esquema de particionamiento
 
