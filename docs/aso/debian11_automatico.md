@@ -311,15 +311,13 @@ max-lease-time 7200;
 
 allow booting;
 
-# in this example, we serve DHCP requests from 192.168.0.(3 to 253)
-# and we have a router at 192.168.0.1
 subnet 192.168.100.0 netmask 255.255.255.0 {
   range 192.168.100.20 192.168.100.30;
   option broadcast-address 192.168.100.255;
-  option routers 192.168.100.1;             # our router
-  option domain-name-servers 192.168.100.1; # our router has DNS functionality
-  next-server 192.168.100.10;                # our Server
-  filename "pxelinux.0"; # setting a default, might be wrong for "non defaults"
+  option routers 192.168.100.1;
+  option domain-name-servers 192.168.100.1;
+  next-server 192.168.100.10;
+  filename "pxelinux.0";
 }
 ```
 
