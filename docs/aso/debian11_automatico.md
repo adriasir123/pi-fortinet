@@ -5,12 +5,12 @@ Instrucciones generales:
 - Partimos del [preseed.cfg](https://www.debian.org/releases/stable/example-preseed.txt) ejemplo de Debian
 - Podemos encontrar la lista de locales posibles en `/usr/share/i18n/SUPPORTED`
 - Contraseñas cifradas
-  - Instalo: `sudo apt install whois`
-  - Cifro: `printf "1234" | mkpasswd -s -m md5`
+    - Instalo: `sudo apt install whois`
+    - Cifro: `printf "1234" | mkpasswd -s -m md5`
 - LVM con:
-  - `/`
-  - `/var`
-  - `/home`
+    - `/`
+    - `/var`
+    - `/home`
 
 ## Tipo 1: ISO modificada
 
