@@ -88,6 +88,9 @@ nav:
             - 'Instalación Debian 11 preseed': 'aso/debian11_automatico.md'
         - BD:
             - 'Prueba inicial': 'bd/prueba-inicial.md'
+        - HLC:
+            - Virtualización en Linux:
+                - 'Taller 1': 'hlc/taller1-virtualizacion.md'
 extra:
   disqus: conocimiento-en-bits-neocities-org
 markdown_extensions:
