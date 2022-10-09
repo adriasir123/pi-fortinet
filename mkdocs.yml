@@ -91,6 +91,7 @@ nav:
         - HLC:
             - Virtualización en Linux:
                 - 'Taller 1': 'hlc/taller1-virtualizacion.md'
+                - 'Taller 2': 'hlc/taller2-virtualizacion.md'
 extra:
   disqus: conocimiento-en-bits-neocities-org
 markdown_extensions:
