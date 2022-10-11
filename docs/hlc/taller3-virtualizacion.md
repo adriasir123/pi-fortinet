@@ -47,7 +47,9 @@ La teoría para completar este taller se encuentra en el [capítulo 4 del curso 
 
 ### Parte 6
 
-> Muestro el disco y la NIC VirtIO en la VM Windows
+> Muestro la vista general XML, el disco y la NIC VirtIO de la VM Windows
+
+![xmlwin10](https://i.imgur.com/DMyigNO.png)
 
 ![discovirtio](https://i.imgur.com/guZGv22.png)
 
