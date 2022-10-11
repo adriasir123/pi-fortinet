@@ -92,6 +92,7 @@ nav:
             - Virtualización en Linux:
                 - 'Taller 1': 'hlc/taller1-virtualizacion.md'
                 - 'Taller 2': 'hlc/taller2-virtualizacion.md'
+                - 'Taller 3': 'hlc/taller3-virtualizacion.md'
 extra:
   disqus: conocimiento-en-bits-neocities-org
 markdown_extensions:
