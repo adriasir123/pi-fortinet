@@ -94,6 +94,7 @@ nav:
                 - 'Taller 2': 'hlc/taller2-virtualizacion.md'
                 - 'Taller 3': 'hlc/taller3-virtualizacion.md'
                 - 'Taller 4': 'hlc/taller4-virtualizacion.md'
+                - 'Taller 5': 'hlc/taller5-virtualizacion.md'
 extra:
   disqus: conocimiento-en-bits-neocities-org
 markdown_extensions:
