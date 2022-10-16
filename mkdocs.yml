@@ -86,6 +86,7 @@ nav:
         - ASO:
             - 'Instalación Debian 11': 'aso/instalacion_debian11.md'
             - 'Instalación Debian 11 preseed': 'aso/debian11_automatico.md'
+            - 'Compilación programas C': 'aso/compilacion-programas-c.md'
         - BD:
             - 'Prueba inicial': 'bd/prueba-inicial.md'
         - HLC:
