@@ -4,6 +4,8 @@ La teoría para completar este taller se encuentra en el [capítulo 7 del curso 
 
 test github pages
 
+test github pages 2
+
 ## Entrega
 
 ### Parte 1
