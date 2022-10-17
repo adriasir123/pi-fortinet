@@ -1,5 +1,4 @@
 site_name: conocimiento-en-bits
-site_url: https://conocimiento-en-bits.neocities.org/
 theme:
   name: 'material'
   palette:
@@ -96,8 +95,9 @@ nav:
                 - 'Taller 3': 'hlc/taller3-virtualizacion.md'
                 - 'Taller 4': 'hlc/taller4-virtualizacion.md'
                 - 'Taller 5': 'hlc/taller5-virtualizacion.md'
-extra:
-  disqus: conocimiento-en-bits-neocities-org
+                - 'Taller 6': 'hlc/taller6-virtualizacion.md'
+# extra:
+#   disqus: conocimiento-en-bits-neocities-org
 markdown_extensions:
   - pymdownx.highlight:
       anchor_linenums: true

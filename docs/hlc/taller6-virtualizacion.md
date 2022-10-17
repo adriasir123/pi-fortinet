@@ -2,6 +2,8 @@
 
 La teoría para completar este taller se encuentra en el [capítulo 7 del curso de virtualización](https://github.com/josedom24/curso_virtualizacion_linux).
 
+test github pages
+
 ## Entrega
 
 ### Parte 1
