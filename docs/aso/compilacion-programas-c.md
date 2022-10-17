@@ -118,24 +118,68 @@ Después de un reinicio de la VM nuestro Apache dejaría de funcionar.
 
 ## Nala
 
-Añadido a la práctica: compilar nala y evaluar sus posibilidades, decir nuestra opinión
+### Añadir Testing
 
+Dejo `/etc/apt/sources.list` de la siguiente manera:
 
+```shell
+deb https://deb.debian.org/debian bullseye main
+deb https://deb.debian.org/debian testing main
+deb-src https://deb.debian.org/debian bullseye main
+deb https://security.debian.org/debian-security bullseye-security main
+deb-src https://security.debian.org/debian-security bullseye-security main
+deb https://deb.debian.org/debian bullseye-updates main
+deb-src https://deb.debian.org/debian bullseye-updates main
+deb https://deb.debian.org/debian bullseye-backports main
+deb-src https://deb.debian.org/debian bullseye-backports main
+```
 
+### Requerimientos
 
+```shell
+sudo apt update
+sudo apt install git python3-apt pandoc build-essential python3-pip fish
+```
 
+### Clonar main
 
+```shell
+git clone https://gitlab.com/volian/nala.git
+cd nala
+```
 
+### Instalar
 
+```shell
+sudo make install
+```
 
+Comprobamos que funciona:
 
+```shell
+vagrant@compilacion:~$ nala --version
+nala 0.11.1
+```
 
+### Desinstalar
 
+```shell
+sudo make uninstall
+```
 
+### VS apt
 
+- Descargas en paralelo
+- `nala fetch` elegirá los 3 mirrors más rápidos con respecto a latencia (ms) y nos los guardará en un fichero
+- `nala history` guarda las transacciones
+- Mejora visualmente
 
+[Aquí](https://ostechnix.com/nala-commandline-frontend-for-apt/) podemos ver muchas funciones más que puede hacer Nala.
 
+### Opiniones
 
+Creo que Nala aún está en un estado un poco verde, podría tener muchas más funciones, pero actualmente se encuentra oficialmente añadido en testing y en unstable.
 
+Esto quiere decir que es probable que en la siguiente release stable de Debian (Bookworm) contemos con Nala como paquete oficial.
 
-
+Nala es un frontend de apt como lo son Aptitude y Synaptic, inspirado en dnf, y tan sólo por lo vistoso que es y la rapidez que ofrece le veo mucho futuro si se sigue con el desarrollo.
