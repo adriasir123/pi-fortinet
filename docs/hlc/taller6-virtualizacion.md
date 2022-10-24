@@ -10,6 +10,8 @@ test github pages 3
 
 test github pages 4
 
+prueba dominio .ga
+
 ## Entrega
 
 ### Parte 1
