@@ -86,6 +86,7 @@ nav:
             - 'Instalación Debian 11': 'aso/instalacion_debian11.md'
             - 'Instalación Debian 11 preseed': 'aso/debian11_automatico.md'
             - 'Compilación programas C': 'aso/compilacion-programas-c.md'
+            - 'Ejercicios de paquetería': 'aso/ejercicios-paqueteria.md'
         - BD:
             - 'Prueba inicial': 'bd/prueba-inicial.md'
         - HLC:
@@ -96,8 +97,6 @@ nav:
                 - 'Taller 4': 'hlc/taller4-virtualizacion.md'
                 - 'Taller 5': 'hlc/taller5-virtualizacion.md'
                 - 'Taller 6': 'hlc/taller6-virtualizacion.md'
-# extra:
-#   disqus: conocimiento-en-bits-neocities-org
 markdown_extensions:
   - pymdownx.highlight:
       anchor_linenums: true
