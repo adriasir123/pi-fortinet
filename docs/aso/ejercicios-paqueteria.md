@@ -22,9 +22,645 @@ end
 
 ## Trabajo con apt, aptitude, dpkg
 
+### Ejercicio 1 apt
+
+> Explicar lo que sucede al hacer `sudo apt update`
+
+`man apt` nos dice lo siguiente:
+
+```shell
+       update (apt-get(8))
+           update is used to download package information from all configured sources. Other commands operate on this data to e.g. perform package upgrades
+           or search in and display details about all packages available for installation.
+```
+
+Descarga información de los paquetes (package index) según nuestros sources configurados en el fichero `/etc/apt/sources.list` y en el directorio `/etc/apt/sources.list.d`.
+
+Ejemplo de output:
+
+```shell
+vagrant@paqueteria:~$ sudo apt update
+Get:1 https://deb.debian.org/debian bullseye InRelease [116 kB]
+Get:2 https://security.debian.org/debian-security bullseye-security InRelease [48.4 kB]
+Get:3 https://deb.debian.org/debian bullseye-updates InRelease [44.1 kB]
+Get:4 https://deb.debian.org/debian bullseye-backports InRelease [49.0 kB]
+Get:5 https://deb.debian.org/debian bullseye/main Sources [8633 kB]
+Get:6 https://security.debian.org/debian-security bullseye-security/main Sources [167 kB]
+Get:7 https://security.debian.org/debian-security bullseye-security/main amd64 Packages [193 kB]
+Get:8 https://security.debian.org/debian-security bullseye-security/main Translation-en [122 kB]
+Get:9 https://deb.debian.org/debian bullseye/main amd64 Packages [8184 kB]
+Get:10 https://deb.debian.org/debian bullseye/main Translation-en [6239 kB]
+Get:11 https://deb.debian.org/debian bullseye-updates/main Sources [4812 B]
+Get:12 https://deb.debian.org/debian bullseye-updates/main amd64 Packages [14.6 kB]
+Get:13 https://deb.debian.org/debian bullseye-updates/main Translation-en [7929 B]
+Get:14 https://deb.debian.org/debian bullseye-backports/main Sources [346 kB]
+Get:15 https://deb.debian.org/debian bullseye-backports/main amd64 Packages [356 kB]
+Get:16 https://deb.debian.org/debian bullseye-backports/main Translation-en [292 kB]
+Fetched 24.8 MB in 12s (2068 kB/s)
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+18 packages can be upgraded. Run 'apt list --upgradable' to see them.
+```
+
+> Explicar lo que sucede al hacer `sudo apt upgrade`
+
+`man apt` nos dice lo siguiente:
+
+```shell
+       upgrade (apt-get(8))
+           upgrade is used to install available upgrades of all packages currently installed on the system from the sources configured via sources.list(5).
+           New packages will be installed if required to satisfy dependencies, but existing packages will never be removed. If an upgrade for a package
+           requires the removal of an installed package the upgrade for this package isn't performed.
+```
+
+Instala las actualizaciones disponibles sobre los paquetes **actualmente instalados** en el sistema según nuestras definiciones en `/etc/apt/sources.list` y `/etc/apt/sources.list.d`.
+
+Se instalarán nuevos paquetes si son necesarios para satisfacer dependencias, pero los paquetes existentes nunca serrán borrados.
+
+Ejemplo de output:
+
+```shell
+vagrant@paqueteria:~$ sudo apt upgrade
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+Run 'dpkg-reconfigure tzdata' if you wish to change it.
+
+Setting up grub-common (2.06-4) ...
+Setting up libdbus-1-3:amd64 (1.14.4-1) ...
+Setting up dbus-session-bus-common (1.14.4-1) ...
+Setting up isc-dhcp-common (4.4.3-P1-1) ...
+Setting up dbus-system-bus-common (1.14.4-1) ...
+Setting up dbus-bin (1.14.4-1) ...
+Setting up bind9-libs:amd64 (1:9.18.4-2~bpo11+1) ...
+Setting up grub2-common (2.06-4) ...
+Setting up dbus-daemon (1.14.4-1) ...
+Setting up grub-pc-bin (2.06-4) ...
+Setting up grub-pc (2.06-4) ...
+Replacing config file /etc/default/grub with new version
+Installing for i386-pc platform.
+Installation finished. No error reported.
+Generating grub configuration file ...
+Found linux image: /boot/vmlinuz-5.19.0-0.deb11.2-amd64
+Found initrd image: /boot/initrd.img-5.19.0-0.deb11.2-amd64
+Found linux image: /boot/vmlinuz-5.10.0-19-amd64
+Found initrd image: /boot/initrd.img-5.10.0-19-amd64
+Found linux image: /boot/vmlinuz-5.10.0-18-amd64
+Found initrd image: /boot/initrd.img-5.10.0-18-amd64
+Warning: os-prober will not be executed to detect other bootable partitions.
+Systems on them will not be added to the GRUB boot configuration.
+Check GRUB_DISABLE_OS_PROBER documentation entry.
+done
+Setting up dbus (1.14.4-1) ...
+A reboot is required to replace the running dbus-daemon.
+Please reboot the system when convenient.
+dbus.service is a disabled or a static unit, not starting it.
+Setting up bind9-host (1:9.18.4-2~bpo11+1) ...
+Setting up bind9-dnsutils (1:9.18.4-2~bpo11+1) ...
+Processing triggers for man-db (2.9.4-2) ...
+Processing triggers for libc-bin (2.35-4) ...
+```
+
+### Ejercicio 2 apt
+
+> Listar los paquetes que pueden ser actualizados y explicar el output
+
+```shell
+vagrant@paqueteria:~$ sudo apt list --upgradable
+Listing... Done
+bind9-dnsutils/stable-security 1:9.16.33-1~deb11u1 amd64 [upgradable from: 1:9.16.27-1~deb11u1]
+bind9-host/stable-security 1:9.16.33-1~deb11u1 amd64 [upgradable from: 1:9.16.27-1~deb11u1]
+bind9-libs/stable-security 1:9.16.33-1~deb11u1 amd64 [upgradable from: 1:9.16.27-1~deb11u1]
+dbus/stable-security 1.12.24-0+deb11u1 amd64 [upgradable from: 1.12.20-2]
+grub-common/stable-updates 2.06-3~deb11u2 amd64 [upgradable from: 2.06-3~deb11u1]
+grub-pc-bin/stable-updates 2.06-3~deb11u2 amd64 [upgradable from: 2.06-3~deb11u1]
+grub-pc/stable-updates 2.06-3~deb11u2 amd64 [upgradable from: 2.06-3~deb11u1]
+grub2-common/stable-updates 2.06-3~deb11u2 amd64 [upgradable from: 2.06-3~deb11u1]
+isc-dhcp-client/stable-security 4.4.1-2.3+deb11u1 amd64 [upgradable from: 4.4.1-2.3]
+isc-dhcp-common/stable-security 4.4.1-2.3+deb11u1 amd64 [upgradable from: 4.4.1-2.3]
+libc-bin/stable-updates 2.31-13+deb11u5 amd64 [upgradable from: 2.31-13+deb11u4]
+libc-l10n/stable-updates 2.31-13+deb11u5 all [upgradable from: 2.31-13+deb11u4]
+libc6/stable-updates 2.31-13+deb11u5 amd64 [upgradable from: 2.31-13+deb11u4]
+libdbus-1-3/stable-security 1.12.24-0+deb11u1 amd64 [upgradable from: 1.12.20-2]
+libexpat1/stable-security 2.2.10-2+deb11u5 amd64 [upgradable from: 2.2.10-2+deb11u3]
+linux-image-amd64/stable-security 5.10.149-2 amd64 [upgradable from: 5.10.140-1]
+locales/stable-updates 2.31-13+deb11u5 all [upgradable from: 2.31-13+deb11u4]
+tzdata/stable-updates 2021a-1+deb11u7 all [upgradable from: 2021a-1+deb11u5]
+```
+
+Podemos discernir lo siguiente:
+
+- Nombre de paquete
+- Rama del repositorio
+- Versión
+- Arquitectura
+- Versión actualmente instalada
+
+### Ejercicio 3 apt
+
+> Indicar sobre el paquete `openssh-client`:
+>
+>- Versión instalada
+>- Versión candidata
+>- Prioridad
+
+![openssh-client](https://i.imgur.com/8o5AuDk.png)
+
+### Ejercicio 4 apt
+
+> Mostrar información de un paquete instalado o no
+
+```shell
+sudo apt show <paquete>
+```
+
+Ejemplo:
+
+```shell
+vagrant@paqueteria:~$ sudo apt show tree
+Package: tree
+Version: 1.8.0-1+b1
+Priority: optional
+Section: utils
+Source: tree (1.8.0-1)
+Maintainer: Florian Ernst <florian@debian.org>
+Installed-Size: 118 kB
+Depends: libc6 (>= 2.4)
+Homepage: http://mama.indstate.edu/users/ice/tree/
+Tag: implemented-in::c, interface::commandline, role::program,
+ scope::utility, use::browsing, works-with::file
+Download-Size: 49.6 kB
+APT-Sources: https://deb.debian.org/debian bullseye/main amd64 Packages
+Description: displays an indented directory tree, in color
+ Tree is a recursive directory listing command that produces a depth indented
+ listing of files, which is colorized ala dircolors if the LS_COLORS environment
+ variable is set and output is to tty.
+```
+
+### Ejercicio 5 apt
+
+> Mostrar toda la información que se pueda del paquete `openssh-client`
+
+Podemos hacer:
+
+```shell
+vagrant@paqueteria:~$ sudo apt show openssh-client
+Package: openssh-client
+Version: 1:8.4p1-5+deb11u1
+Priority: standard
+Section: net
+Source: openssh
+Maintainer: Debian OpenSSH Maintainers <debian-ssh@lists.debian.org>
+Installed-Size: 4401 kB
+Provides: rsh-client, ssh-client
+Depends: adduser (>= 3.10), dpkg (>= 1.7.0), passwd, libc6 (>= 2.26), libedit2 (>= 2.11-20080614-0), libfido2-1 (>= 1.5.0), libgssapi-krb5-2 (>= 1.17), libselinux1 (>= 3.1~), libssl1.1 (>= 1.1.1), zlib1g (>= 1:1.1.4)
+Recommends: xauth
+Suggests: keychain, libpam-ssh, monkeysphere, ssh-askpass
+Conflicts: sftp
+Breaks: openssh-sk-helper
+Replaces: openssh-sk-helper, ssh, ssh-krb5
+Homepage: http://www.openssh.com/
+Tag: implemented-in::c, interface::commandline, interface::shell,
+ network::client, protocol::sftp, protocol::ssh, role::program,
+ security::authentication, security::cryptography, uitoolkit::ncurses,
+ use::login, use::transmission, works-with::file
+Download-Size: 929 kB
+APT-Manual-Installed: yes
+APT-Sources: https://deb.debian.org/debian bullseye/main amd64 Packages
+Description: secure shell (SSH) client, for secure access to remote machines
+ This is the portable version of OpenSSH, a free implementation of
+ the Secure Shell protocol as specified by the IETF secsh working
+ group.
+ .
+ Ssh (Secure Shell) is a program for logging into a remote machine
+ and for executing commands on a remote machine.
+ It provides secure encrypted communications between two untrusted
+ hosts over an insecure network. X11 connections and arbitrary TCP/IP
+ ports can also be forwarded over the secure channel.
+ It can be used to provide applications with a secure communication
+ channel.
+ .
+ This package provides the ssh, scp and sftp clients, the ssh-agent
+ and ssh-add programs to make public key authentication more convenient,
+ and the ssh-keygen, ssh-keyscan, ssh-copy-id and ssh-argv0 utilities.
+ .
+ In some countries it may be illegal to use any encryption at all
+ without a special permit.
+ .
+ ssh replaces the insecure rsh, rcp and rlogin programs, which are
+ obsolete for most purposes.
+```
+
+O también:
+
+```shell
+apt-cache showpkg openssh-client
+```
+
+El output es bastante largo, así que [entra en este gist](https://gist.github.com/adriasir123/75467379823af48957506b11db3b0c16) para verlo.
+
+El último comando está muy bien, nos muestra información que no veríamos con `apt show`, pero a su vez carece de información que veríamos con `apt show` como el mantenedor/es del paquete.
+
+### Ejercicio 6 apt
+
+> Mostrar toda la información que se pueda del paquete candidato `openssh-client` a actualizar
+
+Añado los repositorios de `unstable/main` para que `openssh-client` tenga un candidato más actualizado que el paquete actualmente instalado:
+
+```shell
+vagrant@paqueteria:~$ apt policy openssh-client
+openssh-client:
+  Installed: 1:8.4p1-5+deb11u1
+  Candidate: 1:9.0p1-1+b2
+  Version table:
+     1:9.0p1-1+b2 500
+        500 https://deb.debian.org/debian unstable/main amd64 Packages
+ *** 1:8.4p1-5+deb11u1 500
+        500 https://deb.debian.org/debian bullseye/main amd64 Packages
+        100 /var/lib/dpkg/status
+```
+
+No existe un comando directo para hacer esto, así que podemos hacer:
+
+```shell
+sudo apt show openssh-client=$(apt-cache policy openssh-client | grep Candidate | awk '{print $2}')
+```
+
+Output:
+
+```shell
+vagrant@paqueteria:~$ sudo apt show openssh-client=$(apt-cache policy openssh-client | grep Candidate | awk '{print $2}')
+Package: openssh-client
+Version: 1:9.0p1-1+b2
+Priority: standard
+Section: net
+Source: openssh (1:9.0p1-1)
+Maintainer: Debian OpenSSH Maintainers <debian-ssh@lists.debian.org>
+Installed-Size: 5772 kB
+Provides: rsh-client, ssh-client
+Depends: adduser (>= 3.10), dpkg (>= 1.7.0), passwd, libc6 (>= 2.34), libedit2 (>= 2.11-20080614-0), libfido2-1 (>= 1.8.0), libgssapi-krb5-2 (>= 1.17), libselinux1 (>= 3.1~), libssl3 (>= 3.0.5), zlib1g (>= 1:1.1.4)
+Recommends: xauth
+Suggests: keychain, libpam-ssh, monkeysphere, ssh-askpass
+Conflicts: sftp
+Breaks: openssh-sk-helper
+Replaces: openssh-sk-helper, ssh, ssh-krb5
+Homepage: http://www.openssh.com/
+Tag: implemented-in::c, interface::commandline, interface::shell,
+ network::client, protocol::sftp, protocol::ssh, role::program,
+ security::authentication, security::cryptography, uitoolkit::ncurses,
+ use::login, use::transmission, works-with::file
+Download-Size: 973 kB
+APT-Sources: https://deb.debian.org/debian unstable/main amd64 Packages
+Description: secure shell (SSH) client, for secure access to remote machines
+ This is the portable version of OpenSSH, a free implementation of
+ the Secure Shell protocol as specified by the IETF secsh working
+ group.
+ .
+ Ssh (Secure Shell) is a program for logging into a remote machine
+ and for executing commands on a remote machine.
+ It provides secure encrypted communications between two untrusted
+ hosts over an insecure network. X11 connections and arbitrary TCP/IP
+ ports can also be forwarded over the secure channel.
+ It can be used to provide applications with a secure communication
+ channel.
+ .
+ This package provides the ssh, scp and sftp clients, the ssh-agent
+ and ssh-add programs to make public key authentication more convenient,
+ and the ssh-keygen, ssh-keyscan, ssh-copy-id and ssh-argv0 utilities.
+ .
+ In some countries it may be illegal to use any encryption at all
+ without a special permit.
+ .
+ ssh replaces the insecure rsh, rcp and rlogin programs, which are
+ obsolete for most purposes.
+```
+
+### Ejercicio 7 apt
+
+> Listar tanto con apt como con dpkg los contenidos del paquete `openssh-client` actual
+
+Con `apt` sería así:
+
+```shell
+sudo apt install apt-file
+sudo apt-file update
+apt-file list openssh-client
+```
+
+Output:
+
+```shell
+vagrant@paqueteria:~$ apt-file list openssh-client
+openssh-client: /etc/ssh/ssh_config
+openssh-client: /usr/bin/scp
+openssh-client: /usr/bin/sftp
+openssh-client: /usr/bin/slogin
+openssh-client: /usr/bin/ssh
+openssh-client: /usr/bin/ssh-add
+openssh-client: /usr/bin/ssh-agent
+openssh-client: /usr/bin/ssh-argv0
+openssh-client: /usr/bin/ssh-copy-id
+openssh-client: /usr/bin/ssh-keygen
+openssh-client: /usr/bin/ssh-keyscan
+openssh-client: /usr/lib/openssh/agent-launch
+openssh-client: /usr/lib/openssh/ssh-keysign
+openssh-client: /usr/lib/openssh/ssh-pkcs11-helper
+openssh-client: /usr/lib/openssh/ssh-sk-helper
+openssh-client: /usr/lib/systemd/user/graphical-session-pre.target.wants/ssh-agent.service
+openssh-client: /usr/lib/systemd/user/ssh-agent.service
+openssh-client: /usr/share/apport/package-hooks/openssh-client.py
+openssh-client: /usr/share/doc/openssh-client/NEWS.Debian.gz
+openssh-client: /usr/share/doc/openssh-client/OVERVIEW.gz
+openssh-client: /usr/share/doc/openssh-client/README
+openssh-client: /usr/share/doc/openssh-client/README.Debian.gz
+openssh-client: /usr/share/doc/openssh-client/README.dns
+openssh-client: /usr/share/doc/openssh-client/README.tun.gz
+openssh-client: /usr/share/doc/openssh-client/changelog.Debian.amd64.gz
+openssh-client: /usr/share/doc/openssh-client/changelog.Debian.gz
+openssh-client: /usr/share/doc/openssh-client/changelog.gz
+openssh-client: /usr/share/doc/openssh-client/copyright
+openssh-client: /usr/share/doc/openssh-client/faq.html
+openssh-client: /usr/share/lintian/overrides/openssh-client
+openssh-client: /usr/share/man/man1/scp.1.gz
+openssh-client: /usr/share/man/man1/sftp.1.gz
+openssh-client: /usr/share/man/man1/slogin.1.gz
+openssh-client: /usr/share/man/man1/ssh-add.1.gz
+openssh-client: /usr/share/man/man1/ssh-agent.1.gz
+openssh-client: /usr/share/man/man1/ssh-argv0.1.gz
+openssh-client: /usr/share/man/man1/ssh-copy-id.1.gz
+openssh-client: /usr/share/man/man1/ssh-keygen.1.gz
+openssh-client: /usr/share/man/man1/ssh-keyscan.1.gz
+openssh-client: /usr/share/man/man1/ssh.1.gz
+openssh-client: /usr/share/man/man5/ssh_config.5.gz
+openssh-client: /usr/share/man/man8/ssh-keysign.8.gz
+openssh-client: /usr/share/man/man8/ssh-pkcs11-helper.8.gz
+openssh-client: /usr/share/man/man8/ssh-sk-helper.8.gz
+```
+
+Con `dpkg` sería así:
+
+```shell
+vagrant@paqueteria:~$ dpkg -L openssh-client
+/.
+/etc
+/etc/ssh
+/etc/ssh/ssh_config
+/etc/ssh/ssh_config.d
+/usr
+/usr/bin
+/usr/bin/scp
+/usr/bin/sftp
+/usr/bin/ssh
+/usr/bin/ssh-add
+/usr/bin/ssh-agent
+/usr/bin/ssh-argv0
+/usr/bin/ssh-copy-id
+/usr/bin/ssh-keygen
+/usr/bin/ssh-keyscan
+/usr/lib
+/usr/lib/openssh
+/usr/lib/openssh/agent-launch
+/usr/lib/openssh/ssh-keysign
+/usr/lib/openssh/ssh-pkcs11-helper
+/usr/lib/openssh/ssh-sk-helper
+/usr/lib/systemd
+/usr/lib/systemd/user
+/usr/lib/systemd/user/graphical-session-pre.target.wants
+/usr/lib/systemd/user/ssh-agent.service
+/usr/share
+/usr/share/apport
+/usr/share/apport/package-hooks
+/usr/share/apport/package-hooks/openssh-client.py
+/usr/share/doc
+/usr/share/doc/openssh-client
+/usr/share/doc/openssh-client/NEWS.Debian.gz
+/usr/share/doc/openssh-client/OVERVIEW.gz
+/usr/share/doc/openssh-client/README
+/usr/share/doc/openssh-client/README.Debian.gz
+/usr/share/doc/openssh-client/README.dns
+/usr/share/doc/openssh-client/README.tun.gz
+/usr/share/doc/openssh-client/changelog.Debian.gz
+/usr/share/doc/openssh-client/changelog.gz
+/usr/share/doc/openssh-client/copyright
+/usr/share/doc/openssh-client/faq.html
+/usr/share/lintian
+/usr/share/lintian/overrides
+/usr/share/lintian/overrides/openssh-client
+/usr/share/man
+/usr/share/man/man1
+/usr/share/man/man1/scp.1.gz
+/usr/share/man/man1/sftp.1.gz
+/usr/share/man/man1/ssh-add.1.gz
+/usr/share/man/man1/ssh-agent.1.gz
+/usr/share/man/man1/ssh-argv0.1.gz
+/usr/share/man/man1/ssh-copy-id.1.gz
+/usr/share/man/man1/ssh-keygen.1.gz
+/usr/share/man/man1/ssh-keyscan.1.gz
+/usr/share/man/man1/ssh.1.gz
+/usr/share/man/man5
+/usr/share/man/man5/ssh_config.5.gz
+/usr/share/man/man8
+/usr/share/man/man8/ssh-keysign.8.gz
+/usr/share/man/man8/ssh-pkcs11-helper.8.gz
+/usr/share/man/man8/ssh-sk-helper.8.gz
+/usr/bin/slogin
+/usr/lib/systemd/user/graphical-session-pre.target.wants/ssh-agent.service
+/usr/share/man/man1/slogin.1.gz
+```
+
+### Ejercicio 8 apt
+
+> Listar los contenidos de un paquete sin instalar ni descargar
+
+```shell
+apt-file list <paquete>
+```
+
+### Ejercicio 9 apt
+
+> Simular la instalación de `openssh-client`
+
+`man apt-get` nos dice:
+
+```shell
+       -s, --simulate, --just-print, --dry-run, --recon, --no-act
+           No action; perform a simulation of events that would occur based on the current system state but do not actually change the system. Locking will
+           be disabled (Debug::NoLocking) so the system state could change while apt-get is running. Simulations can also be executed by non-root users
+           which might not have read access to all apt configuration distorting the simulation. A notice expressing this warning is also shown by default
+           for non-root users (APT::Get::Show-User-Simulation-Note). Configuration Item: APT::Get::Simulate.
+
+           Simulated runs print out a series of lines, each representing a dpkg operation: configure (Conf), remove (Remv) or unpack (Inst). Square
+           brackets indicate broken packages, and empty square brackets indicate breaks that are of no consequence (rare).
+```
+
+Así que hacemos:
+
+```shell
+vagrant@paqueteria:~$ sudo apt install -s openssh-client
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+The following packages were automatically installed and are no longer required:
+  libcbor0 libperl5.32
+Use 'sudo apt autoremove' to remove them.
+The following additional packages will be installed:
+  libcbor0.8 libfido2-1 libssl3 openssh-server openssh-sftp-server runit-helper
+Suggested packages:
+  keychain libpam-ssh monkeysphere ssh-askpass molly-guard ufw
+Recommended packages:
+  xauth
+The following NEW packages will be installed:
+  libcbor0.8 libssl3
+The following packages will be upgraded:
+  libfido2-1 openssh-client openssh-server openssh-sftp-server runit-helper
+5 upgraded, 2 newly installed, 0 to remove and 251 not upgraded.
+Inst libcbor0.8 (0.8.0-2+b1 Debian:unstable [amd64])
+Inst libssl3 (3.0.5-4 Debian:unstable [amd64])
+Inst libfido2-1 [1.6.0-2] (1.12.0-1 Debian:unstable [amd64])
+Inst openssh-sftp-server [1:8.4p1-5+deb11u1] (1:9.0p1-1+b2 Debian:unstable [amd64]) []
+Inst openssh-server [1:8.4p1-5+deb11u1] (1:9.0p1-1+b2 Debian:unstable [amd64]) []
+Inst openssh-client [1:8.4p1-5+deb11u1] (1:9.0p1-1+b2 Debian:unstable [amd64]) []
+Inst runit-helper [2.10.3] (2.15.0 Debian:unstable [all])
+Conf libcbor0.8 (0.8.0-2+b1 Debian:unstable [amd64])
+Conf libssl3 (3.0.5-4 Debian:unstable [amd64])
+Conf libfido2-1 (1.12.0-1 Debian:unstable [amd64])
+Conf openssh-sftp-server (1:9.0p1-1+b2 Debian:unstable [amd64])
+Conf openssh-server (1:9.0p1-1+b2 Debian:unstable [amd64])
+Conf openssh-client (1:9.0p1-1+b2 Debian:unstable [amd64])
+Conf runit-helper (2.15.0 Debian:unstable [all])
+```
+
+### Ejercicio 10 apt
+
+> Mostrar comando que liste los bugs de un paquete
+
+```shell
+sudo apt install apt-listbugs
+sudo apt-listbugs -s all list <paquete>
+```
+
+Ejemplo:
+
+```shell
+vagrant@paqueteria:~$ sudo apt-listbugs -s all list tree
+Retrieving bug reports... Done
+Parsing Found/Fixed information... Done
+normal bugs of tree (→ ) <Forwarded>
+ b1 - #934520 - tree: --filefrom option doesn't recognize symbolic links
+minor bugs of tree (→ ) <Forwarded>
+ b2 - #1014621 - tree: --timefmt doesn't imply -D, manual says it should
+wishlist bugs of tree (→ ) <Forwarded>
+ b3 - #865867 - make tree -H "mobile friendly"
+ b4 - #939644 - Viewport not set... need way to add HTML headers
+Summary:
+ tree(4 bugs)
+```
+
+### Ejercicio 11 apt
+
+> Después de realizar un apt update && apt upgrade. Si quisieras actualizar únicamente los paquetes que tienen de cadena openssh. ¿Qué procedimiento seguirías?. Realiza esta acción, con las estructuras repetitivas que te ofrece bash, así como con el comando xargs.
+
+
+
+
+
+### Ejercicio 12 apt
+
+> Mostrar las dependencias inversas de un paquete
+
+`man apt-cache` nos dice:
+
+```shell
+       rdepends pkg...
+           rdepends shows a listing of each reverse dependency a package has.
+```
+
+Así que hacemos:
+
+```shell
+apt-cache rdepends <paquete>
+```
+
+Ejemplo:
+
+```shell
+vagrant@paqueteria:~$ apt-cache rdepends tree
+tree
+Reverse Depends:
+  pass
+  sisu-complete
+  sisu
+  pypass
+  progress-linux-desktop
+  pass
+  mle
+  inxi
+  hollywood
+  gopass
+  creddump7
+  bfh-desktop
+  inxi
+  sisu-complete
+  sisu
+  pypass
+  progress-linux-desktop
+  gopass
+  mle
+  keyringer
+  inxi
+  hollywood
+```
+
+### Ejercicio 13 apt
+
+> ¿Cómo procederías para encontrar el paquete al que pertenece un determinado fichero?
+
 ```shell
 
-```
+
+
+
+
+
+
+
+
+    14. ¿Que procedimientos emplearías para liberar la caché en cuanto a descargas de paquetería?
+
+    15. Realiza la instalación del paquete keyboard-configuration pasando previamente los valores de los parámetros de configuración como variables de entorno.
+
+    16. Reconfigura el paquete locales de tu equipo, añadiendo una localización que no exista previamente. Comprueba a modificar las variables de entorno correspondientes para que la sesión del usuario utilice otra localización.
+
+    17. Interrumpe la configuración de un paquete y explica los pasos a dar para continuar la instalación.
+
+    18. Explica la instrucción que utilizarías para hacer una actualización completa de todos los paquetes de tu sistema de manera completamente no interactiva
+
+    19. Bloquea la actualización de determinados paquetes.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
