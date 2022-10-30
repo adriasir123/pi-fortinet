@@ -35,7 +35,7 @@ end
 
 ## Trabajo con ficheros .deb
 
-### Ejercicio 1
+### Ejercicio 1 deb
 
 > Descargar un paquete sin instalarlo
 
@@ -116,7 +116,7 @@ drwx------ 2 vagrant vagrant  4096 Oct 29 15:19 .ssh
 -rw-r--r-- 1 vagrant vagrant 49636 Aug  6  2019 tree_1.8.0-1+b1_amd64.deb
 ```
 
-### Ejercicio 2
+### Ejercicio 2 deb
 
 > Listar el contenido de un paquete deb
 
@@ -182,7 +182,7 @@ tree: /usr/share/doc/tree/copyright
 tree: /usr/share/man/man1/tree.1.gz
 ```
 
-### Ejercicio 3
+### Ejercicio 3 deb
 
 #### 3.1
 
@@ -376,15 +376,272 @@ Vemos que tenemos el binario, las páginas man...etc.
 
 ## Trabajo con repositorios
 
+### Ejercicio 1 repos
+
+> Añadir a `sources.list` los repositorios bullseye-backports y sid
+
+Al estar usando una máquina Vagrant los repositorios de `bullseye-backports` los tengo ya, y sólo tendría que añadir los de sid.
+
+Dejo `/etc/apt/sources.list` de la siguiente manera:
+
+```shell
+vagrant@paqueteria:~$ cat /etc/apt/sources.list
+deb https://deb.debian.org/debian bullseye main
+deb-src https://deb.debian.org/debian bullseye main
+
+deb https://security.debian.org/debian-security bullseye-security main
+deb-src https://security.debian.org/debian-security bullseye-security main
+
+deb https://deb.debian.org/debian bullseye-updates main
+deb-src https://deb.debian.org/debian bullseye-updates main
+
+# Backports
+
+deb https://deb.debian.org/debian bullseye-backports main
+deb-src https://deb.debian.org/debian bullseye-backports main
+
+# Unstable
+
+deb https://deb.debian.org/debian unstable main
+deb-src https://deb.debian.org/debian unstable main
+```
+
+Si queremos que estos cambios se apliquen, tenemos que hacer:
+
+```shell
+sudo apt update
+```
+
+### Ejercicio 2 repos
+
+> Configurar apt para que los paquetes de bullseye tengan mayor prioridad
+
+Creo el fichero `/etc/apt/preferences`, que no existe por defecto:
+
+```shell
+sudo nano /etc/apt/preferences
+```
+
+Con el siguiente contenido:
+
+```shell
+Package: *
+Pin: release n=bullseye
+Pin-Priority: 600
+```
+
+Hago la prueba con un paquete para ver cuál sería el candidato y mostrar de paso las prioridades cambiadas:
+
+```shell
+vagrant@paqueteria:/etc/apt$ apt policy htop
+htop:
+  Installed: (none)
+  Candidate: 3.0.5-7
+  Version table:
+     3.2.1-1 500
+        500 https://deb.debian.org/debian unstable/main amd64 Packages
+     3.0.5-7 600
+        600 https://deb.debian.org/debian bullseye/main amd64 Packages
+```
+
+### Ejercicio 3 repos
+
+> Configurar apt para que los paquetes de bullseye-backports tengan mayor prioridad que los de unstable
+
+Si no tocamos nada, vemos que por defecto unstable tiene mayor prioridad que bullseye-backports:
+
+```shell
+vagrant@paqueteria:~$ apt policy 7zip
+7zip:
+  Installed: (none)
+  Candidate: 22.01+dfsg-4
+  Version table:
+     22.01+dfsg-4 500
+        500 https://deb.debian.org/debian unstable/main amd64 Packages
+     22.01+dfsg-2~bpo11+1 100
+        100 https://deb.debian.org/debian bullseye-backports/main amd64 Packages
+```
+
+Así que para modificarlo, dejo `/etc/apt/preferences` de la siguiente manera:
+
+```shell
+Package: *
+Pin: release n=bullseye
+Pin-Priority: 600
+
+Package: *
+Pin: release n=bullseye-backports
+Pin-Priority: 550
+```
+
+Vemos los cambios:
+
+```shell
+vagrant@paqueteria:~$ apt policy 7zip
+7zip:
+  Installed: (none)
+  Candidate: 22.01+dfsg-2~bpo11+1
+  Version table:
+     22.01+dfsg-4 500
+        500 https://deb.debian.org/debian unstable/main amd64 Packages
+     22.01+dfsg-2~bpo11+1 550
+        550 https://deb.debian.org/debian bullseye-backports/main amd64 Packages
+```
+
+### Ejercicio 4 repos
+
+> Añadir la arquitectura i386
+
+```shell
+sudo dpkg --add-architecture i386
+sudo apt update
+```
+
+> Listar arquitecturas no nativas
+
+```shell
+vagrant@paqueteria:~$ dpkg --print-foreign-architectures
+i386
+```
+
+> Eliminar la arquitectura i386
+
+```shell
+sudo dpkg --remove-architecture i386
+sudo apt update
+```
+
+### Ejercicio 5 repos
+
+> Mostrar todas las versiones disponibles de un paquete
+
+Existen varias maneras que iré mostrando.
+
+Con `apt policy`:
+
+```shell
+vagrant@paqueteria:~$ apt policy htop
+htop:
+  Installed: (none)
+  Candidate: 3.0.5-7
+  Version table:
+     3.2.1-1 500
+        500 https://deb.debian.org/debian unstable/main amd64 Packages
+     3.0.5-7 600
+        600 https://deb.debian.org/debian bullseye/main amd64 Packages
+```
+
+Con `apt-show-versions`:
+
+```shell
+vagrant@paqueteria:~$ apt-show-versions htop
+htop:amd64 not installed
+```
+
+Esta manera tiene una gran desventaja y es como vemos, sólo muestra las versiones de lo que está instalado. Si lo instalamos, entonces sí veríamos la versión:
+
+```shell
+vagrant@paqueteria:~$ apt-show-versions htop
+htop:amd64/bullseye 3.0.5-7 uptodate
+```
+
+Pero aún así, no vemos las demás versiones que podamos tener disponibles a no ser que las instalemos, así que esta manera me parece un poco incompleta.
+
+Con `apt-cache madison`:
+
+```shell
+vagrant@paqueteria:~$ apt-cache madison htop
+      htop |    3.2.1-1 | https://deb.debian.org/debian unstable/main amd64 Packages
+      htop |    3.0.5-7 | https://deb.debian.org/debian bullseye/main amd64 Packages
+      htop |    3.0.5-7 | https://deb.debian.org/debian bullseye/main Sources
+      htop |    3.2.1-1 | https://deb.debian.org/debian unstable/main Sources
+```
+
+Con `apt-cache showpkg`:
+
+```shell
+vagrant@paqueteria:~$ apt-cache showpkg htop
+Package: htop
+Versions:
+3.2.1-1 (/var/lib/apt/lists/deb.debian.org_debian_dists_unstable_main_binary-amd64_Packages)
+ Description Language:
+                 File: /var/lib/apt/lists/deb.debian.org_debian_dists_bullseye_main_binary-amd64_Packages
+                  MD5: 8eb5aa19b3c92a975dc78e2165f6688d
+ Description Language: en
+                 File: /var/lib/apt/lists/deb.debian.org_debian_dists_bullseye_main_i18n_Translation-en
+                  MD5: 8eb5aa19b3c92a975dc78e2165f6688d
+ Description Language:
+                 File: /var/lib/apt/lists/deb.debian.org_debian_dists_unstable_main_binary-amd64_Packages
+                  MD5: 8eb5aa19b3c92a975dc78e2165f6688d
+
+3.0.5-7 (/var/lib/apt/lists/deb.debian.org_debian_dists_bullseye_main_binary-amd64_Packages)
+ Description Language:
+                 File: /var/lib/apt/lists/deb.debian.org_debian_dists_bullseye_main_binary-amd64_Packages
+                  MD5: 8eb5aa19b3c92a975dc78e2165f6688d
+ Description Language: en
+                 File: /var/lib/apt/lists/deb.debian.org_debian_dists_bullseye_main_i18n_Translation-en
+                  MD5: 8eb5aa19b3c92a975dc78e2165f6688d
+ Description Language:
+                 File: /var/lib/apt/lists/deb.debian.org_debian_dists_unstable_main_binary-amd64_Packages
+                  MD5: 8eb5aa19b3c92a975dc78e2165f6688d
 
 
+Reverse Depends:
+  education-common,htop
+  progress-linux-base-system,htop
+  live-task-extra,htop
+  hollywood,htop
+  freedombox,htop
+  education-common,htop
+  bfh-base-system,htop
+  freedombox,htop
+  progress-linux-base-system,htop
+  live-task-extra,htop
+  hollywood,htop
+  freedombox,htop
+Dependencies:
+3.2.1-1 - libc6 (2 2.33) libncursesw6 (2 6) libnl-3-200 (2 3.2.7) libnl-genl-3-200 (2 3.2.7) libtinfo6 (2 6) lm-sensors (0 (null)) lsof (0 (null)) strace (0 (null))
+3.0.5-7 - libc6 (2 2.29) libncursesw6 (2 6) libnl-3-200 (2 3.2.7) libnl-genl-3-200 (2 3.2.7) libtinfo6 (2 6) lm-sensors (0 (null)) lsof (0 (null)) strace (0 (null))
+Provides:
+3.2.1-1 -
+3.0.5-7 -
+Reverse Provides:
+```
 
+### Ejercicio 6 repos
 
+> Comandos para descargar un paquete de stable
 
+```shell
+sudo apt install -t stable <paquete>
+sudo apt install <paquete>/stable
+```
 
+### Ejercicio 7 repos
 
+> Comandos para descargar un paquete de bullseye-backports
 
+```shell
+sudo apt install -t bullseye-backports <paquete>
+sudo apt install <paquete>/bullseye-backports
+```
 
+### Ejercicio 8 repos
+
+> Comandos para descargar un paquete de sid
+
+```shell
+sudo apt install -t unstable <paquete>
+sudo apt install <paquete>/unstable
+```
+
+### Ejercicio 9 repos
+
+> Comando para descargar un paquete de arquitectura i386
+
+```shell
+sudo apt install <paquete>:i386
+```
 
 ## Trabajo con directorios
 
