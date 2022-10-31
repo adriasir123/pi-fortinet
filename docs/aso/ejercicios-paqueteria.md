@@ -614,53 +614,49 @@ Reverse Depends:
 
 ### Ejercicio 13 apt
 
-> ¿Cómo procederías para encontrar el paquete al que pertenece un determinado fichero?
+> Mostrar el paquete al que pertenece un fichero
+
+`man dpkg` nos dice:
 
 ```shell
-
+           -S, --search filename-search-pattern...
+               Search for a filename from installed packages.
 ```
 
+Así que hacemos:
 
+```shell
+dpkg -S <ruta-al-binario>
+```
 
+Ejemplo:
 
+```shell
+vagrant@paqueteria:~$ dpkg -S /bin/ls
+coreutils: /bin/ls
+```
 
+### Ejercicio 14 apt
 
+> Liberar la caché de la paquetería
 
-    14. ¿Que procedimientos emplearías para liberar la caché en cuanto a descargas de paquetería?
+`man apt-get` nos dice:
 
-    15. Realiza la instalación del paquete keyboard-configuration pasando previamente los valores de los parámetros de configuración como variables de entorno.
+```shell
+       clean
+           clean clears out the local repository of retrieved package files. It removes everything but the lock file from /var/cache/apt/archives/ and
+           /var/cache/apt/archives/partial/.
+```
 
-    16. Reconfigura el paquete locales de tu equipo, añadiendo una localización que no exista previamente. Comprueba a modificar las variables de entorno correspondientes para que la sesión del usuario utilice otra localización.
+Así que hacemos:
 
-    17. Interrumpe la configuración de un paquete y explica los pasos a dar para continuar la instalación.
+```shell
+sudo apt clean
+```
 
-    18. Explica la instrucción que utilizarías para hacer una actualización completa de todos los paquetes de tu sistema de manera completamente no interactiva
+### Ejercicio 15 apt
 
-    19. Bloquea la actualización de determinados paquetes.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+> Realiza la instalación del paquete keyboard-configuration pasando previamente los valores de los parámetros de configuración como variables de entorno
 
 
 
@@ -668,6 +664,169 @@ Reverse Depends:
 
 
 
+### Ejercicio 16 apt
+
+> Reconfigura el paquete locales de tu equipo, añadiendo una localización que no exista previamente. Comprueba a modificar las variables de entorno correspondientes para que la sesión del usuario utilice otra localización.
+
+
+
+
+
+### Ejercicio 17 apt
+
+> Interrumpir la instalación de un paquete y explicar los pasos para continuar la instalación
+
+Para crear esta situación puedo forzar el apagado de la máquina vagrant durante la instalación de `mariadb-server`:
+
+![forcedfailmariadb](https://i.postimg.cc/0QCFj5zm/forcefailmariadb.gif)
+
+Si volvemos a levantar la máquina e intentamos seguir con la instalación, nos encontramos con el siguiente error:
+
+```shell
+vagrant@paqueteria:~$ sudo apt install mariadb-server
+E: dpkg was interrupted, you must manually run 'sudo dpkg --configure -a' to correct the problem.
+```
+
+Hacemos lo que nos dice:
+
+```shell
+vagrant@paqueteria:~$ sudo dpkg --configure -a
+Setting up libconfig-inifiles-perl (3.000003-1) ...
+Setting up galera-4 (26.4.11-0+deb11u1) ...
+Setting up gawk (1:5.1.0-1) ...
+Setting up psmisc (23.4-2) ...
+Setting up libsnappy1v5:amd64 (1.1.8-1) ...
+Setting up socat (1.7.4.1-3) ...
+Setting up libmariadb3:amd64 (1:10.5.15-0+deb11u1) ...
+Setting up libdbi-perl:amd64 (1.643-3+b1) ...
+Setting up rsync (3.2.3-4+deb11u1) ...
+Created symlink /etc/systemd/system/multi-user.target.wants/rsync.service → /lib/systemd/system/rsync.service.
+Setting up mariadb-server-core-10.5 (1:10.5.15-0+deb11u1) ...
+Setting up mariadb-client-core-10.5 (1:10.5.15-0+deb11u1) ...
+Setting up mariadb-client-10.5 (1:10.5.15-0+deb11u1) ...
+Processing triggers for man-db (2.9.4-2) ...
+Processing triggers for libc-bin (2.31-13+deb11u4) ...
+```
+
+Ya podríamos volver a instalar:
+
+```shell
+vagrant@paqueteria:~$ sudo apt install mariadb-server
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+The following additional packages will be installed:
+  galera-4 gawk libcgi-fast-perl libcgi-pm-perl libclone-perl libconfig-inifiles-perl libdbd-mariadb-perl libdbi-perl libencode-locale-perl libfcgi-bin
+  libfcgi-perl libfcgi0ldbl libhtml-parser-perl libhtml-tagset-perl libhtml-template-perl libhttp-date-perl libhttp-message-perl libio-html-perl
+  liblwp-mediatypes-perl libmariadb3 libmpfr6 libsigsegv2 libsnappy1v5 libterm-readkey-perl libtimedate-perl liburi-perl mariadb-client-10.5
+  mariadb-client-core-10.5 mariadb-common mariadb-server-10.5 mariadb-server-core-10.5 mysql-common psmisc rsync socat
+Suggested packages:
+  gawk-doc libmldbm-perl libnet-daemon-perl libsql-statement-perl libdata-dump-perl libipc-sharedcache-perl libwww-perl mailx mariadb-test netcat-openbsd
+The following NEW packages will be installed:
+  galera-4 gawk libcgi-fast-perl libcgi-pm-perl libclone-perl libconfig-inifiles-perl libdbd-mariadb-perl libdbi-perl libencode-locale-perl libfcgi-bin
+  libfcgi-perl libfcgi0ldbl libhtml-parser-perl libhtml-tagset-perl libhtml-template-perl libhttp-date-perl libhttp-message-perl libio-html-perl
+  liblwp-mediatypes-perl libmariadb3 libmpfr6 libsigsegv2 libsnappy1v5 libterm-readkey-perl libtimedate-perl liburi-perl mariadb-client-10.5
+  mariadb-client-core-10.5 mariadb-common mariadb-server mariadb-server-10.5 mariadb-server-core-10.5 mysql-common psmisc rsync socat
+0 upgraded, 36 newly installed, 0 to remove and 18 not upgraded.
+Need to get 19.7 MB of archives.
+After this operation, 162 MB of additional disk space will be used.
+Do you want to continue? [Y/n] y
+Get:1 https://deb.debian.org/debian bullseye/main amd64 libmpfr6 amd64 4.1.0-3 [2012 kB]
+Get:2 https://deb.debian.org/debian bullseye/main amd64 libsigsegv2 amd64 2.13-1 [34.8 kB]
+Get:3 https://deb.debian.org/debian bullseye/main amd64 gawk amd64 1:5.1.0-1 [605 kB]
+Get:4 https://deb.debian.org/debian bullseye/main amd64 mysql-common all 5.8+1.0.7 [7464 B]
+Get:5 https://deb.debian.org/debian bullseye/main amd64 mariadb-common all 1:10.5.15-0+deb11u1 [36.7 kB]
+Get:6 https://deb.debian.org/debian bullseye/main amd64 galera-4 amd64 26.4.11-0+deb11u1 [804 kB]
+Get:7 https://deb.debian.org/debian bullseye/main amd64 libdbi-perl amd64 1.643-3+b1 [780 kB]
+Get:8 https://deb.debian.org/debian bullseye/main amd64 libconfig-inifiles-perl all 3.000003-1 [52.1 kB]
+Get:9 https://deb.debian.org/debian bullseye/main amd64 libmariadb3 amd64 1:10.5.15-0+deb11u1 [176 kB]
+Get:10 https://deb.debian.org/debian bullseye/main amd64 mariadb-client-core-10.5 amd64 1:10.5.15-0+deb11u1 [783 kB]
+Get:11 https://deb.debian.org/debian bullseye/main amd64 mariadb-client-10.5 amd64 1:10.5.15-0+deb11u1 [1509 kB]
+Get:12 https://deb.debian.org/debian bullseye/main amd64 libsnappy1v5 amd64 1.1.8-1 [17.9 kB]
+Get:13 https://deb.debian.org/debian bullseye/main amd64 mariadb-server-core-10.5 amd64 1:10.5.15-0+deb11u1 [6689 kB]
+Get:14 https://deb.debian.org/debian bullseye/main amd64 psmisc amd64 23.4-2 [198 kB]
+Get:15 https://deb.debian.org/debian bullseye/main amd64 rsync amd64 3.2.3-4+deb11u1 [396 kB]
+Get:16 https://deb.debian.org/debian bullseye/main amd64 socat amd64 1.7.4.1-3 [370 kB]
+Get:17 https://deb.debian.org/debian bullseye/main amd64 mariadb-server-10.5 amd64 1:10.5.15-0+deb11u1 [4260 kB]
+Get:18 https://deb.debian.org/debian bullseye/main amd64 libhtml-tagset-perl all 3.20-4 [13.0 kB]
+  mariadb-server
+The following packages will be upgraded:
+  mariadb-server-10.5
+1 upgraded, 1 newly installed, 0 to remove and 18 not upgraded.
+1 not fully installed or removed.
+Need to get 0 B/4295 kB of archives.
+After this operation, 66.9 MB of additional disk space will be used.
+Do you want to continue? [Y/n] y
+Reading changelogs... Done
+Preconfiguring packages ...
+(Reading database ... 25893 files and directories currently installed.)
+Preparing to unpack .../mariadb-server-10.5_1%3a10.5.15-0+deb11u1_amd64.deb ...
+Unpacking mariadb-server-10.5 (1:10.5.15-0+deb11u1) over (1:10.5.15-0+deb11u1) ...
+Selecting previously unselected package mariadb-server.
+Preparing to unpack .../mariadb-server_1%3a10.5.15-0+deb11u1_all.deb ...
+Unpacking mariadb-server (1:10.5.15-0+deb11u1) ...
+Setting up mariadb-server-10.5 (1:10.5.15-0+deb11u1) ...
+Created symlink /etc/systemd/system/multi-user.target.wants/mariadb.service → /lib/systemd/system/mariadb.service.
+Setting up mariadb-server (1:10.5.15-0+deb11u1) ...
+Processing triggers for man-db (2.9.4-2) ...
+```
+
+### Ejercicio 18 apt
+
+> Actualizar todos los paquetes de manera no interactiva
+
+`man apt-get` nos dice:
+
+```shell
+       -y, --yes, --assume-yes
+           Automatic yes to prompts; assume "yes" as answer to all prompts and run non-interactively. If an undesirable situation, such as changing a held
+           package, trying to install an unauthenticated package or removing an essential package occurs then apt-get will abort. Configuration Item:
+           APT::Get::Assume-Yes.
+```
+
+Así que tenemos 2 maneras:
+
+```shell
+sudo apt update && sudo apt upgrade -y
+sudo apt update && sudo apt dist-upgrade -y
+```
+
+La primera manera conlleva menos riesgo que la segunda, y lo único que podría parar la "no interactividad" sería un menú de debconf u otras situaciones excepcionales.
+
+[Ejemplo de uso de la primera manera](https://gist.github.com/adriasir123/004ec6396a998c4edd9d57d3a2fdd8af)
+
+[Ejemplo de uso de la segunda manera](https://gist.github.com/adriasir123/9c3b7c4e356851dce9f0c6bcc942f04e)
+
+### Ejercicio 19 apt
+
+> Bloquear la actualización de ciertos paquetes
+
+`man apt-mark` nos dice:
+
+```shell
+       hold
+           hold is used to mark a package as held back, which will prevent the package from being automatically installed, upgraded or removed.
+```
+
+Así que hacemos:
+
+```shell
+sudo apt-mark hold <paquete>
+```
+
+Ejemplo:
+
+```shell
+vagrant@paqueteria:~$ sudo apt-mark hold tree
+tree set on hold.
+```
+
+Podemos mostrar la lista de paquetes que tenemos en "hold":
+
+```shell
+vagrant@paqueteria:~$ apt-mark showhold
+tree
+```
 
 ## Trabajo con ficheros .deb
 
