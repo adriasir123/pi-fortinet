@@ -63,6 +63,8 @@ Reading state information... Done
 18 packages can be upgraded. Run 'apt list --upgradable' to see them.
 ```
 
+El resultado se almacena en `/var/lib/apt/lists/`.
+
 > Explicar lo que sucede al hacer `sudo apt upgrade`
 
 `man apt` nos dice lo siguiente:
