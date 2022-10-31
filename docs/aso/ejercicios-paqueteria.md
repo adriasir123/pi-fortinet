@@ -535,7 +535,7 @@ Conf runit-helper (2.15.0 Debian:unstable [all])
 
 ### Ejercicio 10 apt
 
-> Mostrar comando que liste los bugs de un paquete
+> Listar los bugs de un paquete
 
 ```shell
 sudo apt install apt-listbugs
@@ -1424,7 +1424,7 @@ vagrant@paqueteria:~$ apt-show-versions htop
 htop:amd64 not installed
 ```
 
-Esta manera tiene una gran desventaja y es como vemos, sólo muestra las versiones de lo que está instalado. Si lo instalamos, entonces sí veríamos la versión:
+Esta manera tiene una gran desventaja y es que como vemos, sólo muestra las versiones de lo que está instalado. Si lo instalamos, entonces sí veríamos la versión:
 
 ```shell
 vagrant@paqueteria:~$ apt-show-versions htop
