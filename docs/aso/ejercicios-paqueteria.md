@@ -559,11 +559,40 @@ Summary:
 
 ### Ejercicio 11 apt
 
-> Después de realizar un apt update && apt upgrade. Si quisieras actualizar únicamente los paquetes que tienen de cadena openssh. ¿Qué procedimiento seguirías?. Realiza esta acción, con las estructuras repetitivas que te ofrece bash, así como con el comando xargs.
+> Realizar una actualización completa de la paquetería
 
+```shell
+sudo apt update && sudo apt upgrade
+```
 
+> Actualizar los paquetes que contienen la cadena openssh
 
+```shell
+sudo apt upgrade *openssh*
+```
 
+El proceso es largo, así que [mostraré como ejemplo](https://gist.github.com/adriasir123/bfd22429bf7da069b65b4d049119812c) lo que aparece antes de confirmar.
+
+> Hacer lo mismo pero con un for en bash
+
+Tenemos que ejecutar el siguiente script con sudo:
+
+```shell
+#!/bin/bash
+
+pkgnames=$(apt-cache pkgnames openssh)
+
+for i in $pkgnames
+do
+   apt upgrade $i
+done
+```
+
+> Hacer lo mismo pero con xargs
+
+```shell
+apt-cache pkgnames openssh | xargs sudo apt upgrade -y
+```
 
 ### Ejercicio 12 apt
 
@@ -656,21 +685,81 @@ sudo apt clean
 
 ### Ejercicio 15 apt
 
-> Realiza la instalación del paquete keyboard-configuration pasando previamente los valores de los parámetros de configuración como variables de entorno
+> Instalar el paquete `keyboard-configuration` automáticamente pasando parámetros con debconf
 
+Instalo `debconf-utils`:
 
+```shell
+sudo apt install debconf-utils
+```
 
+Instalo una primera vez `keyboard-configuration` sin pasarle parámetros para poder obtener su configuración:
 
+```shell
+sudo apt install keyboard-configuration
+```
 
+Exporto las "selections" a un fichero:
 
+```shell
+sudo debconf-get-selections | grep keyboard-configuration > selections.conf
+```
+
+Desinstalo `keyboard-configuration`:
+
+```shell
+sudo apt purge keyboard-configuration
+```
+
+Paso los parámetros del fichero a debconf:
+
+```shell
+sudo debconf-set-selections < selections.conf
+```
+
+Al volver a instalar el paquete, los parámetros evitarán las preguntas de debconf:
+
+![keyboardautomatico](https://i.postimg.cc/jSTT3xD7/keyboardnopreguntas.gif)
 
 ### Ejercicio 16 apt
 
-> Reconfigura el paquete locales de tu equipo, añadiendo una localización que no exista previamente. Comprueba a modificar las variables de entorno correspondientes para que la sesión del usuario utilice otra localización.
+> Mostrar la configuración de locales actual
 
+```shell
+vagrant@paqueteria:~$ localectl
+   System Locale: LANG=C.UTF-8
+       VC Keymap: n/a
+      X11 Layout: es
+       X11 Model: pc105
+```
 
+> Reconfigurar el paquete locales, añadiendo una nueva locale
 
+```shell
+sudo dpkg-reconfigure locales
+```
 
+![añadolocales](https://i.imgur.com/7oHofdu.png)
+
+![defaultlocale](https://i.imgur.com/I2y3vgO.png)
+
+Compruebo que ha funcionado:
+
+```shell
+vagrant@paqueteria:~$ localectl
+   System Locale: LANG=es_ES.UTF-8
+       VC Keymap: n/a
+      X11 Layout: es
+       X11 Model: pc105
+```
+
+Existen algunas otras variables que podemos usar:
+
+```shell
+export LANGUAGE=es_ES.UTF-8
+export LANG=es_ES.UTF-8
+export LC_ALL=es_ES.UTF-8
+```
 
 ### Ejercicio 17 apt
 
