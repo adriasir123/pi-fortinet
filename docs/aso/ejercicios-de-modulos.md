@@ -116,11 +116,24 @@ Tras reiniciar, no puedo inicar máquinas de kvm por ejemplo:
 
 ## Ejercicio 6
 
-> Carga el módulo loop, obtén información de qué es y para qué sirve. Lista el contenido de /sys/modules/loop/parameters y configura el equipo para que se puedan cargar como máximo 12 dispositvos loop la próxima vez que se arranque.
+> Cargar el módulo loop, obtén información de qué es y para qué sirve
+
+```shell
+sudo modprobe loop
+```
+
+Sirve para montar ficheros como si fueran sistemas de archivos.
+
+> Lista el contenido de /sys/module/loop/parameters y configura el equipo para que se puedan cargar como máximo 12 dispositvos loop la próxima vez que se arranque.
+
+ ✘ atlas@olympus  ~  ls -la /sys/module/loop/parameters
+.r--r--r-- root root 4.0 KB Thu Nov  3 14:34:40 2022  max_loop
+.r--r--r-- root root 4.0 KB Thu Nov  3 14:34:40 2022  max_part
+drwxr-xr-x root root   0 B  Thu Nov  3 14:34:40 2022  .
+drwxr-xr-x root root   0 B  Thu Nov  3 14:32:27 2022  ..
 
 
-
-
+Modifico `/sys/module/loop/parameters/max_loop` a 12
 
 
 
