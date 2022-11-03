@@ -87,6 +87,7 @@ nav:
             - 'Instalación Debian 11 preseed': 'aso/debian11_automatico.md'
             - 'Compilación programas C': 'aso/compilacion-programas-c.md'
             - 'Ejercicios de paquetería': 'aso/ejercicios-paqueteria.md'
+            - 'Ejercicios de módulos': 'aso/ejercicios-de-modulos.md'
         - BD:
             - 'Prueba inicial': 'bd/prueba-inicial.md'
         - HLC:
