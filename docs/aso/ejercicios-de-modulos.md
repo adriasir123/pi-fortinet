@@ -10,17 +10,19 @@ Podemos hacer:
 lsmod
 ```
 
+[Output](https://gist.github.com/adriasir123/b3232f0a2e96adc0405718a26757de43)
+
 O también:
 
 ```shell
-less /proc/modules
+cat /proc/modules
 ```
 
-[Output](https://gist.github.com/adriasir123/b3232f0a2e96adc0405718a26757de43)
+[Output](https://gist.github.com/adriasir123/3d8b114c08aba31f489fb1cbecebd3db)
 
 ## Ejercicio 2
 
-> Contar el número de módulos disponibles en el núcleo que estás usando
+> Contar el número de módulos disponibles en el núcleo
 
 ```shell
  atlas@olympus  ~  find /lib/modules/$(uname -r)/kernel -type f -iname '*.ko' | wc -l
@@ -29,78 +31,91 @@ less /proc/modules
 
 ## Ejercicio 3
 
-> Conectar USB y observa la salida de la instrucción sudo dmesg
+> Monitorizar con `sudo dmesg -wH` la conexión de un pendrive
 
 ```shell
 sudo dmesg -wH
 ```
 
-GIF para que se vean los cambios:
+Muestro los cambios:
 
-![gifdmesg](https://i.postimg.cc/Dw2J1tHH/dmesgusb.gif)
+![dmesgpendrive](https://i.postimg.cc/Dw2J1tHH/dmesgusb.gif)
 
 ## Ejercicio 4
 
 > Elegir un módulo no esencial
 
-Elijo el módulo `lp`.
+Elijo `kvm_intel`
 
 > Comprobar que está actualmente cargado
 
 ```shell
- atlas@olympus  ~  lsmod | grep -w 'lp'
-lp                     20480  0
+ atlas@olympus  ~  lsmod | grep -w 'kvm_intel'
+kvm_intel             331776  0
+kvm                   937984  1 kvm_intel
 ```
 
-> Eliminar el módulo
+> Descargar el módulo
 
 ```shell
-sudo modprobe -r lp
+sudo modprobe -r kvm_intel
 ```
 
 > Comprobar qué ocurre
 
+Ya no nos aparece en el listado:
+
 ```shell
- atlas@olympus  ~  lsmod | grep -w 'lp'
+ atlas@olympus  ~  lsmod | grep -w 'kvm_intel'
  ✘ atlas@olympus  ~ 
 ```
 
-Ya no nos aparece en el listado.
+Además, como es lógico, KVM dejará de funcionar:
+
+![kvmsinfuncionar](https://i.imgur.com/ymImfRA.png)
 
 > Volver a cargarlo
 
 ```shell
-sudo modprobe lp
+sudo modprobe kvm_intel
 ```
 
 Compruebo que vuelve a aparecer en el listado:
 
 ```shell
- atlas@olympus  ~  lsmod | grep -w 'lp'
-lp                     20480  0
+ atlas@olympus  ~  lsmod | grep -w 'kvm_intel'
+kvm_intel             331776  0
+kvm                   937984  1 kvm_intel
 ```
+
+KVM volverá a funcionar:
+
+![kvmfuncionando](https://i.imgur.com/UNgHHw1.png)
 
 ## Ejercicio 5
 
-> Selecciona un módulo que esté en uso en tu equipo y configura el arranque para que no se cargue automáticamente
+> Elegir un módulo que esté en uso
 
-Creo el fichero `/etc/modprobe.d/kvm_intel.conf` y `/etc/modprobe.d/kvm.conf`:
+Elijo `kvm_intel` y compruebo que está cargado:
+
+```shell
+ atlas@olympus  ~  lsmod | grep -w 'kvm_intel'
+kvm_intel             331776  0
+kvm                   937984  1 kvm_intel
+```
+
+> Configurar el arranque para que no se cargue automáticamente
+
+Creo el siguiente fichero:
 
 ```shell
 sudo nano /etc/modprobe.d/kvm_intel.conf
-sudo nano /etc/modprobe.d/kvm.conf
 ```
 
 Con los contenidos:
 
 ```shell
 blacklist kvm_intel
-```
-
-Y:
-
-```shell
-blacklist kvm
 ```
 
 Ejecuto:
@@ -110,9 +125,9 @@ sudo depmod -ae
 sudo update-initramfs -u
 ```
 
-Tras reiniciar, no puedo inicar máquinas de kvm por ejemplo:
+Tras reiniciar, por ejemplo, no puedo iniciar máquinas de KVM:
 
-![nofuncionakvm](https://i.imgur.com/ymImfRA.png)
+![kvmsinfuncionar](https://i.imgur.com/ymImfRA.png)
 
 ## Ejercicio 6
 
