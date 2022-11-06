@@ -98,6 +98,7 @@ nav:
                 - 'Taller 4': 'hlc/taller4-virtualizacion.md'
                 - 'Taller 5': 'hlc/taller5-virtualizacion.md'
                 - 'Taller 6': 'hlc/taller6-virtualizacion.md'
+                - 'Práctica': 'hlc/practica-virtualizacion.md'
 markdown_extensions:
   - pymdownx.highlight:
       anchor_linenums: true
