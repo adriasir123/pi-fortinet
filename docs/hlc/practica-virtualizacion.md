@@ -193,7 +193,7 @@ ssh -i script debian@192.168.123.49
 reboot
 ```
 
-### Reducción imagen base
+### Reducción de imagen base
 
 > Utilizar `virt-sparsify` para reducir el tamaño de la imagen
 
