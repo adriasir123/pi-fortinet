@@ -12,7 +12,7 @@
 
 > Indicar los pasos para crear la imagen base
 
-En el [siguiente apartado](#creación-de-imagen-base) se explica.
+En el [siguiente apartado](#creacion-de-imagen-base) se explica.
 
 ### Parte 3
 
