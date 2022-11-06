@@ -4,32 +4,51 @@
 
 ### Parte 1
 
-> Entrega la URL del repositorio GitHub donde has alojado el proyecto
+> URL del repositorio GitHub
 
 <https://github.com/adriasir123/script-virtualizacion>
 
+### Parte 2
 
+> Indicar los pasos para crear la imagen base
 
+En el [siguiente apartado](#creación-de-imagen-base) se explica.
 
 ### Parte 3
 
-> Entrega la clave privada que has utilizado y un enlace para descargarme la imagen base
+> Entregar la clave privada y un enlace para descargar la imagen base
 
-Está en el repositorio
+Todo se encuentra en el repositorio.
 
+### Parte 4
 
+> Ejecutar el script y cuando se pause mostrar captura accediendo al servidor web de maquina1
 
+![primeraccesoweb](https://i.imgur.com/Zk4QsbM.png)
 
+### Parte 5
 
+> Mostrar captura accediendo al servidor web con la IP pública al terminar el script
 
+![accesowebpublico](https://i.imgur.com/kWEaKA2.png)
 
+### Parte 6
 
+> Mostrar captura del disco montado en /var/www/html
 
+![vdbmontado](https://i.imgur.com/Dt4L5jf.png)
 
+> Mostrar captura de los 2G de RAM que tiene la máquina
 
+![2gram](https://i.imgur.com/LCz8ocv.png)
 
+> Mostrar captura accediendo al contenedor
 
+![accesocontenedor](https://i.imgur.com/0bwTXsT.png)
 
+> Mostrar captura de la snapshot creada
+
+![snapshot](https://i.imgur.com/oNxoXZu.png)
 
 ## Creación de imagen base
 
@@ -214,37 +233,10 @@ Y la imagen original:
 rm bullseye-base.qcow2
 ```
 
-
-
-
-
-
 ## Script
 
+Se encuentra en [este repositorio](https://github.com/adriasir123/script-virtualizacion), y allí encontrarás también el enlace para descargar la imagen base sparse.
 
+[Aquí](https://gist.github.com/adriasir123/dc9d3330cf0b95600180f7c5148396bf) puedes ver el output completo del script cuando no hay nada creado.
 
-
-
-
-
-virt-install --connect qemu:///system \
-             --virt-type kvm \
-             --name test \
-             --os-variant debian10 \
-             --network network=red-script-1 \
-             --network network=red-script-2 \
-             --disk maquina1.qcow2 \
-             --import \
-             --memory 2048 \
-             --vcpus 2
-
-
-
-
-
-
-
-
-
-
-
+[Aquí](https://gist.github.com/adriasir123/ba84ee8bae04e280229cd45d584190b9) puedes ver el output completo del script cuando todo está creado.
