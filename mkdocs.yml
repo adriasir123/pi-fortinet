@@ -90,6 +90,7 @@ nav:
             - 'Ejercicios de módulos': 'aso/ejercicios-de-modulos.md'
         - BD:
             - 'Prueba inicial': 'bd/prueba-inicial.md'
+            - 'Práctica 1': 'bd/p1-servidores-clientes.md'
         - HLC:
             - Virtualización en Linux:
                 - 'Taller 1': 'hlc/taller1-virtualizacion.md'
