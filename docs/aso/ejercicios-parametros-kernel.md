@@ -46,7 +46,7 @@ drm                   626688  3 drm_kms_helper,cirrus
 Modifico la siguiente línea de `/etc/default/grub` así:
 
 ```shell
-GRUB_CMDLINE_LINUX_DEFAULT="net.ifnames=0 biosdevname=0 nomodeset" # (1)
+GRUB_CMDLINE_LINUX_DEFAULT="net.ifnames=0 biosdevname=0 nomodeset" # (1)!
 ```
 
 1. Añado nomodeset al final
