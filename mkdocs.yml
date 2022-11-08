@@ -1,6 +1,8 @@
 site_name: conocimiento-en-bits
 theme:
   name: 'material'
+  features:
+    - content.code.annotate 
   palette:
     - scheme: default
       primary: indigo
@@ -88,6 +90,7 @@ nav:
             - 'Compilación programas C': 'aso/compilacion-programas-c.md'
             - 'Ejercicios de paquetería': 'aso/ejercicios-paqueteria.md'
             - 'Ejercicios de módulos': 'aso/ejercicios-de-modulos.md'
+            - 'Compilación de Kernel': 'aso/compilacion-kernel.md'
         - BD:
             - 'Prueba inicial': 'bd/prueba-inicial.md'
             - 'Práctica 1': 'bd/p1-servidores-clientes.md'
