@@ -87,10 +87,12 @@ nav:
         - ASO:
             - 'Instalación Debian 11': 'aso/instalacion_debian11.md'
             - 'Instalación Debian 11 preseed': 'aso/debian11_automatico.md'
-            - 'Compilación programas C': 'aso/compilacion-programas-c.md'
             - 'Ejercicios de paquetería': 'aso/ejercicios-paqueteria.md'
-            - 'Ejercicios de módulos': 'aso/ejercicios-de-modulos.md'
-            - 'Compilación de Kernel': 'aso/compilacion-kernel.md'
+            - Kernel:
+                - 'Compilación programas C': 'aso/compilacion-programas-c.md'
+                - 'Ejercicios de módulos': 'aso/ejercicios-de-modulos.md'
+                - 'Ejercicios de parámetros': 'aso/ejercicios-parametros-kernel.md'
+                - 'Compilación de Kernel': 'aso/compilacion-kernel.md'
         - BD:
             - 'Prueba inicial': 'bd/prueba-inicial.md'
             - 'Práctica 1': 'bd/p1-servidores-clientes.md'
