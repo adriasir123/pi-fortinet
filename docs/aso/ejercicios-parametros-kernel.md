@@ -7,7 +7,7 @@
 Muestro el estado de apparmor:
 
 ```shell
-vagrant@parametroskernel:~$ cat /sys/module/apparmor/parameters/enabled
+ atlas@olympus  ~  cat /sys/module/apparmor/parameters/enabled
 Y
 ```
 
@@ -24,7 +24,7 @@ sudo reboot
 Compruebo que se ha deshabilitado:
 
 ```shell
-vagrant@parametroskernel:~$ cat /sys/module/apparmor/parameters/enabled
+ atlas@olympus  ~  cat /sys/module/apparmor/parameters/enabled
 N
 ```
 
@@ -37,16 +37,16 @@ N = deshabilitado
 Compruebo que tengo KMS activado:
 
 ```shell
-vagrant@parametroskernel:~$ lsmod | grep kms
-drm_kms_helper        278528  3 cirrus
-cec                    61440  1 drm_kms_helper
-drm                   626688  3 drm_kms_helper,cirrus
+ atlas@olympus  ~  lsmod | grep kms
+drm_kms_helper        278528  2 i915,nouveau
+cec                    61440  2 drm_kms_helper,i915
+drm                   626688  13 drm_kms_helper,i915,ttm,nouveau
 ```
 
 Modifico la siguiente línea de `/etc/default/grub`:
 
 ```shell
-GRUB_CMDLINE_LINUX_DEFAULT="net.ifnames=0 biosdevname=0 nomodeset" # (1)!
+GRUB_CMDLINE_LINUX_DEFAULT="quiet nomodeset" # (1)!
 ```
 
 1. Añado nomodeset al final
@@ -128,19 +128,95 @@ sudo swapon -a
 
 ## Ejercicio 4
 
-> Haz que el cambio de la swappiness sea permanente
+> Hacer permanente el cambio de la swappiness
 
+```shell
+sudo bash -c 'echo "vm.swappiness=10" >> /etc/sysctl.conf'
+```
 
+Recargo la configuración:
 
+```shell
+sudo sysctl -p
+```
 
+Compruebo que el valor ha cambiado:
 
+```shell
+ atlas@olympus  ~  sudo sysctl vm.swappiness
+vm.swappiness = 10
+```
 
+## Ejercicio 5
 
+> Mostrar el valor del bit de forward IPv6
 
-    Muestra el valor del bit de forward para IPv6.
-    Deshabilita completamente las Magic Sysrq en el arranque y vuelve a habilitarlas después de reiniciar.
+```shell
+ atlas@olympus  ~  sudo sysctl net.ipv6.conf.all.forwarding
+net.ipv6.conf.all.forwarding = 0
+```
 
+## Ejercicio 6
 
+> Deshabilitar completamente el Magic SysRq en el arranque y volver a habilitarlo después de reiniciar
 
+Compruebo que por defecto está habilitado:
 
+```shell
+ atlas@olympus  ~  cat /proc/sys/kernel/sysrq
+438
+```
 
+También puedo comprobar que funciona haciendo la siguiente secuencia de acciones:
+
+1. Pulsar Ctrl + Alt + Fn a la vez
+2. Pulsar la tecla SysRq (imp pant / pet sis) con la otra mano
+3. Soltar Ctrl + Alt + Fn mientras que se sigue pulsando la tecla SysRq
+4. Pulsar las teclas R, E, I, S, U, B consecutivamente
+5. Soltar todas las teclas
+
+Lo deshabilito permanentemente:
+
+```shell
+sudo bash -c 'echo "kernel.sysrq=0" >> /etc/sysctl.conf'
+```
+
+Recargo la configuración:
+
+```shell
+sudo sysctl -p
+```
+
+Compruebo que el valor ha cambiado:
+
+```shell
+ atlas@olympus  ~  sudo sysctl kernel.sysrq
+kernel.sysrq = 0
+```
+
+A partir de ahora ya no funcionará el Magic SysRq incluso tras reiniciar:
+
+```shell
+sudo reboot
+```
+
+Lo vuelvo a habilitar:
+
+```shell
+sudo sed -i 's/kernel.sysrq=0/kernel.sysrq=438/g' /etc/sysctl.conf
+```
+
+Recargo la configuración:
+
+```shell
+sudo sysctl -p
+```
+
+Compruebo que el valor ha cambiado:
+
+```shell
+ atlas@olympus  ~  sudo sysctl kernel.sysrq
+kernel.sysrq = 438
+```
+
+Ya volvería a funcionar el Magic SysRq.
