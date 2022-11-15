@@ -1,12 +1,14 @@
 # Compilación de Kernel
 
-entrega finalmente el fichero deb con el kérnel compilado por ti.
+Conseguir un kernel lo más pequeño posible que tenga como mínimo:
 
-El hardware básico incluye como mínimo el teclado, la interfaz de red y la consola gráfica (texto).
+- Teclado
+- Conexión de red
+- Pantalla
 
 ## Pasos previos
 
-Dejo mi `/etc/apt/sources.list` de la siguiente manera:
+Dejo `/etc/apt/sources.list` de la siguiente manera:
 
 ```shell
 sudo nano /etc/apt/sources.list
@@ -30,7 +32,7 @@ Actualizo e instalo paquetes:
 
 ```shell
 sudo apt update
-sudo apt install linux-source=6.0.3-1~bpo11+1 build-essential qtbase5-dev
+sudo apt install linux-source=6.0.3-1~bpo11+1 build-essential qtbase5-dev libncurses-dev
 ```
 
 ## Base de compilación
@@ -43,43 +45,56 @@ sudo apt install linux-source=6.0.3-1~bpo11+1 build-essential qtbase5-dev
  atlas@olympus  ~/kernel 
 ```
 
-## Configuración de compilación
+## Personalización de compilación
 
-Reduzco el `.config` con **solo** los módulos actualmente activados:
+Reduzco el `.config` actual con **solo** los módulos actualmente cargados:
 
 ```shell
 make localmodconfig
 ```
 
-Modifico la siguiente línea en el `Makefile` para hacer un versionado de las compilaciones:
+Modifico la siguiente línea en el `Makefile` para empezar un versionado de compilaciones marcando con una tag los paquetes generados:
+
+```shell
+nano Makefile
+```
 
 ```shell
 EXTRAVERSION = -v1
 ```
 
-Para personalizar al máximo la compilación, uso el siguiente menú:
+Para elegir qué módulos quitar y cuáles dejar, uso el siguiente menú:
 
 ```shell
 make nconfig
 ```
 
-Cuando una compilación funcione, me copio el .config en el directorio padre:
-
-```shell
-cp .config ../.configv1
-```
-
 ## Compilación
+
+Podemos hacerla de la manera simple:
 
 ```shell
 make -j 12 bindeb-pkg
 ```
 
-Si queremos controlar el tiempo de compilación, ejecutamos de la siguiente manera:
+O de la manera completa:
 
 ```shell
-time make -j 12 bindeb-pkg
+time make -j 12 bindeb-pkg && ( speaker-test -t sine -f 500 )& pid=$! ; sleep 0.5s ; kill -9 $pid # (1)!
 ```
+
+1. Obtendremos la duración completa de ejecución al finalizar y un pitido por los altavoces de aviso
+
+
+Nos mostrará 
+
+Si queremos controlar el tiempo de compilación, ejecutamos de la siguiente manera:
+
+
+
+
+
+
 
 Los ficheros deb generados se encontrarán en el directorio padre:
 
@@ -96,7 +111,7 @@ drwxr-xr-x atlas atlas 4.0 KB Thu Nov 10 13:40:20 2022  linux-source-6.0
 drwxr-xr-x atlas atlas 269 B  Thu Nov 10 13:41:00 2022  .
 ```
 
-make clean para hacer una nueva compilación
+make -j12 clean para hacer una nueva compilación
 
 ## Instalación
 
@@ -112,6 +127,30 @@ sudo dpkg -P linux-image-4.19.67-compile_4.19.67-compile-9_amd64.deb
 
 
 
+## Proceso de reducción
+
+Cuando una compilación funcione, me copio el .config en el directorio padre:
+
+```shell
+cp .config ../.configv1
+```
+
+
+
+
+
+
+
+
+
+
+
+
+## Entregas
+
+
+entrega finalmente el fichero deb con el kérnel compilado por ti.
+
 
 make clean
 
@@ -122,10 +161,8 @@ Tamaño en bytes de vmlinuz: 3502640
 
 
 
-grep =y .config | wc -l
 cat .config | grep "=y" | wc -l
 
-grep =m .config | wc -l
 cat .config | grep "=m" | wc -l
 
 
@@ -134,6 +171,31 @@ cat .config | grep "=m" | wc -l
 []()
 
 
+
+
+
+
+
+
+
+https://github.com/adriasir123/kernel-config-backups
+
+
+
+
+
+
+cat .config | grep "=y" | wc -l
+
+
+
+sudo dpkg -i linux-image
+
+make -j 12 clean
+
+
+
+## Conclusiones
 
 
 

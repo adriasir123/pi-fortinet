@@ -1,8 +1,6 @@
-# Prueba inicial
+# PLSQL Apuntes
 
-## Ejercicio 5
-
-> 
+## Ejercicio 5 
 
 Recibe un nombre de usuario y devuelve su tablespace por defecto (DBA_USERS):
 
@@ -182,13 +180,39 @@ exception
 lo último que va a haber en el bloque de exception
 
 update y tal no levanta excepciones tengo que hacer sql not found
+```
+
+## Triggers
+
+Before: algún tipo de comprobación sobre inserción de datos...etc
+
+Vista actualizable: si contiene todos los campos obligatorios de las tablas con las que se creó la vista
+
+Eventos que hacen ejecutar un trigger: Insert, update, delete, combinación
+
+Tipos de dispario:
+
+- Por sentencia: impedir que alguien meta cosa a partir de las 15:00 (los datos a insertar no son importantes)
+- Por fila: 
+
+No pueden haber commits y rollback en los triggers
+
+
+
+```sql
+select 'HOLA '||ename
+from emp;
+
+
+
+select 'CREATE USER '||ename||'IDENTIFIED BY '||ename||';'
+from emp
 
 
 
 
+```
 
-
-
-
+Triggers de sistema: after logon, before logoff, insert...
 
 
