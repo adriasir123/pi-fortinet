@@ -80,21 +80,12 @@ make -j 12 bindeb-pkg
 O de la manera completa:
 
 ```shell
-time make -j 12 bindeb-pkg && ( speaker-test -t sine -f 500 )& pid=$! ; sleep 0.5s ; kill -9 $pid # (1)!
+time make -j 12 bindeb-pkg && ( speaker-test -t sine -f 500 )& pid=$! ; sleep 0.5s ; kill -9 $pid
 ```
 
-1. Obtendremos la duración completa de ejecución al finalizar y un pitido por los altavoces de aviso
+!!! info
 
-
-Nos mostrará 
-
-Si queremos controlar el tiempo de compilación, ejecutamos de la siguiente manera:
-
-
-
-
-
-
+    Al finalizar, con la manera completa, obtendremos la duración de la compilación  y un pitido por los altavoces de aviso
 
 Los ficheros deb generados se encontrarán en el directorio padre:
 
@@ -110,8 +101,6 @@ drwxr-xr-x atlas atlas 4.0 KB Thu Nov 10 13:40:20 2022  linux-source-6.0
 .rw-r--r-- atlas atlas 1.8 KB Thu Nov 10 13:41:00 2022  linux-upstream_6.0.3-v1-1_amd64.changes
 drwxr-xr-x atlas atlas 269 B  Thu Nov 10 13:41:00 2022  .
 ```
-
-make -j12 clean para hacer una nueva compilación
 
 ## Instalación
 
@@ -136,6 +125,7 @@ cp .config ../.configv1
 ```
 
 
+make -j12 clean para hacer una nueva compilación
 
 
 
