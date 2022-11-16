@@ -2,8 +2,6 @@
 
 ## Configuración y compilación del núcleo linux 1
 
-<https://www.youtube.com/watch?v=xMYq2nae-94>
-
 <iframe width="1252" height="704" src="https://www.youtube.com/embed/xMYq2nae-94" title="Configuración y compilación del núcleo linux (1)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ```shell
@@ -152,7 +150,7 @@ drwxr-xr-x 29 vagrant vagrant    4096 Nov  8 01:07 linux-source-6.0
 
 ## Configuración y compilación del núcleo linux 2
 
-<https://www.youtube.com/watch?v=iDgtcLsI5FU>
+<iframe width="1252" height="704" src="https://www.youtube.com/embed/iDgtcLsI5FU" title="Configuración y compilación del núcleo linux (2)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 Conteo de módulos:
 
