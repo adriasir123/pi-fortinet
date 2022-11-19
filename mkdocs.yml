@@ -106,6 +106,8 @@ nav:
                 - 'Taller 5': 'hlc/taller5-virtualizacion.md'
                 - 'Taller 6': 'hlc/taller6-virtualizacion.md'
                 - 'Práctica': 'hlc/practica-virtualizacion.md'
+            - OpenStack:
+                - 'Taller 1': 'hlc/ taller1-cliente-vpn.md'
 markdown_extensions:
   - pymdownx.highlight:
       anchor_linenums: true
