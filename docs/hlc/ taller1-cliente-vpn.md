@@ -115,7 +115,7 @@ log /var/log/openvpn-sputnik.log
 verb 1
 ```
 
-## Reinicio de OpenVPN
+### Reinicio de OpenVPN
 
 ```shell
 sudo systemctl restart openvpn
