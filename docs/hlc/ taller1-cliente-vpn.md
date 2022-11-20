@@ -66,7 +66,7 @@ Lo subo aquí: <https://dit.gonzalonazareno.org/gestiona/cert/>
 
 ![descargacrt](https://i.imgur.com/Tk2xNky.png)
 
-Lo muevo al directorio correto:
+Lo muevo al directorio correcto:
 
 ```shell
 sudo mv ~/Downloads/olympus.crt /etc/openvpn
