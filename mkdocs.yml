@@ -118,6 +118,11 @@ markdown_extensions:
   - pymdownx.superfences
   - admonition
   - pymdownx.details
+extra_css:
+  - stylesheets/asciinema-player.css
+extra_javascript:
+  - javascripts/asciinema-player.min.js
 plugins:
   - glightbox
   - search
+  - mkdocs-asciinema
