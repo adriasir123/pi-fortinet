@@ -94,6 +94,8 @@ nav:
                 - 'Ejercicios de parámetros': 'aso/ejercicios-parametros-kernel.md'
                 - 'Compilación programas C': 'aso/compilacion-programas-c.md'
                 - 'Compilación de Kernel': 'aso/compilacion-kernel.md'
+            - Red Hat:
+                - 'Migración CentOS': 'aso/migracion-centos.md'
         - BD:
             - 'Prueba inicial': 'bd/prueba-inicial.md'
             - 'Práctica 1': 'bd/p1-servidores-clientes.md'
