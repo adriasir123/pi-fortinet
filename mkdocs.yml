@@ -118,3 +118,4 @@ markdown_extensions:
   - pymdownx.details
 plugins:
   - glightbox
+  - search

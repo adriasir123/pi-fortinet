@@ -216,3 +216,11 @@ from emp
 Triggers de sistema: after logon, before logoff, insert...
 
 
+## 21/11/2022
+
+Si quiero que un usuario sólo pueda ver determinadas filas de una tabla, tengo que crear una vista con las filas que quiero que vea.
+Sobre esa tabla le doy permisos de select a ese usuario.
+
+
+
+
