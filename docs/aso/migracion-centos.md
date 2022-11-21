@@ -1,6 +1,8 @@
 # Migración CentOS
 
-![asciicast](/asciinema/test1)
+![asciicast](https://asciinema.org/a/F4PIQDfbV34f8tU6yyXGkvsaA)
+
+<script id="asciicast-F4PIQDfbV34f8tU6yyXGkvsaA" src="https://asciinema.org/a/F4PIQDfbV34f8tU6yyXGkvsaA.js" async></script>
 
 Debido al anuncio del fin de soporte por parte de Red Hat de Centos8 el pasado 31 de diciembre de 2021, y teniendo en cuentas que el fin de vida de centos 7 está programada para el 30 de junio de 2024. Han salido múltiples distribuciones que cubren el hueco dejado por esta distribución tan extendida y tan usada en el ámbito de servidores.
 
