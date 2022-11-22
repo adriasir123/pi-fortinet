@@ -24,23 +24,13 @@ Como hemos podido ver, no hay buenos ni malos en esta historia, puesto que Red H
 
 > Decir tu opinión
 
-Mi opinión: han puesto fin al desarrollo de CentOS, que ahora se ha bifurcado en CentOS Linux y CentOS Stream. La última versión de CentOS Linux es la 7 que terminará su soporte en 2024, y ya no habrá más de este tipo, y se seguirá con CentOS Stream, que es la versión de desarrollo de RHEL. Esto es una mala noticia para los usuarios de CentOS, ya que no podrán seguir usando CentOS Linux, y tendrán que migrar a otra distribución, como RHEL, o a otra distribución basada en RHEL, como Oracle Linux o Rocky Linux.
+Mi opinión es bastante neutra, ya que puedo entender ambos puntos de vista.
 
+Red Hat tenía que mantener algo que no les devolvía beneficios, y encima no les era de utilidad. Ahora por lo menos le darán una nueva utilidad a CentOS que les servirá para tener ideas que implementar en futuras versiones de RHEL, su produto principal. Es decir, CentOS Stream ahora nutrirá directamente a RHEL, cosa que antes no pasaba, RHEL nutría a CentOS. Además ha sido una gran táctica comercial para obligar a las empresas a pasarse a RHEL.
 
+Por otro lado, la comunidad de CentOS tenía una buena distribución que se les ha quitado de manera brusca, además de haber sido un movimiento bastante sucio por parte de Red Hat. Ellos prometían en torno a 10 años de soporte para CentOS 8 como venía siendo de costumbre en las releases de CentOS, pero lo redujeron a 2 años con solo 1 año de margen para que la gente se planteara la migración. Hay que tener en cuenta que este problema ha sido más grande de lo que en principio parece, ya que CentOS era muy usado por grandes empresas como Amazon y Facebook. Al transformarlo en un proyecto de upstream, de desarrollo, han eliminado la principal razón por la que la gente usaba CentOS, y es la gran estabilidad que aportaba.
 
-
-En mi opinión es un movimiento sucio, pero como compraron CentOS realmente pueden hacer lo que quieran y al fin y al cabo en el mundo del software libre nada se pierde para la siempre si la gente lo quiere seguir utilizando y manteniendo, y se acabarán haciendo forks del proyecto (como ha pasado)
-
-
-usados por empresas grandes incluso por amazon por ejemplo. Al volver CentOS un proyecto de upstream, de desarrollo, se han cargado la principal razón por la que la gente usaba centos, y es una táctica comercial de red hat para que la gente se pase a su sistema operativo, que es RHEL, y que es de pago.
-
-
-CentOS era muy usado por grandes empresas como Amazon y Facebook, así que no les supondría un gran problema migrar a RHEL y Red Hat habría hecho un gran negocio.
-
-
-
-
-
+La buena noticia es que estamos en el mundo del software libre, y algo no muere si la comunidad no quiere. Se han acabado haciendo forks del proyecto, como era de esperar, y se han creado nuevas distribuciones que mantienen la filosofía de CentOS, como Rocky Linux y AlmaLinux.
 
 ## Ejercicio 2
 
