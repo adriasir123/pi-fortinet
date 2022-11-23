@@ -5,6 +5,7 @@
 > explicando la configuración necesaria en ambos extremos y demostrando su funcionamiento.
 
 test1
+test2
 
 ```shell
 
