@@ -34,7 +34,27 @@ La buena noticia es que estamos en el mundo del software libre, y algo no muere 
 
 ## Ejercicio 2
 
-> Crea una cuenta en Red Hat y descárgate la iso de Red Hat Enterprise Linux (RHEL) y evalúa el producto. Comenta el procedimiento de alta.
+> Crear una cuenta en Red Hat y descargar la iso de RHEL
+
+<https://developers.redhat.com/products/rhel/download>
+
+![redhat1](https://i.imgur.com/rRF5O1s.png)
+
+![redhat2](https://i.imgur.com/o86bxE4.png)
+
+![redhat3](https://i.imgur.com/PRYaDw4.png)
+
+![redhat4](https://i.imgur.com/jMIkKU5.png)
+
+![redhat5](https://i.imgur.com/XvRKxvD.png)
+
+![redhat6](https://i.imgur.com/nGM7YnJ.png)
+
+![redhat7](https://i.imgur.com/EM3l7jA.png)
+
+![redhat8](https://i.imgur.com/0e3NY0S.png)
+
+> Evaluar el producto
 
 
 
@@ -49,7 +69,10 @@ La buena noticia es que estamos en el mundo del software libre, y algo no muere 
 
 
 
-3. Descarga la iso de CentOS Stream y evalúa el producto.
+
+## Ejercicio 3
+
+> Descarga la iso de CentOS Stream y evalúa el producto.
 
 
 
