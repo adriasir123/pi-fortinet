@@ -290,8 +290,6 @@ Muestro que efectivamente esa es la IP de `servidorpostgresql1`:
 
 ## Oracle ⇆ PostgreSQL
 
-> Realizar un enlace entre un servidor ORACLE y otro Postgres o MySQL empleando Heterogeneus Services, explicando la configuración necesaria en ambos extremos y demostrando su funcionamiento.
-
 ### `servidororacle1` → `servidorpostgresql1`
 
 Instalo el driver para la conexión con PostgreSQL:
@@ -622,57 +620,24 @@ CREATE FOREIGN TABLE DEPT (
 SERVER servidororacle1 OPTIONS (schema 'SCOTT', table 'DEPT');
 ```
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Muestro la tabla `DEPT` remota usando el enlace:
+Compruebo que se ha creado:
 
 ```sql
-select * from dblink('servidorpostgresql1','select * from bibliotecas') as object_list(id integer, ciudad varchar, calle varchar);
+postgres=# select * from information_schema.foreign_tables;
+ foreign_table_catalog | foreign_table_schema | foreign_table_name | foreign_server_catalog | foreign_server_name
+-----------------------+----------------------+--------------------+------------------------+---------------------
+ postgres              | public               | dept               | postgres               | servidororacle1
+(1 row)
 ```
 
-![bibliotecaspostgres1](https://i.imgur.com/ZxD89CN.png)
+!!! info
 
+    Una FOREIGN TABLE existe localmente en PostgreSQL pero muestra datos remotos usando un FDW. En este caso, `oracle_fdw`.
 
+Muestro la tabla `DEPT` remota:
 
+```sql
+select * from DEPT;
+```
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+![deptoracle1](https://i.imgur.com/f5QFfuG.png)
