@@ -491,7 +491,11 @@ Descomprimo:
 sudo unzip -d /opt/oracle instantclient-sdk-linux.x64-21.8.0.0.0dbru.zip
 ```
 
-Añado la siguiente variable a `~/.bashrc`:
+Añado la siguiente variable a `.bashrc`:
+
+```shell
+sudo nano ~/.bashrc
+```
 
 ```shell
 export ORACLE_HOME=/opt/oracle/instantclient_21_8
@@ -524,10 +528,30 @@ make
 sudo make install
 ```
 
+Dejo `ld.so.conf` de la siguiente manera:
+
+```shell
+sudo nano /etc/ld.so.conf
+```
+
+```shell
+include /etc/ld.so.conf.d/*.conf
+
+/opt/oracle/instantclient_21_8
+/usr/share/postgresql/13/extension
+```
+
+Aplico los cambios y reinicio PostgreSQL:
+
+```shell
+sudo ldconfig
+sudo systemctl restart postgresql
+```
+
 Añado la extensión necesaria:
 
 ```sql
-postgres=# create extension dblink;
+postgres=# CREATE EXTENSION oracle_fdw;
 CREATE EXTENSION
 ```
 
@@ -535,18 +559,19 @@ Compruebo que se ha añadido:
 
 ```shell
 postgres=# \dx
-                                 List of installed extensions
-  Name   | Version |   Schema   |                         Description
----------+---------+------------+--------------------------------------------------------------
- dblink  | 1.2     | public     | connect to other PostgreSQL databases from within a database
- plpgsql | 1.0     | pg_catalog | PL/pgSQL procedural language
-(2 rows)
+                                   List of installed extensions
+    Name    | Version |   Schema   |                         Description
+------------+---------+------------+--------------------------------------------------------------
+ dblink     | 1.2     | public     | connect to other PostgreSQL databases from within a database
+ oracle_fdw | 1.2     | public     | foreign data wrapper for Oracle access
+ plpgsql    | 1.0     | pg_catalog | PL/pgSQL procedural language
+(3 rows)
 ```
 
-Creo el "Foreign server" apuntando a `servidorpostgresql1`:
+Creo el "Foreign server" apuntando a `servidororacle1`:
 
 ```sql
-postgres=# CREATE SERVER servidorpostgresql1 FOREIGN DATA WRAPPER dblink_fdw OPTIONS ( host '10.0.1.2' , dbname 'bibliofilos' , port '5432');
+postgres=# CREATE SERVER servidororacle1 FOREIGN DATA WRAPPER oracle_fdw OPTIONS (dbserver '//192.168.121.211:1521/ORCLCDB');
 CREATE SERVER
 ```
 
@@ -560,8 +585,9 @@ Compruebo que se ha creado:
                                                                      List of foreign servers
         Name         |  Owner   | Foreign-data wrapper | Access privileges | Type | Version |                     FDW options                      | Description
 ---------------------+----------+----------------------+-------------------+------+---------+------------------------------------------------------+-------------
- servidorpostgresql1 | postgres | dblink_fdw           |                   |      |         | (host '10.0.1.2', dbname 'bibliofilos', port '5432') |
-(1 row)
+ servidororacle1     | postgres | oracle_fdw           |                   |      |         | (dbserver '//192.168.121.211:1521/ORCLCDB')          |
+ servidorpostgresql2 | postgres | dblink_fdw           |                   |      |         | (host '10.0.1.3', dbname 'bibliofilos', port '5432') |
+(2 rows)
 
 (END)
 ```
@@ -569,7 +595,7 @@ Compruebo que se ha creado:
 Creo el "USER MAPPING":
 
 ```sql
-postgres=# CREATE USER MAPPING FOR postgres SERVER servidorpostgresql1 OPTIONS ( user 'bibliofilos_admin' , password '1234');
+postgres=# CREATE USER MAPPING FOR postgres SERVER servidororacle1 OPTIONS (user 'SCOTT', password 'tiger');
 CREATE USER MAPPING
 ```
 
@@ -580,21 +606,39 @@ postgres=# \deu+
                               List of user mappings
        Server        | User name |                  FDW options
 ---------------------+-----------+-----------------------------------------------
- servidorpostgresql1 | postgres  | ("user" 'bibliofilos_admin', password '1234')
-(1 row)
+ servidororacle1     | postgres  | ("user" 'SCOTT', password 'tiger')
+ servidorpostgresql2 | postgres  | ("user" 'bibliofilos_admin', password '1234')
+(2 rows)
 ```
 
-Pruebo la conexión:
+Creo una foreign table para probar el funcionamiento:
 
 ```sql
-postgres=# SELECT dblink_connect('my_new_conn1', 'servidorpostgresql1');
- dblink_connect
-----------------
- OK
-(1 row)
+CREATE FOREIGN TABLE DEPT (
+    DEPTNO      integer OPTIONS (key 'true') NOT NULL,
+    DNAME       varchar(14),
+    LOC         varchar(13)
+)
+SERVER servidororacle1 OPTIONS (schema 'SCOTT', table 'DEPT');
 ```
 
-Muestro la tabla `bibliotecas` remota usando el enlace:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Muestro la tabla `DEPT` remota usando el enlace:
 
 ```sql
 select * from dblink('servidorpostgresql1','select * from bibliotecas') as object_list(id integer, ciudad varchar, calle varchar);
@@ -602,23 +646,15 @@ select * from dblink('servidorpostgresql1','select * from bibliotecas') as objec
 
 ![bibliotecaspostgres1](https://i.imgur.com/ZxD89CN.png)
 
-Compruebo que **sin usar el enlace** estoy en `servidorpostgresql2`:
 
-![sinenlace](https://i.imgur.com/Ncjdype.png)
 
-No obtengo IP y esto es correcto, ya que estoy conectado localmente usando un socket Unix, y no se usan IPs.
 
-Compruebo que **usando el enlace** estoy en `servidorpostgresql1`:
 
-```sql
-select * from dblink('servidorpostgresql1','select inet_server_addr();') as object_list(ip varchar);
-```
 
-![conenlace](https://i.imgur.com/m1AeaH7.png)
 
-Muestro que efectivamente esa es la IP de `servidorpostgresql1`:
 
-![ipservidorpostgresql1](https://i.imgur.com/CIuUM5r.png)
+
+
 
 
 
