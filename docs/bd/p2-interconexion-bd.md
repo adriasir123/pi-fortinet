@@ -475,7 +475,7 @@ Muestro la tabla `libros` remota usando el enlace:
 
 ### `servidorpostgresql1` → `servidororacle1`
 
-Instalo el cliente de Oracle [según mi propia documentación de la práctica 1](https://www.servidoresclientes.ga/ri/alumno1/#18-instalacion-del-cliente).
+Instalo el cliente de Oracle [siguiendo mi propia documentación de la práctica 1](https://www.servidoresclientes.ga/ri/alumno1/#18-instalacion-del-cliente).
 
 Descargo el paquete SDK del cliente de Oracle:
 
