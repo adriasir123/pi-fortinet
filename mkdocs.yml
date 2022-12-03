@@ -100,6 +100,7 @@ nav:
             - 'Prueba inicial': 'bd/prueba-inicial.md'
             - 'Práctica 1': 'bd/p1-servidores-clientes.md'
             - 'Práctica 2': 'bd/p2-interconexion-bd.md'
+            - 'Examen prácticas 1 y 2': 'bd/examen-practicas-1-2.md'
         - HLC:
             - Virtualización en Linux:
                 - 'Taller 1': 'hlc/taller1-virtualizacion.md'
