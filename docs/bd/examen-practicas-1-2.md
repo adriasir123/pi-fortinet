@@ -64,17 +64,161 @@ sudo docker run --add-host localhost:0.0.0.0 --publish 5000:5000 --rm samueltall
 
 ## Parte 2: Interconexiones
 
-### Apartado 2A
+### 2A
 
-> BD ORACLE llamada service name GN, en el esquema RAUL la tabla profesores antes creada
+#### En `servidororacle1`
 
-![sc8](https://i.imgur.com/7ouEUMq.png)
+> Conectar como `sys`
 
-![sc9](https://i.imgur.com/NunZOmL.png)
+```shell
+sqlplus / as sysdba
+```
 
-![sc10](https://i.imgur.com/Mgg0sxK.png)
+> Crear el usuario `raul` con privilegios
 
-![sc11](https://i.imgur.com/FhlNurq.png)
+```sql
+SQL>
+create user raul identified by 1234;
+
+User created.
+
+grant all privileges to raul;
+
+Grant succeeded.
+```
+
+> Cambiar a este usuario
+
+```sql
+connect raul/1234
+```
+
+> Crear la tabla `profesores`
+
+```sql
+CREATE TABLE profesores (
+  DNI NUMBER(10) NOT NULL,
+  Nombre VARCHAR2(50) NOT NULL,
+  CONSTRAINT profesores_pk PRIMARY KEY (DNI)
+);
+
+Table created.
+```
+
+> Insertar registros
+
+```sql
+INSERT INTO profesores VALUES (28888888, 'Raul Ruiz Padilla');
+
+1 row created.
+
+INSERT INTO profesores VALUES (27777777, 'Rafael Luengo Sanz');
+
+1 row created.
+```
+
+> Comprobar que se han insertado
+
+```sql
+SELECT * FROM profesores;
+
+       DNI NOMBRE
+---------- --------------------------------------------------
+  28888888 Raul Ruiz Padilla
+  27777777 Rafael Luengo Sanz
+```
+
+> Mostrar el `SERVICE_NAME` actual
+
+```sql
+show parameters service_name
+
+NAME		                             TYPE	 VALUE
+------------------------------------ ----------- ------------------------------
+service_names		                     string	 ORCLCDB
+```
+
+> Cambiarlo a `GN`
+
+```sql
+alter system set service_names = 'GN' scope = spfile;
+
+System altered.
+```
+
+> Reiniciar la bd
+
+```sql
+SHUTDOWN IMMEDIATE
+Database closed.
+Database dismounted.
+ORACLE instance shut down.
+STARTUP
+ORACLE instance started.
+
+Total System Global Area 1258287544 bytes
+Fixed Size	            9134520 bytes
+Variable Size	          788529152 bytes
+Database Buffers	  452984832 bytes
+Redo Buffers	            7639040 bytes
+Database mounted.
+Database opened.
+```
+
+> Comprobar que el `SERVICE_NAME` ha cambiado
+
+```sql
+show parameters service_name
+
+NAME		                             TYPE	 VALUE
+------------------------------------ ----------- ------------------------------
+service_names		                     string	 GN
+```
+
+> Modificar el fragmento correspondiente en `tnsnames.ora`
+
+```shell
+nano /opt/oracle/product/19c/dbhome_1/network/admin/tnsnames.ora
+```
+
+```shell
+GN=
+  (DESCRIPTION =
+    (ADDRESS_LIST =
+      (ADDRESS = (PROTOCOL = TCP)(HOST = servidororacle1)(PORT = 1521))
+    )
+    (CONNECT_DATA =
+      (SERVICE_NAME = GN)
+    )
+  )
+```
+
+#### En `servidorpostgresql1`
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 > Crear bd en postgres llamada GN2 con tabla asignaturas
 
@@ -88,7 +232,28 @@ sudo docker run --add-host localhost:0.0.0.0 --publish 5000:5000 --rm samueltall
 
 ![sc16](https://i.imgur.com/B6zCaSF.png)
 
-### Apartado 2B
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### 2B
 
 > Debes realizar una consulta desde un cliente ORACLE que muestre el nombre de las asignaturas y el del profesor que las imparte usando una interconexión entre ambos servidores
 
@@ -96,7 +261,7 @@ sudo docker run --add-host localhost:0.0.0.0 --publish 5000:5000 --rm samueltall
 
 ![sc18](https://i.imgur.com/s9Hk5sT.png)
 
-### Apartado 2C
+### 2C
 
 > Debes realizar una consulta desde un cliente Postgres que muestre el nombre de las asignaturas y el del profesor que las imparte usando una interconexión entre ambos servidores
 
