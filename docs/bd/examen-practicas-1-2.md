@@ -12,11 +12,6 @@
 
 ![raulmongo](https://i.imgur.com/8NBLxMR.png)
 
-
-
-
-
-
 ### 1B
 
 > Arrancar `MongoDB-PHP-GUI`
@@ -37,20 +32,22 @@ sudo docker run --add-host localhost:0.0.0.0 --publish 5000:5000 --rm samueltall
 
 ![docsinsert](https://i.imgur.com/2pm415B.png)
 
-
-
-
-
-
 ### 1C
 
-> Cambia la aplicación web de forma que si se loguea el usuario raul, pueda ver los datos de la tabla o colección profesores tras los cambios de los apartados a y b
+> Modificar la app web para loguear con el usuario `raul`, y ver los datos de la colección `profesores`
 
-![sc6](https://i.imgur.com/TT2fKXJ.png)
+![loginapp](https://i.imgur.com/TT2fKXJ.png)
 
-![sc7](https://i.imgur.com/ODFwOqg.png)
+![contenidoapp](https://i.imgur.com/ODFwOqg.png)
 
+!!! info
 
+    Durante el examen se ha creado la rama `examen`, que es donde se alojan estos cambios. La app original sigue estando intacta en `main`
+
+!!! warning
+
+    La app internamente se sigue logueando con admin, los usuarios que escribimos no "pertenecen a la base de datos". Son usuarios ficticios digamos.  
+    Sería interesante cambiar esto en un futuro
 
 
 
