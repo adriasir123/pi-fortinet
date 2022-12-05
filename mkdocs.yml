@@ -2,7 +2,9 @@ site_name: conocimiento-en-bits
 theme:
   name: 'material'
   features:
-    - content.code.annotate 
+    - content.code.annotate
+  icon:
+    logo: simple/linux
   palette:
     - scheme: default
       primary: indigo
