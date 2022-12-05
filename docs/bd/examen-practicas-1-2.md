@@ -182,6 +182,18 @@ GN=
 
 #### En `servidorpostgresql1`
 
+> Conectar como `postgres`
+
+```shell
+vagrant@servidorpostgresql1:~$ su - postgres
+Password:
+postgres@servidorpostgresql1:~$ psql
+psql (13.8 (Debian 13.8-0+deb11u1))
+Type "help" for help.
+
+postgres=#
+```
+
 > Crear una bd llamada `GN2`
 
 ```shell
