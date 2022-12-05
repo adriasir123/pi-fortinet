@@ -4,6 +4,7 @@ theme:
   features:
     - content.code.annotate
     - navigation.tabs
+    - navigation.sections
   icon:
     logo: material/linux
   palette:
