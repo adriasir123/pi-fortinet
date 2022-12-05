@@ -4,7 +4,7 @@ theme:
   features:
     - content.code.annotate
   icon:
-    logo: simple/linux
+    logo: material/linux
   palette:
     - scheme: default
       primary: indigo
