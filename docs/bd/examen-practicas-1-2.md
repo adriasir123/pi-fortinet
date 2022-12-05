@@ -49,19 +49,6 @@ sudo docker run --add-host localhost:0.0.0.0 --publish 5000:5000 --rm samueltall
     La app internamente se sigue logueando con admin, los usuarios que escribimos no "pertenecen a la base de datos". Son usuarios ficticios digamos.  
     Sería interesante cambiar esto en un futuro
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 ## Parte 2: Interconexiones
 
 ### 2A
@@ -225,14 +212,18 @@ You are now connected to database "gn2" as user "postgres".
 gn2=#
 ```
 
-> Crear la tabla `asignaturas` y comprobar que se ha creado
+> Crear la tabla `asignaturas`
 
 ```sql
-gn2=# CREATE TABLE asignaturas (
+CREATE TABLE asignaturas (
   Nombre VARCHAR(3) PRIMARY KEY,
   DNIprofesor integer NOT NULL
 );
-CREATE TABLE
+```
+
+Compruebo que se ha creado:
+
+```shell
 gn2=# \dt
             List of relations
  Schema |    Name     | Type  |  Owner
