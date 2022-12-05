@@ -402,50 +402,175 @@ ASO		                             Raul Ruiz Padilla
 ABD		                             Rafael Luengo Sanz
 ```
 
+### 2C `servidorpostgresql1` → `servidororacle1`
 
+> Cambiar `ORCLCDB` por `GN` en `tnsnames.ora`
 
+```shell
+sudo nano /opt/oracle/instantclient_21_8/network/admin/tnsnames.ora
+```
 
+```shell
+GN=
+  (DESCRIPTION =
+    (ADDRESS_LIST =
+      (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.121.211)(PORT = 1521))
+    )
+    (CONNECT_DATA =
+      (SERVICE_NAME = GN)
+    )
+  )
+```
 
+> Conectar como `postgres` a `gn2`:
 
+```shell
+vagrant@servidorpostgresql1:~$ su - postgres
+Password:
+postgres@servidorpostgresql1:~$ psql gn2
+psql (13.8 (Debian 13.8-0+deb11u1))
+Type "help" for help.
 
+gn2=#
+```
 
+> Añadir la extensión `oracle_fdw`
 
+```shell
+gn2=# CREATE EXTENSION oracle_fdw;
+CREATE EXTENSION
+```
 
+Compruebo que se ha añadido:
 
+```shell
+gn2=# \dx
+                        List of installed extensions
+    Name    | Version |   Schema   |              Description
+------------+---------+------------+----------------------------------------
+ oracle_fdw | 1.2     | public     | foreign data wrapper for Oracle access
+ plpgsql    | 1.0     | pg_catalog | PL/pgSQL procedural language
+(2 rows)
+```
 
+> Crear el "foreign server" apuntando a `servidororacle1`
 
+```sql
+gn2=# CREATE SERVER servidororacle1examen FOREIGN DATA WRAPPER oracle_fdw OPTIONS (dbserver '//192.168.121.211:1521/GN');
+CREATE SERVER
+```
 
+Compruebo que se ha creado:
 
+```shell
+gn2=# \des+
+                                                               List of foreign servers
+         Name          |  Owner   | Foreign-data wrapper | Access privileges | Type | Version |              FDW options               | Description
+-----------------------+----------+----------------------+-------------------+------+---------+----------------------------------------+-------------
+ servidororacle1examen | postgres | oracle_fdw           |                   |      |         | (dbserver '//192.168.121.211:1521/GN') |
+(1 row)
+```
 
+Le doy permisos de uso a `raul`:
 
+```sql
+gn2=# GRANT USAGE ON FOREIGN SERVER servidororacle1examen TO raul;
+GRANT
+```
 
+> Crear los "USER MAPPING"
 
+```sql
+gn2=# CREATE USER MAPPING FOR postgres SERVER servidororacle1examen OPTIONS (user 'raul', password '1234');
+CREATE USER MAPPING
+gn2=# CREATE USER MAPPING FOR raul SERVER servidororacle1examen OPTIONS (user 'raul', password '1234');
+CREATE USER MAPPING
+```
 
-### 2C
+Compruebo que se han creado:
 
-> Debes realizar una consulta desde un cliente Postgres que muestre el nombre de las asignaturas y el del profesor que las imparte usando una interconexión entre ambos servidores
+```shell
+gn2=# \deu+
+                        List of user mappings
+        Server         | User name |           FDW options
+-----------------------+-----------+----------------------------------
+ servidororacle1examen | postgres  | ("user" 'raul', password '1234')
+ servidororacle1examen | raul      | ("user" 'raul', password '1234')
+(2 rows)
+```
 
-![sc19](https://i.imgur.com/wVhohqs.png)
+> Crear la "foreign table" `profesores`
 
-CREATE FOREIGN TABLE profesores (
-    DNI         integer,
+```sql
+CREATE FOREIGN TABLE PROFESORES (
+    DNI         integer OPTIONS (key 'true') NOT NULL,
     NOMBRE      varchar(50) NOT NULL
 )
-SERVER servidororacle1 OPTIONS (schema 'raul', table 'profesores');
+SERVER servidororacle1examen OPTIONS (schema 'RAUL', table 'PROFESORES');
+```
 
-Todo el proceso de interconexión se hace conectado a la base de datos GN2
+Compruebo que se ha creado:
 
-SELECT *
-FROM oracle.profesores p, asignaturas a
-JOIN asignaturas a
-ON (p.dni = a.dniprofesor);
+```sql
+gn2=# select * from information_schema.foreign_tables;
+ foreign_table_catalog | foreign_table_schema | foreign_table_name | foreign_server_catalog |  foreign_server_name
+-----------------------+----------------------+--------------------+------------------------+-----------------------
+ gn2                   | public               | profesores         | gn2                    | servidororacle1examen
+(1 row)
+```
 
-select p.nombre, a.nombre
-from oracle.profesores p inner join
-asignaturas a on p.dni = a.dniprofesor;
+Le doy permisos a `raul` sobre la tabla:
 
+```sql
+gn2=# grant all on table profesores to raul;
+GRANT
+```
 
+> Cambiar al usuario `raul`
 
+```shell
+gn2=# set role raul;
+SET
+```
 
+Comprobar el cambio de usuario:
 
+```shell
+gn2=> select current_user, session_user;
+ current_user | session_user
+--------------+--------------
+ raul         | postgres
+(1 row)
+```
 
+> Mostrar la tabla `profesores` remota para hacer una primera prueba
+
+```sql
+gn2=> SELECT * FROM profesores;
+   dni    |       nombre
+----------+--------------------
+ 28888888 | Raul Ruiz Padilla
+ 27777777 | Rafael Luengo Sanz
+(2 rows)
+```
+
+> Hacer la consulta final usando la "foreign table", mostrando el nombre de las asignaturas junto con el nombre del profesor que las imparte
+
+Consulta:
+
+```sql
+SELECT a.nombre, p.nombre
+FROM asignaturas a 
+INNER JOIN profesores p
+ON a.dniprofesor = p.dni;
+```
+
+Resultado:
+
+```sql
+ nombre |       nombre
+--------+--------------------
+ ASO    | Raul Ruiz Padilla
+ ABD    | Rafael Luengo Sanz
+(2 rows)
+```
