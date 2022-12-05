@@ -195,6 +195,212 @@ GN=
 
 #### En `servidorpostgresql1`
 
+> Crear una bd llamada `GN2`
+
+```shell
+postgres=# CREATE DATABASE GN2;
+CREATE DATABASE
+postgres=# \l
+                                   List of databases
+    Name     |  Owner   | Encoding | Collate |  Ctype  |       Access privileges
+-------------+----------+----------+---------+---------+--------------------------------
+ bibliofilos | postgres | UTF8     | C.UTF-8 | C.UTF-8 | =Tc/postgres                  +
+             |          |          |         |         | postgres=CTc/postgres         +
+             |          |          |         |         | bibliofilos_admin=CTc/postgres
+ gn2         | postgres | UTF8     | C.UTF-8 | C.UTF-8 |
+ pepino      | postgres | UTF8     | C.UTF-8 | C.UTF-8 |
+ postgres    | postgres | UTF8     | C.UTF-8 | C.UTF-8 |
+ template0   | postgres | UTF8     | C.UTF-8 | C.UTF-8 | =c/postgres                   +
+             |          |          |         |         | postgres=CTc/postgres
+ template1   | postgres | UTF8     | C.UTF-8 | C.UTF-8 | =c/postgres                   +
+             |          |          |         |         | postgres=CTc/postgres
+(6 rows)
+```
+
+> Cambiar a la bd creada
+
+```shell
+postgres=# \connect gn2
+You are now connected to database "gn2" as user "postgres".
+gn2=#
+```
+
+> Crear la tabla `asignaturas` y comprobar que se ha creado
+
+```sql
+gn2=# CREATE TABLE asignaturas (
+  Nombre VARCHAR(3) PRIMARY KEY,
+  DNIprofesor integer NOT NULL
+);
+CREATE TABLE
+gn2=# \dt
+            List of relations
+ Schema |    Name     | Type  |  Owner
+--------+-------------+-------+----------
+ public | asignaturas | table | postgres
+(1 row)
+```
+
+> Insertar registros
+
+```sql
+gn2=# INSERT INTO asignaturas VALUES ('ASO', 28888888);
+INSERT 0 1
+gn2=# INSERT INTO asignaturas VALUES ('ABD', 27777777);
+INSERT 0 1
+```
+
+> Comprobar que se han insertado
+
+```sql
+gn2=# SELECT * FROM asignaturas;
+ nombre | dniprofesor
+--------+-------------
+ ASO    |    28888888
+ ABD    |    27777777
+(2 rows)
+```
+
+> Crear el usuario `raul` y comprobar que se ha creado
+
+```shell
+vagrant@servidorpostgresql1:~$ sudo adduser raul
+Adding user `raul' ...
+Adding new group `raul' (1002) ...
+Adding new user `raul' (1002) with group `raul' ...
+Creating home directory `/home/raul' ...
+Copying files from `/etc/skel' ...
+New password:
+Retype new password:
+passwd: password updated successfully
+Changing the user information for raul
+Enter the new value, or press ENTER for the default
+	Full Name []:
+	Room Number []:
+	Work Phone []:
+	Home Phone []:
+	Other []:
+Is the information correct? [Y/n] y
+vagrant@servidorpostgresql1:~$ su - postgres
+Password:
+postgres@servidorpostgresql1:~$ psql
+psql (13.8 (Debian 13.8-0+deb11u1))
+Type "help" for help.
+
+postgres=# create user raul with encrypted password '1234';
+CREATE ROLE
+postgres=# \du
+                                       List of roles
+     Role name     |                         Attributes                         | Member of
+-------------------+------------------------------------------------------------+-----------
+ bibliofilos_admin |                                                            | {}
+ postgres          | Superuser, Create role, Create DB, Replication, Bypass RLS | {}
+ raul              |                                                            | {}
+```
+
+> Darle los permisos necesarios
+
+```shell
+postgres=# GRANT all privileges ON DATABASE gn2 TO raul;
+GRANT
+postgres=# \l
+                                   List of databases
+    Name     |  Owner   | Encoding | Collate |  Ctype  |       Access privileges
+-------------+----------+----------+---------+---------+--------------------------------
+ bibliofilos | postgres | UTF8     | C.UTF-8 | C.UTF-8 | =Tc/postgres                  +
+             |          |          |         |         | postgres=CTc/postgres         +
+             |          |          |         |         | bibliofilos_admin=CTc/postgres
+ gn2         | postgres | UTF8     | C.UTF-8 | C.UTF-8 | =Tc/postgres                  +
+             |          |          |         |         | postgres=CTc/postgres         +
+             |          |          |         |         | raul=CTc/postgres
+ pepino      | postgres | UTF8     | C.UTF-8 | C.UTF-8 |
+ postgres    | postgres | UTF8     | C.UTF-8 | C.UTF-8 |
+ template0   | postgres | UTF8     | C.UTF-8 | C.UTF-8 | =c/postgres                   +
+             |          |          |         |         | postgres=CTc/postgres
+ template1   | postgres | UTF8     | C.UTF-8 | C.UTF-8 | =c/postgres                   +
+             |          |          |         |         | postgres=CTc/postgres
+(6 rows)
+
+postgres=# \connect gn2
+You are now connected to database "gn2" as user "postgres".
+gn2=# GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO raul;
+GRANT
+gn2=# SELECT * from information_schema.table_privileges WHERE grantee = 'raul';
+ grantor  | grantee | table_catalog | table_schema | table_name  | privilege_type | is_grantable | with_hierarchy
+----------+---------+---------------+--------------+-------------+----------------+--------------+----------------
+ postgres | raul    | gn2           | public       | asignaturas | INSERT         | NO           | NO
+ postgres | raul    | gn2           | public       | asignaturas | SELECT         | NO           | YES
+ postgres | raul    | gn2           | public       | asignaturas | UPDATE         | NO           | NO
+ postgres | raul    | gn2           | public       | asignaturas | DELETE         | NO           | NO
+ postgres | raul    | gn2           | public       | asignaturas | TRUNCATE       | NO           | NO
+ postgres | raul    | gn2           | public       | asignaturas | REFERENCES     | NO           | NO
+ postgres | raul    | gn2           | public       | asignaturas | TRIGGER        | NO           | NO
+(7 rows)
+```
+
+### 2B `servidororacle1` → `servidorpostgresql1`
+
+> Dejar `odbc.ini` de la siguiente manera:
+
+```shell
+sudo nano /etc/odbc.ini
+```
+
+```shell
+[postgresql]
+Description = postgresql
+Driver = /usr/lib/x86_64-linux-gnu/odbc/psqlodbcw.so
+ServerName = 192.168.121.222
+Username = raul
+Password = 1234
+Port = 5432
+Database = gn2
+```
+
+> Conectar a la bd
+
+```shell
+sqlplus / as sysdba
+```
+
+> Crear un nuevo enlace
+
+```sql
+CREATE PUBLIC DATABASE LINK postgresqlexamen
+CONNECT TO "raul" IDENTIFIED BY "1234"
+USING 'postgresql';
+```
+
+> Hacer una primera prueba mostrando la tabla remota `asignaturas` usando el enlace
+
+```sql
+SELECT * FROM "asignaturas"@postgresqlexamen;
+
+nombre		                             dniprofesor
+------------------------------------ -----------
+ASO			                                28888888
+ABD			                                27777777
+```
+
+> Hacer la consulta final usando el enlace, mostrando el nombre de las asignaturas junto con el nombre del profesor que las imparte
+
+Consulta:
+
+```sql
+SELECT a."nombre", p.nombre
+FROM "asignaturas"@postgresqlexamen a 
+INNER JOIN profesores p
+ON a."dniprofesor" = p.dni;
+```
+
+Resultado:
+
+```sql
+nombre		                             NOMBRE
+------------------------------------ --------------------------------------------------
+ASO		                             Raul Ruiz Padilla
+ABD		                             Rafael Luengo Sanz
+```
 
 
 
@@ -214,52 +420,6 @@ GN=
 
 
 
-
-
-
-
-
-
-> Crear bd en postgres llamada GN2 con tabla asignaturas
-
-![sc12](https://i.imgur.com/G1R4zbG.png)
-
-![sc13](https://i.imgur.com/lbdIwQW.png)
-
-![sc14](https://i.imgur.com/dIYvFTr.png)
-
-![sc15](https://i.imgur.com/pHNIJGl.png)
-
-![sc16](https://i.imgur.com/B6zCaSF.png)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-### 2B
-
-> Debes realizar una consulta desde un cliente ORACLE que muestre el nombre de las asignaturas y el del profesor que las imparte usando una interconexión entre ambos servidores
-
-![sc17](https://i.imgur.com/wTvFxSh.png)
-
-![sc18](https://i.imgur.com/s9Hk5sT.png)
 
 ### 2C
 
@@ -285,18 +445,7 @@ from oracle.profesores p inner join
 asignaturas a on p.dni = a.dniprofesor;
 
 
-CREATE TABLE asignaturas (
-  Nombre VARCHAR ( 50 ) PRIMARY KEY,
-  DNIProfesor serial NOT NULL
-);
-
-INSERT INTO asignaturas (Nombre, DNIProfesor) VALUES('ASO', 28888888);
-INSERT INTO asignaturas (Nombre, DNIProfesor) VALUES('ABD', 27777777);
 
 
 
-CREATE TABLE profesores (
-  DNI VARCHAR2(10) NOT NULL,
-  Nombre VARCHAR2(50) NOT NULL,
-  CONSTRAINT profesores_pk PRIMARY KEY (DNI)
-);
+
