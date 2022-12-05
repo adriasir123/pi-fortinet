@@ -3,6 +3,7 @@ theme:
   name: 'material'
   features:
     - content.code.annotate
+    - navigation.tabs
   icon:
     logo: material/linux
   palette:
