@@ -25,35 +25,35 @@ nav:
     - 2º ASIR 21/22:
         - SRI:
             - Vagrant y Ansible:
-                - 'Ejercicio 1: Playbook sencillo': 'ej1-playbook-sencillo.md'
-                - 'Ejercicio 2: router NAT vagrant': 'ej2-router-nat-vagrant.md'
-                - 'Ejercicio 3: Configuración escenario router NAT': 'ej3-config-escenario-router-nat.md'
+                - 'Ejercicio 1: Playbook sencillo': 'sri/ej1-playbook-sencillo.md'
+                - 'Ejercicio 2: router NAT vagrant': 'sri/ej2-router-nat-vagrant.md'
+                - 'Ejercicio 3: Configuración escenario router NAT': 'sri/ej3-config-escenario-router-nat.md'
             - DHCP:
-                - 'Ejercicio 1': 'ej1-instalar-configurar-dhcp.md'
-                - 'Ejercicio 2: reservas': 'ej2-reserva-dhcp.md'
-                - 'Práctica': 'practica-servidor-dhcp.md'
+                - 'Ejercicio 1': 'sri/ej1-instalar-configurar-dhcp.md'
+                - 'Ejercicio 2: reservas': 'sri/ej2-reserva-dhcp.md'
+                - 'Práctica': 'sri/practica-servidor-dhcp.md'
             - HTTP:
-                - 'Ejercicio 1: Mapeo de URLs': 'ej1-mapeo-urls-al-sistema-ficheros.md'
-                - 'Ejercicio 2: Control de acceso': 'ej2-control-acceso-autenticacion-autorizacion.md'
-                - 'Ejercicio 3: .htaccess con Apache': 'ej3-apache-.htaccess.md'
-                - 'Ejercicio 4: Módulos en Apache': 'ej4-modulos-apache.md'
-                - 'Ejercicio 5: VPS': 'ej5-vps.md'
-                - 'Ejercicio 6: Apache proxy inverso': 'ej6-apache-proxy-inverso.md'
-                - 'Práctica: LEMP en VPS': 'practica3-LEMP-VPS.md'
+                - 'Ejercicio 1: Mapeo de URLs': 'sri/ej1-mapeo-urls-al-sistema-ficheros.md'
+                - 'Ejercicio 2: Control de acceso': 'sri/ej2-control-acceso-autenticacion-autorizacion.md'
+                - 'Ejercicio 3: .htaccess con Apache': 'sri/ej3-apache-.htaccess.md'
+                - 'Ejercicio 4: Módulos en Apache': 'sri/ej4-modulos-apache.md'
+                - 'Ejercicio 5: VPS': 'sri/ej5-vps.md'
+                - 'Ejercicio 6: Apache proxy inverso': 'sri/ej6-apache-proxy-inverso.md'
+                - 'Práctica: LEMP en VPS': 'sri/practica3-LEMP-VPS.md'
             - DNS:
-                - 'Ejercicio 1: bind9': 'ej1-instalar-configurar-bind9.md'
-                - 'Ejercicio 2: Slave DNS': 'ej2-instalar-configurar-slave.md'
-                - 'Ejercicio 3: Delegación subdominios': 'ej3-delegacion-subdominio-bind9.md'
-                - 'Práctica: DNS+Web+BD en escenario': 'practica-web-bd-dns-escenario.md'
+                - 'Ejercicio 1: bind9': 'sri/ej1-instalar-configurar-bind9.md'
+                - 'Ejercicio 2: Slave DNS': 'sri/ej2-instalar-configurar-slave.md'
+                - 'Ejercicio 3: Delegación subdominios': 'sri/ej3-delegacion-subdominio-bind9.md'
+                - 'Práctica: DNS+Web+BD en escenario': 'sri/practica-web-bd-dns-escenario.md'
             - HTTPS (1ª Parte):
-                - 'Práctica: HTTPS en VPS': 'practica-https-vps.md'
+                - 'Práctica: HTTPS en VPS': 'sri/practica-https-vps.md'
             - HTTP (2ª Parte):
-                - 'Práctica: Aumento rendimiento web': 'practica-aumento-rendimiento-web.md'
+                - 'Práctica: Aumento rendimiento web': 'sri/practica-aumento-rendimiento-web.md'
             - Correo:
-                - 'Ejercicios en escenario libvirt': 'ejercicios-correo.md'
-                - 'Práctica: Servidor de correos en VPS': 'practica-servidor-correo.md'
+                - 'Ejercicios en escenario libvirt': 'sri/ejercicios-correo.md'
+                - 'Práctica: Servidor de correos en VPS': 'sri/practica-servidor-correo.md'
             - HA Clusters:
-                - 'Práctica': 'practica-cluster-ha.md'
+                - 'Práctica': 'sri/practica-cluster-ha.md'
         - IAW:
             - 'ej1-pull-request': '2021-09-22-ej1-pull-request.md'
             - 'app-web-estatica': '2021-10-5-implantacion-despliegue-aplicacion-web-estatica.md'
