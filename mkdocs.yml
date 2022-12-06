@@ -77,15 +77,15 @@ nav:
                 - 'Práctica: BookMedik en Docker': 'practica-docker-php.md'
                 - 'Práctica: Django tutorial en Docker': 'practica-docker-python.md'
         - SAD:
-            - 'Criptografía 1: Cifrado asímetrico': 'practica-cifrado-asimetrico-gpg-openssl.md'
-            - 'Criptografía 2: Firmas': 'practica-integridad-firmas-autenticacion.md'
-            - 'Práctica: VPN': 'practica-vpn-sad.md'
+            - 'Criptografía 1: Cifrado asímetrico': 'sad/practica-cifrado-asimetrico-gpg-openssl.md'
+            - 'Criptografía 2: Firmas': 'sad/practica-integridad-firmas-autenticacion.md'
+            - 'Práctica: VPN': 'sad/practica-vpn-sad.md'
             - Cortafuegos:
-                - 'Ejercicio 1 iptables: por nodo': 'ej1-iptables-nodo.md'
-                - 'Ejercicio 1 nftables: por nodo': 'ej1-nftables-nodo.md'
-                - 'Ejercicio 2 iptables: perimetral': 'ej2-iptables-perimetral.md'
-                - 'Ejercicio 2 nftables: perimetral': 'ej2-nftables-perimetral.md'
-                - 'Práctica iptables: perimetral escenario': 'perimetral-iptables-escenario.md'
+                - 'Ejercicio 1 iptables: por nodo': 'sad/ej1-iptables-nodo.md'
+                - 'Ejercicio 1 nftables: por nodo': 'sad/ej1-nftables-nodo.md'
+                - 'Ejercicio 2 iptables: perimetral': 'sad/ej2-iptables-perimetral.md'
+                - 'Ejercicio 2 nftables: perimetral': 'sad/ej2-nftables-perimetral.md'
+                - 'Práctica iptables: perimetral escenario': 'sad/perimetral-iptables-escenario.md'
         - 'Escenario libvirt': 'practica-escenario-libvirt.md'
     - 2º ASIR 22/23:
         - ASO:
