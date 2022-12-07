@@ -117,6 +117,8 @@ nav:
                 - 'Práctica': 'hlc/practica-virtualizacion.md'
             - OpenStack:
                 - 'Taller 1': 'hlc/taller1-cliente-vpn.md'
+    - OpenWebinars:
+        - 'SQL desde Cero': 'openwebinars/sql-desde-cero.md'
 markdown_extensions:
   - pymdownx.highlight:
       anchor_linenums: true
