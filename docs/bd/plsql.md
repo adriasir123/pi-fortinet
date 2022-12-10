@@ -221,6 +221,82 @@ Triggers de sistema: after logon, before logoff, insert...
 Si quiero que un usuario sólo pueda ver determinadas filas de una tabla, tengo que crear una vista con las filas que quiero que vea.
 Sobre esa tabla le doy permisos de select a ese usuario.
 
+## 07/12/2022
+
+```sql
+TYPE TipoRegEmples IS RECORD (
+  empno emp.empno%TYPE,
+  ename emp.ename%TYPE,
+  sal emp.sal%TYPE,
+  comm emp.comm%TYPE,
+  deptno emp.deptno%TYPE
+);
+
+registroempleado TipoRegEmpleado;
+```
+
+Es lo mismo que %ROWTYPE pero sin hacerlo. Declaras el tipo de dato con todos los campos. Lo que pasa es que es menos automático
+
+Una lista enlazada quiere decir que no se guardan todos los elementos a la vez, en memoria se guarda el sitio para lo que se usa, y cuando se usa otro elemento se guarda en otro lugar no contiguo de memoria. Como no son contiguos, es dinámico en tiempo de ejecución, se enlazan con punteros.
+
+```sql
+TYPE TipoTablaNombresEmpleados IS TABLE OF emp.ename%TYPE
+INDEX BY BINARY_INTEGER;
+
+TYPE TipoTabCadenas IS TABLE OF VARCHAR2
+INDEX BY BINARY_INTEGER;
+
+v_Tab1 TipoTabCadenas;
+v_Tab2 TipoTablaNombresEmpleados;
+
+v_Tab1(8):='PEPE';
+
+If v_tab1.EXISTS(7)
+
+
+
+```
+
+Si se intenta ver un elemento del array que no existe levanta %NO_DATA_FOUND
+
+
+Un paquete es un conjunto de librerías, que contiene funciones
+
+Las variables en los paquetes son globales digamos, se pueden usar por ejemplo con triggers porque no pueden recibir parámetros
+
+Ejemplos de paquetes de fábrica de Oracle:
+
+- DBMS_STANDARD
+- DBMS_OUTPUT
+- DBMS_MAIL
+- DBMS_SQL
+- DBMS_JOB
+- DBMS_SESSION
+- DBMS_HTML
+
+
+PROBLEMA DE LAS TABLAS MUTANTES
+
+Para probar triggers de tablas mutantes hay que hacer INSERT de más de una fila (insert into select y que esa select haga saltar la restricción)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
