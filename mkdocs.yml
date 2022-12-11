@@ -102,7 +102,7 @@ nav:
                 - 'Migración CentOS': 'aso/migracion-centos.md'
         - BD:
             - 'Prueba inicial': 'bd/prueba-inicial.md'
-            - 'Práctica 1: servidores y clientes': 'https://www.servidoresclientes.ga'
+            - 'Práctica 1: servidores y clientes': 'https://www.grupalesbdc.ga/p1-servidores-clientes/intro'
             - 'Práctica 2: interconexiones': 'bd/p2-interconexion-bd.md'
             - 'Examen prácticas 1 y 2': 'bd/examen-practicas-1-2.md'
             - 'Pequeña práctica PL/SQL': 'bd/pequeña-practica-plsql.md'
