@@ -405,8 +405,8 @@ EXEC mostrar_privilegios_usuario('SYS');
 > - Los nombres de localidades, departamentos y empleados deben aparecer por orden alfabético
 > - Si alguno de los departamentos no tiene ningún empleado con comisiones, aparecerá un mensaje informando de ello en lugar de la lista de empleados
 > - El procedimiento debe gestionar adecuadamente las siguientes excepciones:
->   - La tabla Empleados está vacía
->   - Alguna comisión es mayor que 10000
+>     - La tabla Empleados está vacía
+>     - Alguna comisión es mayor que 10000
 
 ```sql
 CREATE OR REPLACE PROCEDURE listar_empleados(p_deptno dept.deptno%TYPE)
