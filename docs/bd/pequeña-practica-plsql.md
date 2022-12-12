@@ -399,7 +399,8 @@ EXEC mostrar_privilegios_usuario('SYS');
 
 ## Ejercicio 9
 
-> Realiza un procedimiento PLSQL llamado listar_comisiones que nos muestre por pantalla un listado de las comisiones de los empleados agrupados según la localidad donde está ubicado su departamento.  
+> Realiza un procedimiento PLSQL llamado listar_comisiones que nos muestre por pantalla un listado de las comisiones de los empleados agrupados según la localidad donde está ubicado su departamento.
+>
 > Hay que seguir las siguientes directrices:
 >
 > - Los nombres de localidades, departamentos y empleados deben aparecer por orden alfabético
