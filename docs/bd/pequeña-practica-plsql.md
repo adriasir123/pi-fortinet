@@ -397,36 +397,244 @@ EXEC mostrar_privilegios_usuario('SYS');
 
 [Output](https://gist.github.com/adriasir123/4b68f6910cdcbca08ab7556c14f06289)
 
+## Ejercicio 9
 
+> Realiza un procedimiento PLSQL llamado listar_comisiones que nos muestre por pantalla un listado de las comisiones de los empleados agrupados según la localidad donde está ubicado su departamento.  
+> Hay que seguir las siguientes directrices:
+>
+> - Los nombres de localidades, departamentos y empleados deben aparecer por orden alfabético
+> - Si alguno de los departamentos no tiene ningún empleado con comisiones, aparecerá un mensaje informando de ello en lugar de la lista de empleados
+> - El procedimiento debe gestionar adecuadamente las siguientes excepciones:
+>   - La tabla Empleados está vacía
+>   - Alguna comisión es mayor que 10000
 
+```sql
+CREATE OR REPLACE PROCEDURE listar_empleados(p_deptno dept.deptno%TYPE)
+IS
+  CURSOR c_empleados
+  IS
+    SELECT ename, comm
+    FROM emp
+    WHERE deptno = p_deptno
+    ORDER BY ename ASC;
+BEGIN
+  FOR i in c_empleados
+  LOOP
+    dbms_output.put_line(chr(9) || chr(9) || i.ename || ' ..... ' || i.comm);
+  END LOOP;
+END;
+/
+```
 
+```sql
+CREATE OR REPLACE FUNCTION total_comms_dep(p_deptno dept.deptno%TYPE)
+RETURN NUMBER
+IS
+  v_total_comms NUMBER;
+BEGIN
+  SELECT NVL( SUM( NVL(comm,0) ),0 )
+  INTO v_total_comms
+  FROM emp
+  WHERE deptno = p_deptno;
+  
+  RETURN v_total_comms;
+END;
+/
+```
 
+```sql
+CREATE OR REPLACE PROCEDURE listar_departamentos(p_localidad dept.loc%TYPE)
+IS
+  CURSOR c_departamentos
+  IS
+    SELECT deptno, dname
+    FROM dept
+    WHERE loc = p_localidad
+    ORDER BY dname ASC;
+BEGIN
+  FOR i in c_departamentos
+  LOOP
+    dbms_output.put_line(chr(9) || 'Departamento: ' || i.dname);
+    dbms_output.put_line(chr(9));
+    IF total_comms_dep(i.deptno) = 0 THEN
+      dbms_output.put_line(chr(9) || chr(9) || 'No hay ningun empleado con comisiones');
+    ELSE
+      listar_empleados(i.deptno);
+    END IF;
+    dbms_output.put_line(chr(9));
+    dbms_output.put_line(chr(9) || 'Total Comisiones en el Departamento ' || i.dname || ': ' || total_comms_dep(i.deptno));
+  END LOOP;
+END;
+/
+```
 
+```sql
+CREATE OR REPLACE FUNCTION total_comms_loc(p_loc dept.loc%TYPE)
+RETURN NUMBER
+IS
+  v_total_comms NUMBER;
+BEGIN
+  SELECT NVL( SUM( NVL(e.comm,0) ),0 )
+  INTO v_total_comms
+  FROM emp e
+  INNER JOIN dept d
+  ON e.deptno = d.deptno
+  WHERE d.loc = p_loc;
+  
+  RETURN v_total_comms;
+END;
+/
+```
 
+```sql
+CREATE OR REPLACE FUNCTION total_comms_empresa
+RETURN NUMBER
+IS
+  v_total_comms NUMBER;
+BEGIN
+  SELECT SUM(comm)
+  INTO v_total_comms
+  FROM emp;
+  
+  RETURN v_total_comms;
+END;
+/
+```
 
+```sql
+CREATE OR REPLACE PROCEDURE comprobar_excepciones
+IS
+  v_emp_recs NUMBER;
+  v_emp_comms NUMBER;
+  e_comm_alta exception;
+  e_tabla_vacia_emp exception;
+BEGIN
+  SELECT COUNT(*) INTO v_emp_recs
+  FROM emp;
+  IF v_emp_recs = 0 THEN
+    raise e_tabla_vacia_emp;
+  END IF;
+  SELECT COUNT(*) INTO v_emp_comms
+  FROM emp
+  WHERE comm > 10000;
+  IF v_emp_comms > 0 THEN
+    raise e_comm_alta;
+  END IF;
+EXCEPTION
+  WHEN e_tabla_vacia_emp THEN
+    raise_application_error(-20001, 'La tabla empleados esta vacia');
+  WHEN e_comm_alta THEN
+    raise_application_error(-20002, 'Alguna comision es mayor que 10000');
+END;
+/
+```
 
+```sql
+CREATE OR REPLACE PROCEDURE listar_comisiones
+IS
+  CURSOR c_localidades
+  IS
+    SELECT loc
+    FROM dept
+    ORDER BY loc ASC;
+BEGIN
+  comprobar_excepciones();
+  FOR i IN c_localidades
+  LOOP
+    dbms_output.put_line('Localidad ' || i.loc);
+    dbms_output.put_line(chr(9));
+    listar_departamentos(i.loc);
+    dbms_output.put_line(chr(9));
+    dbms_output.put_line('Total Comisiones en la Localidad ' || i.loc || ': ' || total_comms_loc(i.loc));
+    dbms_output.put_line(chr(9));
+  END LOOP;
+  dbms_output.put_line('Total Comisiones en la Empresa: ' || total_comms_empresa());
+END;
+/
+```
 
+```sql
+EXEC listar_comisiones;
+```
 
+Output sin excepciones:
 
+```shell
+Localidad BOSTON
 
+	Departamento: OPERATIONS
 
+	        No hay ningun empleado con comisiones
 
+	Total Comisiones en el Departamento OPERATIONS: 0
 
+Total Comisiones en la Localidad BOSTON: 0
 
+Localidad CHICAGO
 
+	Departamento: SALES
 
+	        ALLEN ..... 300
+	        BLAKE .....
+	        JAMES .....
+	        MARTIN ..... 1400
+	        TURNER ..... 0
+	        WARD ..... 500
 
+	Total Comisiones en el Departamento SALES: 2200
 
+Total Comisiones en la Localidad CHICAGO: 2200
 
+Localidad DALLAS
 
+	Departamento: RESEARCH
 
+	        No hay ningun empleado con comisiones
 
+	Total Comisiones en el Departamento RESEARCH: 0
 
+Total Comisiones en la Localidad DALLAS: 0
 
+Localidad NEW YORK
 
+	Departamento: ACCOUNTING
 
+	        No hay ningun empleado con comisiones
 
+	Total Comisiones en el Departamento ACCOUNTING: 0
 
+Total Comisiones en la Localidad NEW YORK: 0
+
+Total Comisiones en la Empresa: 2200
+
+PL/SQL procedure successfully completed.
+```
+
+Output con la tabla `emp` vacía:
+
+```shell
+BEGIN listar_comisiones; END;
+
+*
+ERROR at line 1:
+ORA-20001: La tabla empleados esta vacia
+ORA-06512: at "SCOTT.COMPROBAR_EXCEPCIONES", line 21
+ORA-06512: at "SCOTT.LISTAR_COMISIONES", line 9
+ORA-06512: at line 1
+```
+
+Output con la tabla `emp` llena, pero alguna comisión mayor que 10000:
+
+```shell
+BEGIN listar_comisiones; END;
+
+*
+ERROR at line 1:
+ORA-20002: Alguna comision es mayor que 10000
+ORA-06512: at "SCOTT.COMPROBAR_EXCEPCIONES", line 23
+ORA-06512: at "SCOTT.LISTAR_COMISIONES", line 9
+ORA-06512: at line 1
+```
 
 ## Ejercicio 10
 
