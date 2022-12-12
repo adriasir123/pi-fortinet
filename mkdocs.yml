@@ -135,3 +135,6 @@ plugins:
   - glightbox
   - search
   - mkdocs-asciinema
+  - git-committers:
+      repository: adriasir123/conocimiento-en-bits 
+      branch: main
