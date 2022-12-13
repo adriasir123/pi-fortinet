@@ -1,4 +1,4 @@
-# Bievenido a mi web
+# Bienvenido a mi web
 
 Aquí estaré posteando todas las prácticas que haga durante el curso 2021/2022 y 2022/2023 de 2º ASIR.
 
