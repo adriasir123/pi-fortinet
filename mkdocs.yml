@@ -119,6 +119,10 @@ nav:
                 - 'Taller 1': 'hlc/taller1-cliente-vpn.md'
     - OpenWebinars:
         - 'SQL desde Cero': 'openwebinars/sql-desde-cero.md'
+    - C1:
+        - 'Essay: describing a place': 'c1/describing-place-essay.md'
+        - 'Outline: injustice case': 'c1/injustice-case-outline.md'
+        - 'Essay: meaningless activities': 'c1/leisure-time-meaningless-activities.md'
 markdown_extensions:
   - pymdownx.highlight:
       anchor_linenums: true
