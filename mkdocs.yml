@@ -1,4 +1,4 @@
-site_name: conocimiento-en-bits
+site_name: Compartiendo Conocimiento
 theme:
   name: 'material'
   features:
@@ -21,7 +21,19 @@ theme:
         icon: material/brightness-7
         name: Switch to light mode
 nav:
-    - Principal: index.md
+    - Home: index.md
+    - 2º ASIR 20/21:
+        - 'Compilación de un programa en C': '2asir20-21/compilacion-programaC-con-makefile.md'
+        - 'Documentación servidores físicos': '2asir20-21/doc-servidores-fisicos.md'
+        - 'Ejercicio: Cifrado simétrico con gpg+openssl': '2asir20-21/ejercicio-cifrado-simetrico-gpg-openssl.md'
+        - 'Ejercicios de manejo de módulos': '2asir20-21/ejs-modulos-kernel.md'
+        - 'Práctica: Instalación de Debian 10': '2asir20-21/instalacion-debian-10.md'
+        - 'Ejercicio 4: Mapeo URLs': '2asir20-21/mapeo-urls-sistema-ficheros.md'
+        - 'Práctica 3: Integridad, firmas y autenticación': '2asir20-21/p3-integridad-firmas-autenticacion.md'
+        - 'Práctica: Cifrado asimétrico con gpg y openssl': '2asir20-21/practica-cifrado-asimetrico-gpg-openssl.md'
+        - 'Práctica infantil de PL/SQL': '2asir20-21/practica-infantil-plsql.md'
+        - 'Prácticas de la UD1 SEG': '2asir20-21/practicas-ud1-seg.md'
+        - 'Tarea: Creación de un sistema automatizado de instalación': '2asir20-21/tarea-creacion-sistema-automatizado-instalacion.md'
     - 2º ASIR 21/22:
         - SRI:
             - Vagrant y Ansible:
