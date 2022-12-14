@@ -7,6 +7,7 @@ theme:
     - navigation.sections
   icon:
     logo: material/linux
+  favicon: images/favicon.ico
   palette:
     - scheme: default
       primary: indigo
@@ -22,6 +23,20 @@ theme:
         name: Switch to light mode
 nav:
     - Home: index.md
+    - 2º ASIR 19/20:
+        - 'Práctica 6: Auditoría de bases de datos': '2asir19-20/auditoria-practica-bd.md'
+        - 'Práctica 4 BD: Interconexión de Servidores de Bases de Datos': '2asir19-20/database-interconnection.md'
+        - 'Práctica: Despliegue de CMS java': '2asir19-20/java-webapp.md'
+        - 'Práctica: Métricas, logs y monitorización': '2asir19-20/metrics-logs-monitoring.md'
+        - 'Práctica 3 BD (PI): Gestión de usuarios, privilegios y roles': '2asir19-20/p3-bd-pi-oracle.md'
+        - 'Práctica 5 BD draft: Gestión del almacenamiento (individual)': '2asir19-20/p5-bd-individua-draft.md'
+        - 'Práctica 5 BD: Gestión del almacenamiento (individual)': '2asir19-20/p5-bd-individual.md'
+        - 'Práctica: Proxy, proxy inverso y balanceadores de carga': '2asir19-20/proxy-practica.md'
+        - 'Práctica servicios: Ejecución de scripts PHP y Python. Rendimiento': '2asir19-20/rendimiento-ejec-php-python.md'
+        - 'Tema 6: Las formas jurídicas de la empresa': '2asir19-20/t4-formas-juridicas.md'
+        - 'Tarea 7 Cloud: Hosting': '2asir19-20/t7-cloud-hosting.md'
+        - 'Tarea 8 Cloud:  Instalación de app python (Mezzanine)': '2asir19-20/t8-cloud-app-python.md.md'
+        - 'Práctica: Usuarios, grupos y ACLs en LDAP': '2asir19-20/usuarios-grupos-acl-ldap.md'
     - 2º ASIR 20/21:
         - 'Compilación de un programa en C': '2asir20-21/compilacion-programaC-con-makefile.md'
         - 'Documentación servidores físicos': '2asir20-21/doc-servidores-fisicos.md'
