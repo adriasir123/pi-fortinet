@@ -1,3 +1,3 @@
-# Conocimiento en bits
+# Compartiendo Conocimiento
 
-Blog actual de prácticas
+Blog de prácticas
