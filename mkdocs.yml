@@ -146,6 +146,7 @@ nav:
                 - 'Taller 1': 'hlc/taller1-cliente-vpn.md'
     - OpenWebinars:
         - 'SQL desde Cero': 'openwebinars/sql-desde-cero.md'
+        - 'Fundamentos de PL/SQL': 'openwebinars/fundamentos-plsql.md'
     - C1:
         - 'Essay: describing a place': 'c1/describing-place-essay.md'
         - 'Outline: injustice case': 'c1/injustice-case-outline.md'
