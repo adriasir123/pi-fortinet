@@ -1,5 +1,7 @@
 # Bienvenido a mi web
 
+Soy Adrián Jaramillo.
+
 Aquí estaré posteando todas las prácticas que haga durante el curso 2021/2022 y 2022/2023 de 2º ASIR.
 
 Este blog está hecho con 2 objetivos principales en mente:
