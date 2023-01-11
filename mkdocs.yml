@@ -132,8 +132,10 @@ nav:
             - 'Práctica 1: servidores y clientes': 'https://www.grupalesbdc.ga/p1-servidores-clientes/intro'
             - 'Práctica 2: interconexiones': 'bd/p2-interconexion-bd.md'
             - 'Examen prácticas 1 y 2': 'bd/examen-practicas-1-2.md'
-            - 'Pequeña práctica PL/SQL': 'bd/pequeña-practica-plsql.md'
+            - 'Práctica 3: pequeña PL/SQL': 'bd/p3-pequeña-plsql.md'
+            - 'Práctica 4: grupal PL/SQL': 'https://www.grupalesbdc.ga/p4-grupal-plsql/intro'
             - 'Examen prácticas 3 y 4': 'bd/examen-practicas-3-4.md'
+            - 'Práctica 5 usuarios': 'https://www.grupalesbdc.ga/p5-usuarios/intro'
         - HLC:
             - Virtualización en Linux:
                 - 'Taller 1': 'hlc/taller1-virtualizacion.md'

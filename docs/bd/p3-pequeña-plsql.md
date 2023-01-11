@@ -1,4 +1,4 @@
-# Pequeña práctica de PL/SQL
+# Práctica 3: pequeña PL/SQL
 
 ## Ejercicio 1
 
