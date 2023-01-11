@@ -79,12 +79,14 @@ CREATE OR REPLACE PROCEDURE boletintipo1 (
     WHERE a.curso = p_curso;
 BEGIN
     dbms_output.put_line('Curso: ' || p_curso);
+    dbms_output.put_line(chr(9));
     FOR i IN c_boletintipo1 LOOP
-      dbms_output.put_line('Nombre y apellidos: ' || i.apenom);
-      dbms_output.put_line('Direccion: ' || i.direc);
-      DBMS_OUTPUT.PUT_LINE('Fecha y hora de impresión: ' || TO_CHAR(SYSDATE, 'DD-MON-YYYY HH24:MI:SS'));
-      dbms_output.put_line('Asignatura: ' || i.nombre);
-      dbms_output.put_line('Nota: ' || i.nota);
+      dbms_output.put_line(CHR(9) || 'Nombre y apellidos: ' || i.apenom);
+      dbms_output.put_line(CHR(9) || 'Direccion: ' || i.direc);
+      DBMS_OUTPUT.PUT_LINE(CHR(9) || 'Fecha y hora de impresion: ' || TO_CHAR(SYSDATE, 'DD-MON-YYYY HH24:MI:SS'));
+      dbms_output.put_line(CHR(9) || 'Asignatura: ' || i.nombre);
+      dbms_output.put_line(CHR(9) || 'Nota: ' || i.nota);
+      dbms_output.put_line(chr(9));
     END LOOP;
 END;
 /
@@ -134,7 +136,7 @@ EXEC imprimir_boletines(1,1,'');
 ```
 
 
-![](https://i.postimg.cc/t4zH3qDD/boletin1curso.png)
+![pruebacurso1](https://i.postimg.cc/c1YDPDY8/boletin1curso.png)
 
 
 
