@@ -133,6 +133,7 @@ nav:
             - 'Práctica 2: interconexiones': 'bd/p2-interconexion-bd.md'
             - 'Examen prácticas 1 y 2': 'bd/examen-practicas-1-2.md'
             - 'Pequeña práctica PL/SQL': 'bd/pequeña-practica-plsql.md'
+            - 'Examen prácticas 3 y 4': 'bd/examen-practicas-3-4.md'
         - HLC:
             - Virtualización en Linux:
                 - 'Taller 1': 'hlc/taller1-virtualizacion.md'
