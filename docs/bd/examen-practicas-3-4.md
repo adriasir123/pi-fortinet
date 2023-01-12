@@ -104,10 +104,10 @@ END;
 -- (1)!
 ```
 
-1. Este procedimiento maneja las excepciones de boletintipo1:
+1. Este procedimiento maneja las excepciones de `boletintipo1`:
 
-- Curso inexistente
-- Curso sin notas
+    - Curso inexistente
+    - Curso sin notas
 
 ```sql
 CREATE OR REPLACE PROCEDURE comprobar_excepciones_tipo2 (
