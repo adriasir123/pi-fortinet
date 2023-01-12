@@ -139,7 +139,13 @@ EXCEPTION
     RAISE_APPLICATION_ERROR(-20002, 'El alumno ' || p_cursoalumno || ' existe, pero no tiene notas');
 END;
 /
+-- (1)!
 ```
+
+1. Este procedimiento maneja las excepciones de `boletintipo2`:
+
+    - Alumno inexistente
+    - Alumno sin notas
 
 ```sql
 CREATE OR REPLACE PROCEDURE boletintipo1 (
@@ -167,7 +173,10 @@ BEGIN
     END LOOP;
 END;
 /
+-- (1)!
 ```
+
+1. Este procedimiento saca un informe de notas según el curso que recibe como parámetro
 
 ```sql
 CREATE OR REPLACE PROCEDURE boletintipo2 (
@@ -202,7 +211,10 @@ BEGIN
     END LOOP;
 END;
 /
+-- (1)!
 ```
+
+1. Este procedimiento saca un informe de notas según el alumno que recibe como parámetro
 
 ```sql
 CREATE OR REPLACE PROCEDURE imprimir_boletines(
@@ -217,18 +229,10 @@ BEGIN
     END IF;
 END;
 /
+-- (1)!
 ```
 
-
-
-
-
-
-
-
-
-
-
+1. Este es el procedimiento principal, y desde aquí se llama a cada boletín según el tipo que recibe por parámetro. Tiene un segundo parámetro, que recibirá un curso o un alumno, según el tipo de boletín que se quiera imprimir
 
 ### Comprobaciones
 
@@ -254,7 +258,6 @@ EXEC imprimir_boletines(2,'Alcalde Garcia, Elena');
 
 
 
-Deben gestionarse las siguientes excepciones: Curso Inexistente (en los informes  tipo 1), Alumno inexistente (en los informes tipo 2) (4 puntos) y No existen notas (en ambos tipos)
 
 
 ## Ejercicio 2
