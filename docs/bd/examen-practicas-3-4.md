@@ -72,6 +72,76 @@ Deben gestionarse las siguientes excepciones: Curso Inexistente (en los informes
 ### Código
 
 ```sql
+CREATE OR REPLACE PROCEDURE comprobar_excepciones_tipo1 (
+    p_cursoalumno VARCHAR2
+) IS
+  v_curso_recs NUMBER;
+  v_notas_curso NUMBER;
+  e_curso_inexistente exception;
+  e_curso_sin_notas exception;
+BEGIN
+  SELECT COUNT(*) INTO v_curso_recs
+  FROM asignaturas
+  WHERE curso = to_number(p_cursoalumno, '9');
+  IF v_curso_recs = 0 THEN
+    raise e_curso_inexistente;
+  END IF;
+  SELECT COUNT(*) INTO v_notas_curso
+  FROM notas n
+      INNER JOIN asignaturas a
+      ON n.cod = a.cod
+  WHERE a.curso = to_number(p_cursoalumno, '9');
+  IF v_notas_curso = 0 THEN
+    raise e_curso_sin_notas;
+  END IF;
+EXCEPTION
+  WHEN e_curso_inexistente THEN
+    RAISE_APPLICATION_ERROR(-20001, 'No existe el curso ' || p_cursoalumno);
+  WHEN e_curso_sin_notas THEN
+    RAISE_APPLICATION_ERROR(-20002, 'El curso ' || p_cursoalumno || ' existe, pero no tiene notas');
+END;
+/
+-- (1)!
+```
+
+1. Este procedimiento maneja las excepciones de boletintipo1:
+
+- Curso inexistente
+- Curso sin notas
+
+```sql
+CREATE OR REPLACE PROCEDURE comprobar_excepciones_tipo2 (
+    p_cursoalumno VARCHAR2
+) IS
+  v_alumno_recs NUMBER;
+  v_notas_alumno NUMBER;
+  e_alumno_inexistente exception;
+  e_alumno_sin_notas exception;
+BEGIN
+  SELECT COUNT(*) INTO v_alumno_recs
+  FROM alumnos
+  WHERE apenom = p_cursoalumno;
+  IF v_alumno_recs = 0 THEN
+    raise e_alumno_inexistente;
+  END IF;
+  SELECT COUNT(*) INTO v_notas_alumno
+  FROM notas n
+      INNER JOIN alumnos a
+      ON n.dni = a.dni
+  WHERE a.apenom = p_cursoalumno;
+  IF v_notas_alumno = 0 THEN
+    raise e_alumno_sin_notas;
+  END IF;
+EXCEPTION
+  WHEN e_alumno_inexistente THEN
+    RAISE_APPLICATION_ERROR(-20001, 'No existe el alumno ' || p_cursoalumno);
+  WHEN e_alumno_sin_notas THEN
+    RAISE_APPLICATION_ERROR(-20002, 'El alumno ' || p_cursoalumno || ' existe, pero no tiene notas');
+END;
+/
+```
+
+```sql
 CREATE OR REPLACE PROCEDURE boletintipo1 (
     p_cursoalumno VARCHAR2
 ) IS
@@ -84,15 +154,16 @@ CREATE OR REPLACE PROCEDURE boletintipo1 (
             ON n.cod = a.cod
         WHERE a.curso = to_number(p_cursoalumno, '9');
 BEGIN
-    dbms_output.put_line('Curso: ' || p_cursoalumno);
-    dbms_output.put_line('Fecha y hora de impresion: ' || to_char(sysdate, 'DD-MON-YYYY HH24:MI'));
-    dbms_output.put_line(chr(9));
+    comprobar_excepciones_tipo1(p_cursoalumno);
+    DBMS_OUTPUT.PUT_LINE('Curso: ' || p_cursoalumno);
+    DBMS_OUTPUT.PUT_LINE('Fecha y hora de impresion: ' || to_char(sysdate, 'DD-MON-YYYY HH24:MI'));
+    DBMS_OUTPUT.PUT_LINE(chr(9));
     FOR i IN c_notas_por_curso LOOP
-        dbms_output.put_line(chr(9) || 'Alumno: ' || i.apenom);
-        dbms_output.put_line(chr(9) || 'Direccion: ' || i.direc || ' (' || i.pobla || ')');
-        dbms_output.put_line(chr(9) || 'Asignatura: ' || i.nombre);
-        dbms_output.put_line(chr(9) || 'Nota: ' || i.nota);
-        dbms_output.put_line(chr(9));
+        DBMS_OUTPUT.PUT_LINE(chr(9) || 'Alumno: ' || i.apenom);
+        DBMS_OUTPUT.PUT_LINE(chr(9) || 'Direccion: ' || i.direc || ' (' || i.pobla || ')');
+        DBMS_OUTPUT.PUT_LINE(chr(9) || 'Asignatura: ' || i.nombre);
+        DBMS_OUTPUT.PUT_LINE(chr(9) || 'Nota: ' || i.nota);
+        DBMS_OUTPUT.PUT_LINE(chr(9));
     END LOOP;
 END;
 /
@@ -113,20 +184,21 @@ CREATE OR REPLACE PROCEDURE boletintipo2 (
             ON n.cod = a.cod
         WHERE al.apenom = p_cursoalumno;
 BEGIN
+    comprobar_excepciones_tipo2(p_cursoalumno);
     SELECT direc INTO vv_direc
     FROM alumnos
     WHERE apenom = p_cursoalumno;
     SELECT pobla INTO vv_pobla
     FROM alumnos
     WHERE apenom = p_cursoalumno;
-    dbms_output.put_line('Alumno: ' || p_cursoalumno);
-    dbms_output.put_line('Direccion: ' || vv_direc || ' (' || vv_pobla || ')');
-    dbms_output.put_line('Fecha y hora de impresion: ' || to_char(sysdate, 'DD-MON-YYYY HH24:MI'));
-    dbms_output.put_line(chr(9));
+    DBMS_OUTPUT.PUT_LINE('Alumno: ' || p_cursoalumno);
+    DBMS_OUTPUT.PUT_LINE('Direccion: ' || vv_direc || ' (' || vv_pobla || ')');
+    DBMS_OUTPUT.PUT_LINE('Fecha y hora de impresion: ' || to_char(sysdate, 'DD-MON-YYYY HH24:MI'));
+    DBMS_OUTPUT.PUT_LINE(chr(9));
     FOR i IN c_notas_por_alumno LOOP
-        dbms_output.put_line(chr(9) || 'Asignatura: ' || i.nombre);
-        dbms_output.put_line(chr(9) || 'Nota: ' || i.nota);
-        dbms_output.put_line(chr(9));
+        DBMS_OUTPUT.PUT_LINE(chr(9) || 'Asignatura: ' || i.nombre);
+        DBMS_OUTPUT.PUT_LINE(chr(9) || 'Nota: ' || i.nota);
+        DBMS_OUTPUT.PUT_LINE(chr(9));
     END LOOP;
 END;
 /
@@ -146,9 +218,6 @@ BEGIN
 END;
 /
 ```
-
-
-
 
 
 
