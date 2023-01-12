@@ -258,17 +258,33 @@ Compilaciones:
 |:--:|
 | *imprimir_boletines* |
 
-
-
-
+Informe sin errores de tipo 1:
 
 ```sql
 EXEC imprimir_boletines(1,'1');
+```
+
+![boletin1normal](https://i.postimg.cc/3JyP8VRr/boletin1curso.png)
+
+Informe sin errores de tipo 2:
+
+```sql
 EXEC imprimir_boletines(2,'Alcalde Garcia, Elena');
 ```
 
+![boletin2normal](https://i.postimg.cc/Wp7MD1dX/boletin2elena.png)
 
-![pruebacurso1](https://i.postimg.cc/c1YDPDY8/boletin1curso.png)
+
+
+
+
+
+
+
+
+
+
+
 
 
 
