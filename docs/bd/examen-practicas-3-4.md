@@ -274,33 +274,49 @@ EXEC imprimir_boletines(2,'Alcalde Garcia, Elena');
 
 ![boletin2normal](https://i.postimg.cc/Wp7MD1dX/boletin2elena.png)
 
+Informe de tipo 1 cuando el curso no existe:
 
+```sql
+EXEC imprimir_boletines(1,'9');
+```
 
+![boletin1cursonoexiste](https://i.imgur.com/JA2auc5.png)
 
+Informe de tipo 1 cuando el curso existe, pero no tiene notas:
 
+```sql
+EXEC imprimir_boletines(1,'3');
+```
 
+![boletin1cursoexistesinotas](https://i.imgur.com/17FPWcG.png)
 
+Para que esta prueba haya funcionado, he tenido que añadir una nueva asignatura en el nuevo curso 3:
 
+```sql
+INSERT INTO ASIGNATURAS VALUES (8,'Nueva',3);
+```
 
+Informe de tipo 2 cuando el alumno no existe:
 
+```sql
+EXEC imprimir_boletines(2,'Jim Carrey');
+```
 
+![boletin2alumnonoexiste](https://i.imgur.com/IlRf5Di.png)
 
+Informe de tipo 2 cuando el alumno existe, pero no tiene notas:
 
+```sql
+EXEC imprimir_boletines(2,'Robin Williams');
+```
 
+![boletin2alumnoexistesinotas](https://i.imgur.com/0abdUdE.png)
 
+Para que esta prueba haya funcionado, he tenido que añadir un nuevo alumno:
 
-
-
-
-
-
-
-
-
-
-
-
-
+```sql
+INSERT INTO ALUMNOS VALUES ('12344346','Robin Williams', 'C/Adams Boulevard, 33','California','817766545');
+```
 
 ## Ejercicio 2
 
