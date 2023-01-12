@@ -236,6 +236,21 @@ END;
 
 ### Comprobaciones
 
+Compilaciones:
+
+| ![comp1](https://i.imgur.com/SF4HMMY.png) |
+|:--:|
+| *comprobar_excepciones_tipo1* |
+
+
+
+
+
+
+
+
+
+
 ```sql
 EXEC imprimir_boletines(1,'1');
 EXEC imprimir_boletines(2,'Alcalde Garcia, Elena');
