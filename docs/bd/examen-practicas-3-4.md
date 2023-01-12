@@ -242,10 +242,21 @@ Compilaciones:
 |:--:|
 | *comprobar_excepciones_tipo1* |
 
+| ![comp2](https://i.imgur.com/EpIFMgs.png) |
+|:--:|
+| *comprobar_excepciones_tipo2* |
 
+| ![comp3](https://i.imgur.com/vqF6tOB.png) |
+|:--:|
+| *boletintipo1* |
 
+| ![comp4](https://i.imgur.com/jg6B4Y8.png) |
+|:--:|
+| *boletintipo2* |
 
-
+| ![comp5](https://i.imgur.com/HTi9X71.png) |
+|:--:|
+| *imprimir_boletines* |
 
 
 
