@@ -320,24 +320,83 @@ INSERT INTO ALUMNOS VALUES ('12344346','Robin Williams', 'C/Adams Boulevard, 33'
 
 ## Ejercicio 2
 
-2.- Diseña los módulos necesarios para que un mismo alumno no pueda tener notas de asignaturas de cursos distintos. Es decir, el alumno o es de primero o es de segundo. Si ya tiene notas de uno de los dos cursos, no puede tener notas del otro.
+Diseña los módulos necesarios para que un mismo alumno no pueda tener notas de asignaturas de cursos distintos. Es decir, el alumno o es de primero o es de segundo. Si ya tiene notas de uno de los dos cursos, no puede tener notas del otro.
 
-Debe funcionar sin dar problema de tablas mutantes en consultas de datos anexados y en consultas de modificación que afecten a múltiples registros.
-
-
+Debe funcionar sin dar problema de tablas mutantes en consultas de datos anexados y en consultas de modificación que afecten a múltiples registros
 
 
 
+```sql
+CREATE OR REPLACE PROCEDURE comprobar_curso_alumno(
+    p_dni VARCHAR2,
+    p_control_curso OUT NUMBER
+) IS
+BEGIN
+    SELECT AVG(a.curso) INTO p_control_curso
+    FROM notas n
+        INNER JOIN asignaturas a
+        ON n.cod = a.cod
+    WHERE n.dni = p_dni;
+END;
+/
+```
+
+```sql
+CREATE OR REPLACE PROCEDURE comprobar_curso_asignatura(
+    p_cod NUMBER,
+    p_control_curso_asignatura OUT NUMBER
+) IS
+BEGIN
+    SELECT curso INTO p_control_curso_asignatura
+    FROM asignaturas
+    WHERE cod = p_cod;
+END;
+/
+```
+
+```sql
+CREATE OR REPLACE TRIGGER monitorizar_notas
+    BEFORE INSERT OR UPDATE ON notas
+    FOR EACH ROW
+DECLARE
+    vn_control_curso_alumno NUMBER;
+    vn_control_curso_asignatura NUMBER;
+BEGIN
+    comprobar_curso_alumno(:NEW.dni,vn_control_curso_alumno);
+    comprobar_curso_asignatura(:NEW.cod,vn_control_curso_asignatura);
+
+    IF vn_control_curso_alumno != vn_control_curso_asignatura THEN
+        RAISE_APPLICATION_ERROR(-20001, 'El alumno con DNI ' || :NEW.dni || ' esta en el curso ' || vn_control_curso_alumno || ' y la asignatura con codigo ' || :NEW.cod || ' es del curso ' || vn_control_curso_asignatura);
+    END IF;
+END;
+/
+```
+
+
+
+```sql
+INSERT INTO NOTAS VALUES('12344345', 1,7);
+DELETE FROM NOTAS WHERE dni = '12344345' AND cod = 1 AND nota = 7;
+INSERT INTO NOTAS VALUES('12344345',4,7);
+
+UPDATE NOTAS
+SET dni = '12344345', cod = 4, nota = 6
+WHERE dni = 12344345 AND cod = 1 AND nota = 6;
+```
 
 
 
 
+```sql
+CREATE OR REPLACE TRIGGER monitorizar_notas_compound    
+    FOR UPDATE OR INSERT ON notas    
+    COMPOUND TRIGGER
 
+AFTER EACH ROW
+```
 
-
-
-
-
+```sql
+```
 
 
 
