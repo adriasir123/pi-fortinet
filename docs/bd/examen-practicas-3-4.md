@@ -53,7 +53,7 @@ El esquema relacional es el siguiente...
 
 ## Ejercicio 1
 
-### Enunciado
+### 1. Enunciado
 
 Realiza un procedimiento llamado `imprimir_boletines` que reciba dos parámetros.
 
@@ -69,7 +69,7 @@ En cada boletín debe aparecer el nombre y apellidos del alumno, su dirección c
 
 Deben gestionarse las siguientes excepciones: Curso Inexistente (en los informes  tipo 1), Alumno inexistente (en los informes tipo 2) y No existen notas (en ambos tipos)
 
-### Código
+### 1. Código
 
 ```sql
 CREATE OR REPLACE PROCEDURE comprobar_excepciones_tipo1 (
@@ -234,7 +234,7 @@ END;
 
 1. Este es el procedimiento principal, y desde aquí se llama a cada boletín según el tipo que recibe por parámetro. Tiene un segundo parámetro, que recibirá un curso o un alumno, según el tipo de boletín que se quiera imprimir
 
-### Comprobaciones
+### 1. Comprobaciones
 
 Compilaciones:
 
@@ -320,17 +320,20 @@ INSERT INTO ALUMNOS VALUES ('12344346','Robin Williams', 'C/Adams Boulevard, 33'
 
 ## Ejercicio 2
 
+### 2. Enunciado
+
 Diseña los módulos necesarios para que un mismo alumno no pueda tener notas de asignaturas de cursos distintos. Es decir, el alumno o es de primero o es de segundo. Si ya tiene notas de uno de los dos cursos, no puede tener notas del otro.
 
 Debe funcionar sin dar problema de tablas mutantes en consultas de datos anexados y en consultas de modificación que afecten a múltiples registros
 
-
+### 2. Código
 
 ```sql
 CREATE OR REPLACE PROCEDURE comprobar_curso_alumno(
     p_dni VARCHAR2,
     p_control_curso OUT NUMBER
 ) IS
+    PRAGMA AUTONOMOUS_TRANSACTION;
 BEGIN
     SELECT AVG(a.curso) INTO p_control_curso
     FROM notas n
@@ -339,7 +342,10 @@ BEGIN
     WHERE n.dni = p_dni;
 END;
 /
+-- (1)!
 ```
+
+1. Este procedimiento recibe un DNI y devuelve el curso al que pertenece el alummno
 
 ```sql
 CREATE OR REPLACE PROCEDURE comprobar_curso_asignatura(
@@ -352,7 +358,10 @@ BEGIN
     WHERE cod = p_cod;
 END;
 /
+-- (1)!
 ```
+
+1. Este procedimiento recibe un código de asignatura, y devuelve su curso
 
 ```sql
 CREATE OR REPLACE TRIGGER monitorizar_notas
@@ -370,43 +379,77 @@ BEGIN
     END IF;
 END;
 /
+-- (1)!
 ```
 
+1. Este es el bloque padre, el trigger que controla que no se inserte o modifique una nota si el alumno y la asignatura no pertenecen al mismo curso
 
+### 2. Comprobaciones
+
+Compilaciones:
+
+| ![comp1](https://i.imgur.com/rGYHdPt.png) |
+|:--:|
+| *comprobar_curso_alumno* |
+
+| ![comp2](https://i.imgur.com/Uu9BZMa.png) |
+|:--:|
+| *comprobar_curso_asignatura* |
+
+| ![comp3](https://i.imgur.com/bdrxv9E.png) |
+|:--:|
+| *monitorizar_notas* |
+
+Para que todo sea más simple, las pruebas las voy a realizar sobre un alumno específico, el de DNI `12344345`, que es de primero.
+
+Pruebo que no deja insertar una nota si es de una asignatura de segundo:
 
 ```sql
-INSERT INTO NOTAS VALUES('12344345', 1,7);
-DELETE FROM NOTAS WHERE dni = '12344345' AND cod = 1 AND nota = 7;
 INSERT INTO NOTAS VALUES('12344345',4,7);
+```
 
+![sc1](https://i.imgur.com/yGNJCwn.png)
+
+Pruebo que no deja modificar una nota si es con una asignatura de segundo:
+
+```sql
 UPDATE NOTAS
-SET dni = '12344345', cod = 4, nota = 6
+SET dni = '12344345', cod = 5, nota = 6
 WHERE dni = 12344345 AND cod = 1 AND nota = 6;
 ```
 
+![sc2](https://i.imgur.com/emanPEq.png)
 
-
-
-```sql
-CREATE OR REPLACE TRIGGER monitorizar_notas_compound    
-    FOR UPDATE OR INSERT ON notas    
-    COMPOUND TRIGGER
-
-AFTER EACH ROW
-```
+Pruebo que no deja modificar varias notas si es con una asignatura de segundo:
 
 ```sql
+UPDATE NOTAS
+SET dni = '12344345', cod = 4, nota = 6
+WHERE dni = 12344345;
 ```
 
+![sc3](https://i.imgur.com/HjGZuE8.png)
 
+Pruebo que no deja modificar una nota si es con una asignatura de segundo, pero con datos anexados:
 
+```sql
+UPDATE NOTAS
+SET dni = (SELECT dni
+           FROM alumnos
+           WHERE apenom = 'Alcalde Garcia, Elena'),
+    cod = (SELECT cod
+           FROM asignaturas
+           WHERE nombre = 'FOL'),
+    nota = 6
+WHERE dni = 12344345 AND cod = 1 AND nota = 6;
+```
 
+![sc4](https://i.imgur.com/wBfN1EQ.png)
 
+Finalmente, pruebo que si la nota es de una asignatura de primero, deja insertarla:
 
+```sql
+INSERT INTO NOTAS VALUES('12344345',8,7);
+```
 
-
-
-
-
-
-
+![sc5](https://i.imgur.com/unuFr2w.png)
