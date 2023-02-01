@@ -1,5 +1,7 @@
 # Práctica inicial
 
+## Enunciado
+
 Realiza la instalación y configuración básica de OpenLDAP en alfa,utilizando como base el nombre DNS asignado. Deberás crear un usuario llamado prueba y configurar una máquina cliente basada en Debian para que pueda validarse en servidor ldap configurado anteriormente con el usuario prueba.
 
 ## Escenario
@@ -43,54 +45,101 @@ config.vm.synced_folder ".", "/vagrant", disabled: true
 end
 ```
 
-`/etc/hosts`
+## En `server`
+
+### Resoluciones
+
+Dejo `/etc/hosts` así:
 
 ```shell
-127.0.1.1 server.adrianj.gonzalonazareno.org server
+sudo nano /etc/hosts
 ```
 
+```shell
+127.0.0.1	localhost
+127.0.0.2	bullseye
+::1	        localhost ip6-localhost ip6-loopback
+ff02::1	ip6-allnodes
+ff02::2	ip6-allrouters
 
+127.0.1.1 server.adrianj.gonzalonazareno.org server
+10.0.0.3 clientedebian.adrianj.gonzalonazareno.org clientedebian
+```
 
-
-## Parte 1
-
-> server ldap
+Pruebo el FQDN:
 
 ```shell
+vagrant@server:~$ hostname -f
+server.adrianj.gonzalonazareno.org
+```
+
+Pruebo las resoluciones:
+
+```shell
+vagrant@server:~$ ping server.adrianj.gonzalonazareno.org -c 1
+PING server.adrianj.gonzalonazareno.org (127.0.1.1) 56(84) bytes of data.
+64 bytes from server.adrianj.gonzalonazareno.org (127.0.1.1): icmp_seq=1 ttl=64 time=0.129 ms
+
+--- server.adrianj.gonzalonazareno.org ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 0.129/0.129/0.129/0.000 ms
+vagrant@server:~$ ping clientedebian.adrianj.gonzalonazareno.org -c 1
+PING clientedebian.adrianj.gonzalonazareno.org (10.0.0.3) 56(84) bytes of data.
+64 bytes from clientedebian.adrianj.gonzalonazareno.org (10.0.0.3): icmp_seq=1 ttl=64 time=0.467 ms
+
+--- clientedebian.adrianj.gonzalonazareno.org ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 0.467/0.467/0.467/0.000 ms
+```
+
+### Paquetería
+
+```shell
+sudo apt update
 sudo apt install slapd ldap-utils
 ```
 
-Pide contraseña de admin:
+Nos pide contraseña para el usuario `admin` *(1234)*:
 
-![admin-passwd](https://i.imgur.com/A0R6dfu.png)
+![admin](https://i.imgur.com/klucS0s.png)
 
-https://www.zytrax.com/books/ldap/ape/
+Muestro el estado inicial del directorio:
 
+```shell
+vagrant@server:~$ sudo slapcat
+dn: dc=adrianj,dc=gonzalonazareno,dc=org
+objectClass: top
+objectClass: dcObject
+objectClass: organization
+o: adrianj.gonzalonazareno.org
+dc: adrianj
+structuralObjectClass: organization
+entryUUID: 4b2a783c-3671-103d-94b3-f9f56aa6856a
+creatorsName: cn=admin,dc=adrianj,dc=gonzalonazareno,dc=org
+createTimestamp: 20230201114247Z
+entryCSN: 20230201114247.462833Z#000000#000#000000
+modifiersName: cn=admin,dc=adrianj,dc=gonzalonazareno,dc=org
+modifyTimestamp: 20230201114247Z
+```
 
+### Usuario
 
-
-
-
-
-
-
-
-## Parte 2
-
-> Deberás crear un usuario llamado prueba
-
-generate encrypted password 1234
+Genero una contraseña para el usuario `prueba` *(1234)*:
 
 ```shell
 vagrant@server:~$ sudo slappasswd
 New password:
 Re-enter new password:
-{SSHA}l6/rFjEleZMfjBKIsf8ZvAAjDXlcKYrF
+{SSHA}n/YjGnAXWJ6gDEIsZvVz69OFfLyMWbXo
 ```
+
+Creo el siguiente fichero:
 
 ```shell
 nano ldapuser.ldif
 ```
+
+Con el siguiente contenido:
 
 ```shell
 dn: uid=prueba,dc=adrianj,dc=gonzalonazareno,dc=org
@@ -99,12 +148,14 @@ objectClass: posixAccount
 objectClass: shadowAccount
 cn: prueba
 sn: surname
-userPassword: {SSHA}l6/rFjEleZMfjBKIsf8ZvAAjDXlcKYrF
+userPassword: {SSHA}n/YjGnAXWJ6gDEIsZvVz69OFfLyMWbXo
 loginShell: /bin/bash
 uidNumber: 2000
 gidNumber: 2000
 homeDirectory: /srv/homes/prueba
 ```
+
+Creo el usuario:
 
 ```shell
 vagrant@server:~$ ldapadd -x -D cn=admin,dc=adrianj,dc=gonzalonazareno,dc=org -W -f ldapuser.ldif
@@ -112,8 +163,73 @@ Enter LDAP Password:
 adding new entry "uid=prueba,dc=adrianj,dc=gonzalonazareno,dc=org"
 ```
 
+Muestro que se ha creado:
 
+```shell
+vagrant@server:~$ ldapsearch -x -b "dc=adrianj,dc=gonzalonazareno,dc=org" -H ldap://server.adrianj.gonzalonazareno.org -D "cn=admin,dc=adrianj,dc=gonzalonazareno,dc=org" -W "objectclass=posixAccount"
+Enter LDAP Password:
+# extended LDIF
+#
+# LDAPv3
+# base <dc=adrianj,dc=gonzalonazareno,dc=org> with scope subtree
+# filter: objectclass=posixAccount
+# requesting: ALL
+#
 
+# prueba, adrianj.gonzalonazareno.org
+dn: uid=prueba,dc=adrianj,dc=gonzalonazareno,dc=org
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+cn: prueba
+sn: surname
+userPassword:: e1NTSEF9bi9ZakduQVhXSjZnREVJc1p2Vno2OU9GZkx5TVdiWG8=
+loginShell: /bin/bash
+uidNumber: 2000
+gidNumber: 2000
+homeDirectory: /srv/homes/prueba
+uid: prueba
+
+# search result
+search: 2
+result: 0 Success
+
+# numResponses: 2
+# numEntries: 1
+```
+
+### NFS server
+
+Creo el directorio que compartiremos donde se almacenarán todos los homes:
+
+```shell
+sudo mkdir /srv/homes
+```
+
+Instalo el paquete:
+
+```shell
+sudo apt install nfs-kernel-server
+```
+
+Defino el directorio compartido en el siguiente fichero:
+
+```shell
+sudo nano /etc/exports
+```
+
+```shell
+/srv/homes 10.0.0.0/24(rw,sync,no_subtree_check,no_root_squash)
+```
+
+Reinicio nfs y actualizo la lista de directorios compartidos:
+
+```shell
+sudo systemctl restart nfs-kernel-server
+sudo exportfs
+```
+
+## En `clientedebian`
 
 
 
@@ -182,18 +298,11 @@ sudo login prueba
 
 > home compartido
 
-NFS server:
 
-```shell
-sudo apt install nfs-kernel-server
-sudo mkdir /srv/homes
 
-sudo nano /etc/exports
-/srv/homes 10.0.0.0/24(rw,sync,no_subtree_check,no_root_squash)
 
-sudo systemctl restart nfs-kernel-server
-sudo exportfs
-```
+
+
 
 
 NFS client:
@@ -217,84 +326,13 @@ Using the root shell from "asmith", edit the file /etc/fstab on the client, addi
 
 
 
-## Parte 5
-
-> configuración de clienterocky
-
-```shell
-sudo vi /etc/hosts
-```
-
-```shell
-127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
-::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
-127.0.1.1 clienterocky.adrianj.gonzalonazareno.org clienterocky
-10.0.0.2 server.adrianj.gonzalonazareno.org server
-```
-
-
-
-```shell
-sudo dnf install openldap-clients sssd sssd-ldap sssd-tools oddjob-mkhomedir nscd
-
-sudo mkdir /srv/homes
-```
-
-
-```shell
-sudo authselect select sssd with-mkhomedir --force
-```
-
-```shell
-sudo systemctl enable --now oddjobd.service
-sudo systemctl status oddjobd.service
-```
 
 
 
 
-```shell
-sudo vi /etc/openldap/ldap.conf
-
-BASE    dc=adrianj,dc=gonzalonazareno,dc=org
-URI     ldap://server.adrianj.gonzalonazareno.org/
-TLS_REQCERT never
-```
 
 
 
-
-```shell
-sudo vi /etc/sssd/sssd.conf
-
-
-[domain/default]
-id_provider = ldap
-autofs_provider = ldap
-auth_provider = ldap
-chpass_provider = ldap
-ldap_uri = ldap://server.adrianj.gonzalonazareno.org/
-ldap_search_base = dc=adrianj,dc=gonzalonazareno,dc=org
-ldap_id_use_start_tls = false
-ldap_tls_cacertdir = /etc/openldap/certs
-cache_credentials = True
-ldap_tls_reqcert = allow
-
-[sssd]
-services = nss, pam, autofs
-domains = default
-
-[nss]
-homedir_substring = /srv/homes
-
-
-sudo chmod 0600 /etc/sssd/sssd.conf
-
-sudo systemctl restart sssd oddjobd
-sudo systemctl enable sssd oddjobd
-
-sudo systemctl status sssd
-```
 
 
 
