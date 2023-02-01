@@ -127,6 +127,8 @@ nav:
                 - 'Compilación de Kernel': 'aso/compilacion-kernel.md'
             - Red Hat:
                 - 'Migración CentOS': 'aso/migracion-centos.md'
+            - OpenLDAP:
+                - 'Práctica inicial': 'aso/ldap-inicial.md'
         - BD:
             - 'Prueba inicial': 'bd/prueba-inicial.md'
             - 'Práctica 1: servidores y clientes': 'https://www.grupalesbdc.ga/p1-servidores-clientes/intro'
