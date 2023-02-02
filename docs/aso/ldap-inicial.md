@@ -1,10 +1,14 @@
 # Práctica inicial
 
-## Enunciado
+## 1. Enunciado
 
-Realiza la instalación y configuración básica de OpenLDAP en alfa,utilizando como base el nombre DNS asignado. Deberás crear un usuario llamado prueba y configurar una máquina cliente basada en Debian para que pueda validarse en servidor ldap configurado anteriormente con el usuario prueba.
+Realizar la instalación y configuración del servidor OpenLDAP en `server`, utilizando como base el nombre DNS asignado.  
 
-## Escenario
+Crear el usuario `prueba` y configurar `clientedebian` para que pueda validarse en `server` con dicho usuario.
+
+El home de los usuarios deberá estar centralizado en `server`.
+
+## 2. Escenario
 
 ```shell
 Vagrant.configure("2") do |config|
@@ -45,9 +49,9 @@ config.vm.synced_folder ".", "/vagrant", disabled: true
 end
 ```
 
-## En `server`
+## 3. En `server`
 
-### Resoluciones
+### 3.1 Resoluciones
 
 Dejo `/etc/hosts` así:
 
@@ -92,7 +96,7 @@ PING clientedebian.adrianj.gonzalonazareno.org (10.0.0.3) 56(84) bytes of data.
 rtt min/avg/max/mdev = 0.467/0.467/0.467/0.000 ms
 ```
 
-### Paquetería
+### 3.2 Paquetería
 
 ```shell
 sudo apt update
@@ -122,7 +126,7 @@ modifiersName: cn=admin,dc=adrianj,dc=gonzalonazareno,dc=org
 modifyTimestamp: 20230201114247Z
 ```
 
-### Usuario
+### 3.3 Usuario
 
 Genero una contraseña para el usuario `prueba` *(1234)*:
 
@@ -198,7 +202,7 @@ result: 0 Success
 # numEntries: 1
 ```
 
-### NFS server
+### 3.4 NFS server
 
 Creo el directorio que compartiremos donde se almacenarán todos los homes:
 
@@ -229,15 +233,11 @@ sudo systemctl restart nfs-kernel-server
 sudo exportfs
 ```
 
-## En `clientedebian`
+## 4. En `clientedebian`
 
+### 4.1 Resoluciones
 
-
-
-
-## Parte 3
-
-> configuración de clientedebian
+Dejo `/etc/hosts` así:
 
 ```shell
 sudo nano /etc/hosts
@@ -254,93 +254,133 @@ ff02::2	ip6-allrouters
 10.0.0.2 server.adrianj.gonzalonazareno.org server
 ```
 
+Pruebo el FQDN:
 
+```shell
+vagrant@clientedebian:~$ hostname -f
+clientedebian.adrianj.gonzalonazareno.org
+```
+
+Pruebo las resoluciones:
+
+```shell
+vagrant@clientedebian:~$ ping clientedebian.adrianj.gonzalonazareno.org -c 1
+PING clientedebian.adrianj.gonzalonazareno.org (127.0.1.1) 56(84) bytes of data.
+64 bytes from clientedebian.adrianj.gonzalonazareno.org (127.0.1.1): icmp_seq=1 ttl=64 time=0.068 ms
+
+--- clientedebian.adrianj.gonzalonazareno.org ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 0.068/0.068/0.068/0.000 ms
+vagrant@clientedebian:~$ ping server.adrianj.gonzalonazareno.org -c 1
+PING server.adrianj.gonzalonazareno.org (10.0.0.2) 56(84) bytes of data.
+64 bytes from server.adrianj.gonzalonazareno.org (10.0.0.2): icmp_seq=1 ttl=64 time=0.244 ms
+
+--- server.adrianj.gonzalonazareno.org ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 0.244/0.244/0.244/0.000 ms
+```
+
+### 4.2 Paquetería
 
 ```shell
 sudo apt update
 sudo apt install libnss-ldapd libpam-ldapd ldap-utils
 ```
 
-![ldapuri](https://i.postimg.cc/nV7hwzbx/ldap-client-uri.png)
+![ldapuri](https://i.imgur.com/2TwIJ5n.png)
 
-![ldapbase](https://i.postimg.cc/zvfpvM1S/ldapbase.png)
+![ldapbase](https://i.imgur.com/1qd3DjA.png)
 
-![ldapnameservices](https://i.postimg.cc/BnhFQ6ny/ldapservices.png)
+![ldapnameservices](https://i.imgur.com/kpCRrjv.png)
 
+### 4.3 PAM
 
-
-
+Añado la siguiente línea de configuración al final del fichero:
 
 ```shell
 sudo nano /etc/pam.d/common-session
 ```
 
 ```shell
-# add to the end if need (create home directory automatically at initial login)
 session required        pam_mkhomedir.so skel=/etc/skel umask=077
 ```
+
+Reinicio los servicios
 
 ```shell
 sudo systemctl restart nscd nslcd
 ```
 
+### 4.4 NFS client
 
+Creo el directorio donde se montará el compartido por el servidor:
 
-su - prueba
-sudo login prueba
+```shell
+sudo mkdir /srv/homes
+```
 
-
-
-
-
-
-## Parte 4
-
-> home compartido
-
-
-
-
-
-
-
-
-NFS client:
+Instalo el paquete:
 
 ```shell
 sudo apt install nfs-common
-sudo mkdir /srv/homes
+```
 
+Monto el directorio compartido:
+
+```shell
 sudo mount server.adrianj.gonzalonazareno.org:/srv/homes /srv/homes
 ```
 
+Compruebo que se ha montado:
+
+![remotomontado](https://i.imgur.com/8GosssR.png)
+
+Hago el montaje permanente añadiendo la siguiente línea al final del fichero:
 
 ```shell
-Make the mount permanent
-Using the root shell from "asmith", edit the file /etc/fstab on the client, adding a line to the end:
-/etc/fstab (on nfsvm)
-192.168.122.1:/home   /home   nfs  defaults   0  0
+sudo nano /etc/fstab
 ```
 
+```shell
+server.adrianj.gonzalonazareno.org:/srv/homes   /srv/homes   nfs  defaults   0  0
+```
 
+### 4.5 Pruebas
 
+Podemos logearnos con el usuario `prueba` remoto de LDAP de 2 maneras.
 
+Así:
 
+```shell
+vagrant@clientedebian:~$ su - prueba
+Password:
+Creating directory '/srv/homes/prueba'.
+prueba@clientedebian:~$
+```
 
+O así:
 
+```shell
+vagrant@clientedebian:~$ sudo login prueba
+Password:
+Linux clientedebian 5.10.0-20-amd64 #1 SMP Debian 5.10.158-2 (2022-12-13) x86_64
 
+The programs included with the Debian GNU/Linux system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
 
+Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
+permitted by applicable law.
+prueba@clientedebian:~$
+```
 
+Pruebo que ese usuario no existe localmente, y era efectivamente un usuario remoto de LDAP:
 
+```shell
+vagrant@clientedebian:~$ cat /etc/passwd | grep prueba
+vagrant@clientedebian:~$
+```
 
+Estando logeado, muestro el directorio home creado y creo un fichero y compruebo que aparece en el servidor:
 
-
-
-
-
-
-
-
-
-
-
+![pruebafichero](https://i.imgur.com/i7XNngP.png)
