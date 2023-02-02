@@ -22,10 +22,6 @@ config.vm.synced_folder ".", "/vagrant", disabled: true
 
   config.vm.define :server do |server|
     server.vm.box = "debian/bullseye64"
-    server.vm.provider :libvirt do |server|
-      server.memory = 3072
-      server.cpus = 4
-    end
     server.vm.hostname = "server"
     server.vm.network :private_network,
       :libvirt__network_name => "ldap-inicial",
