@@ -59,6 +59,7 @@ sudo systemctl enable mnt.mount
 Instalo el paquete:
 
 ```shell
+sudo apt update
 sudo apt install nfs-kernel-server
 ```
 
