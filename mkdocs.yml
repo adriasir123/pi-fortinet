@@ -119,6 +119,7 @@ nav:
             - 'Instalación Debian 11': 'aso/instalacion_debian11.md'
             - 'Instalación Debian 11 preseed': 'aso/debian11_automatico.md'
             - 'Ejercicios de paquetería': 'aso/ejercicios-paqueteria.md'
+            - 'Montaje NFS systemd': 'aso/systemd-montaje-nfs.md'
             - Kernel:
                 - 'Teoría': 'aso/teoria-kernel.md'
                 - 'Ejercicios de módulos': 'aso/ejercicios-de-modulos.md'
