@@ -70,6 +70,9 @@ La buena noticia es que estamos en el mundo del software libre, y algo no muere 
 
 
 
+
+
+
 ## Ejercicio 3
 
 > Descarga la iso de CentOS Stream y evalúa el producto.

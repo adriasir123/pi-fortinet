@@ -150,6 +150,8 @@ nav:
                 - 'Práctica': 'hlc/practica-virtualizacion.md'
             - OpenStack:
                 - 'Taller 1': 'hlc/taller1-cliente-vpn.md'
+            - Kubernetes:
+                - 'Ejercicio 1: minikube y kubectl': 'hlc/ejercicio1-minikube-kubectl.md'
     - OpenWebinars:
         - 'SQL desde Cero': 'openwebinars/sql-desde-cero.md'
         - 'Fundamentos de PL/SQL': 'openwebinars/fundamentos-plsql.md'
