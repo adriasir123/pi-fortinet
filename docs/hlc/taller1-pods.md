@@ -2,7 +2,43 @@
 
 ## Entregas
 
+### Parte 1
 
+> Pantallazo del fichero yaml que has creado con la definición del Pod
+
+![sc1](https://i.imgur.com/GA49pxO.png)
+
+### Parte 2
+
+> Pantallazo donde se comprueba que el Pod ha sido creado
+
+![sc2](https://i.imgur.com/QtIGVpZ.png)
+
+### Parte 3
+
+> Pantallazo donde se ve la información detallada del Pod
+
+![sc3](https://i.imgur.com/s0t0oFb.png)
+
+![sc3](https://i.imgur.com/TGFK0wA.png)
+
+### Parte 4
+
+> Pantallazo donde se ve el fichero `index.html` del DocumentRoot
+
+![sc4](https://i.imgur.com/F89km4X.png)
+
+### Parte 5
+
+> Pantallazo del navegador accediendo a la aplicación con el `port-forward`
+
+![sc5](https://i.imgur.com/DSSQmv5.png)
+
+### Parte 6
+
+> Pantallazo donde se vean los logs de acceso del Pod
+
+![sc6](https://i.imgur.com/gD9kVgo.png)
 
 ## Desarrollo
 
