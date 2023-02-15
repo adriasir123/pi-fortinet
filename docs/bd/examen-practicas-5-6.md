@@ -87,7 +87,13 @@ Realiza un procedimiento para ORACLE que reciba el nombre de un usuario y muestr
 
 ### 3.1 Enunciado
 
-(corrección in situ) Crea tres usuarios en MongoDB. Crea dos colecciones Examen1 y Examen2 con dos documentos cada una con los atributos que desees. El primer usuario no podrá acceder a ninguna de las dos colecciones. El segundo podrá acceder solo a una de ellas y solo para leer los documentos. El tercer usuario tendrá acceso total a las dos colecciones. Demuestra al profesor in situ el correcto funcionamiento de los permisos
+Crear tres usuarios en MongoDB. Crear dos colecciones `examen1` y `examen2` con dos documentos cada una con los atributos que desees.
+
+- El primer usuario no podrá acceder a ninguna de las dos colecciones.
+- El segundo podrá acceder solo a una de ellas y solo para leer los documentos.
+- El tercer usuario tendrá acceso total a las dos colecciones.
+
+Demuestra al profesor in situ el correcto funcionamiento de los permisos
 
 ### 3.2 Realización
 
