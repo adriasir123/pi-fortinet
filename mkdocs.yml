@@ -139,6 +139,7 @@ nav:
             - 'Práctica 4: grupal PL/SQL': 'https://www.grupalesbdc.ga/p4-grupal-plsql/intro'
             - 'Examen prácticas 3 y 4': 'bd/examen-practicas-3-4.md'
             - 'Práctica 5 usuarios': 'https://www.grupalesbdc.ga/p5-usuarios/intro'
+            - 'Examen prácticas 5 y 6': 'bd/examen-practicas-5-6.md'
         - HLC:
             - Virtualización en Linux:
                 - 'Taller 1': 'hlc/taller1-virtualizacion.md'
@@ -153,6 +154,7 @@ nav:
             - Kubernetes:
                 - 'Ejercicio 1: minikube y kubectl': 'hlc/ejercicio1-minikube-kubectl.md'
                 - 'Taller 1: pods': 'hlc/taller1-pods.md'
+                - 'Taller 2: ReplicaSet': 'hlc/taller2-replicaset.md'
     - OpenWebinars:
         - 'SQL desde Cero': 'openwebinars/sql-desde-cero.md'
         - 'Fundamentos de PL/SQL': 'openwebinars/fundamentos-plsql.md'
