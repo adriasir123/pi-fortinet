@@ -279,36 +279,41 @@ examen56> db.examen2.find()
 ]
 ```
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ## Ejercicio 4
 
 ### 4.1 Enunciado
 
 Queremos cambiar de ubicación un tablespace de Postgres, pero antes debemos avisar a los usuarios que tienen acceso de lectura o escritura a cualquiera de los objetos almacenados en el mismo. Escribe una consulta que obtenga un listado con los nombres de dichos usuarios
 
+### 4.2 Realización
+
+usuarios que tienen acceso de lectura o escritura a cualquiera de los objetos almacenados en el mismo. Escribe una consulta que obtenga un listado con los nombres de dichos usuarios (sacar solamente el listado de usuarios)
+
+```sql
+CREATE OR REPLACE PROCEDURE listado_usuarios_en_tablespace(nombre_del_tablespace text)
+LANGUAGE plpgsql
+AS $$
+DECLARE
+  resultado text;
+BEGIN
+  SELECT DISTINCT grantee
+  INTO resultado
+  FROM information_schema.table_privileges
+  WHERE table_catalog = current_database()
+    AND table_schema = 'public'
+    AND tablespace_name = nombre_del_tablespace
+    AND (privilege_type = 'SELECT' OR privilege_type = 'INSERT' OR privilege_type = 'UPDATE' OR privilege_type = 'DELETE');
+  RAISE NOTICE 'Usuarios con permisos en el tablespace %: %', nombre_del_tablespace, resultado;
+END;
+$$;
+```
+
+```sql
+CALL listado_usuarios_en_tablespace('pg_default');
+```
+
+
+SELECT * FROM pg_tables;
 
 
 
