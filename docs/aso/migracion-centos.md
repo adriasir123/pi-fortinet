@@ -90,47 +90,41 @@ Dejo por aquí [un buen artículo](https://www.educba.com/redhat-vs-debian/) que
 
 ## Ejercicio 3
 
-> Descargar la iso de CentOS Stream y evaluar el producto
+### 3.1
 
+> Descargar la iso de CentOS Stream
 
+![descargastream](https://i.imgur.com/OfiwhVM.png)
 
+### 3.2
 
+> Evaluar el producto
 
+Para evaluarlo, vamos a instalarlo desde la imagen descargada.
 
+Así queda el resumen de características que le voy a dar a la VM:
 
+![instalacion1](https://i.imgur.com/b99Wyvr.png)
 
+Después de esto, empezamos la instalación real:
 
+![instalacion2](https://i.imgur.com/DdxXgNY.png)
 
+![instalacion3](https://i.imgur.com/pVZW1iO.png)
 
+En el siguiente menú, los apartados marcados en rojo son los que he tenido que configurar/cambiar *(ambas contraseñas son 1234 para root y para el usuario)*:
 
+![instalacion4](https://i.imgur.com/394Q0ww.png)
 
+![instalacion5](https://i.imgur.com/C2YL1oe.png)
 
+Ya lo tenemos instalado, y muestro algunas pruebas:
 
+![instalacion6](https://i.imgur.com/C6zS4pl.png)
 
+Como hemos podido ver, desde la adquisición de Centos por parte de Red Hat, lo han dejado muy copia de RHEL, incluso el fichero para comprobar la versión es el mismo.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Red Hat [en este enlace](https://www.redhat.com/en/topics/linux/what-is-centos-stream) explica muy bien las ventajas de CentOS Stream.
 
 ## Ejercicio 4
 
@@ -152,9 +146,32 @@ euroLinux
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ## Ejercicio 5
 
-> Instala CentOS 7, y evalúa la herramientas que ofrecen la distribución del punto 4.
+> Instalar CentOS 7, y evalúa la herramientas que ofrecen la distribución del punto 4.
 
 
 
