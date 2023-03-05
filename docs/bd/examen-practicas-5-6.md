@@ -287,8 +287,13 @@ Queremos cambiar de ubicación un tablespace de Postgres, pero antes debemos avi
 
 ### 4.2 Realización
 
-usuarios que tienen acceso de lectura o escritura a cualquiera de los objetos almacenados en el mismo. Escribe una consulta que obtenga un listado con los nombres de dichos usuarios (sacar solamente el listado de usuarios)
+usuarios que tienen privilegios de lectura o escritura a cualquiera de los objetos almacenados en el mismo. Escribe una consulta que obtenga un listado con los nombres de dichos usuarios (sacar solamente el listado de usuarios)
 
+
+
+
+
+pg_tables
 ```sql
 CREATE OR REPLACE PROCEDURE listado_usuarios_en_tablespace(nombre_del_tablespace text)
 LANGUAGE plpgsql

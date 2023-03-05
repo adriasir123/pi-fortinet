@@ -2,6 +2,8 @@
 
 ## Ejercicio 1
 
+### 1.1
+
 > Analizar el desencadenante de la retirada de CentOS 8 del mercado
 
 CentOS era un rebuild de RHEL 100% open source, gratuito y de comunidad. Es decir, que por cada release de RHEL se lanzaba una versión de CentOS, que además solía tener en torno a 10 años de soporte. Se convirtió en unas de las distribuciones más estables junto con Debian.
@@ -22,6 +24,8 @@ Para terminar y dar más perspectiva al asunto, hay que explicar que Red Hat tie
 
 Como hemos podido ver, no hay buenos ni malos en esta historia, puesto que Red Hat tiene sus motivos para hacer lo que ha hecho, y la comunidad de CentOS también tienen sus motivos para haber reaccionado de manera negativa.
 
+### 1.2
+
 > Decir tu opinión
 
 Mi opinión es bastante neutra, ya que puedo entender ambos puntos de vista.
@@ -33,6 +37,8 @@ Por otro lado, la comunidad de CentOS tenía una buena distribución que se les 
 La buena noticia es que estamos en el mundo del software libre, y algo no muere si la comunidad no quiere. Se han acabado haciendo forks del proyecto, como era de esperar, y se han creado nuevas distribuciones que mantienen la filosofía de CentOS, como Rocky Linux y AlmaLinux.
 
 ## Ejercicio 2
+
+### 2.1
 
 > Crear una cuenta en Red Hat y descargar la iso de RHEL
 
@@ -54,35 +60,81 @@ La buena noticia es que estamos en el mundo del software libre, y algo no muere 
 
 ![redhat8](https://i.imgur.com/0e3NY0S.png)
 
+### 2.2
+
 > Evaluar el producto
 
+Para evaluarlo, vamos a instalarlo desde la imagen descargada.
 
+Así queda el resumen de características que le voy a dar a la VM:
 
+![instalacion1](https://i.imgur.com/1gb4WKO.png)
 
+Después de esto, empezamos la instalación real:
 
+![instalacion2](https://i.imgur.com/STfFnQs.png)
 
+![instalacion3](https://i.imgur.com/lheh3C4.png)
 
+En el siguiente menú, los apartados marcados en rojo son los que he tenido que configurar/cambiar *(ambas contraseñas son 1234 para root y para el usuario)*:
 
+![instalacion4](https://i.imgur.com/bwXNjQd.png)
 
+![instalacion5](https://i.imgur.com/5FTq2RR.png)
 
+Ya lo tenemos instalado, y muestro algunas pruebas:
 
+![instalacion6](https://i.imgur.com/jygB4OU.png)
 
-
-
-
-
-
+Dejo por aquí [un buen artículo](https://www.educba.com/redhat-vs-debian/) que compara RHEL con Debian. Está un poco desactualizado con respecto a las versiones pero por lo demás lo he encontrado interesante.
 
 ## Ejercicio 3
 
-> Descarga la iso de CentOS Stream y evalúa el producto.
+> Descargar la iso de CentOS Stream y evaluar el producto
 
 
 
 
 
 
-4. Descarga iso de una de las otras distribuciones candidatas, indica criterios para la elección de la nueva distribución y evalúa el producto.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Ejercicio 4
+
+> Descarga iso de una de las otras distribuciones candidatas, indica criterios para la elección de la nueva distribución y evalúa el producto.
 
 
 
@@ -97,7 +149,12 @@ euroLinux
 
 
 
-5. Instala CentOS 7, y evalúa la herramientas que ofrecen la distribución del punto 4.
+
+
+
+## Ejercicio 5
+
+> Instala CentOS 7, y evalúa la herramientas que ofrecen la distribución del punto 4.
 
 
 
@@ -111,10 +168,4 @@ euroLinux
 
 
 
-## 
 
-
-```shell
-```
-
-![]()
