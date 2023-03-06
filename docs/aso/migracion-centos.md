@@ -250,7 +250,7 @@ Ya lo tenemos instalado, y muestro algunas pruebas:
 
 > Realizar la migración a Rocky Linux
 
-<https://docs.rockylinux.org/guides/migrate2rocky/>
+<https://docs.rockylinux.org/guides/migrate2rocky/>  
 <https://www.cyberciti.biz/howto/migrate-from-centos-8-to-rocky-linux-conversion/>
 
 #### Actualización de paquetes
