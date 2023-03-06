@@ -204,7 +204,7 @@ A día de hoy, si queremos simular la migración, nos encontramos 2 problemas pr
 
 Este es el dilema con el que nos encontramos actualmente.
 
-Evidentemente, desde CentOS Linux 7 sí podríamos upgradear por ejemplo a CentOS Stream 8 (que es en lo que se ha convertido el antiguo CentOS 8),y desde ahí se podría upgradear a Rocky Linux.
+Evidentemente, desde CentOS Linux 7 sí podríamos upgradear por ejemplo a CentOS Stream 8 (que es en lo que se ha convertido el antiguo CentOS 8), y desde ahí se podría upgradear a Rocky Linux.
 
 La solución más inteligente dentro del dilema que se nos plantea actualmente para la simulación de esta migración en mi opinión, es instalarnos CentOS Stream 8 y de ahí hacer una migración a Rocky Linux.
 
