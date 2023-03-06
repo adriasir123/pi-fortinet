@@ -191,18 +191,111 @@ Por ejemplo, el "live kernel patching" y "Red Hat Sattelite" no estarán disponi
 
 ## Ejercicio 5
 
-> Instalar CentOS 7, y evalúa la herramientas que ofrecen la distribución del punto 4.
+### 5.1
 
+> Explicar el dilema que nos encontramos a la hora de la migración
 
+Esta práctica en su día Alberto la planteó justo cuando el problema de CentOS estaba candente, por lo que significa que por aquel año las isos de Centos 8 originales seguían existiendo y lo que es más importante, sus repositorios.
 
+A día de hoy, si queremos simular la migración, nos encontramos 2 problemas principales:
 
+- Todos los mirrors con imágenes de CentOS 8 originales han sido tirados, por lo tanto no podemos simular una migración desde el CentOS 8 original ya que no existe a día de hoy.
+- Si intentamos una migración bajando una versión, desde el CentOS Linux 7 que sí sigue existiendo, nos encontramos otro problema. Parte de la migración a Rocky Linux requiere que upgradeemos a CentOS 8, pero los repositorios ya no existen y algunos que existen dan problemas, así que las maneras que aún hay por Internet documentadas ya no sirven.
 
+Este es el dilema con el que nos encontramos actualmente.
 
+Evidentemente, desde CentOS Linux 7 sí podríamos upgradear por ejemplo a CentOS Stream 8 (que es en lo que se ha convertido el antiguo CentOS 8),y desde ahí se podría upgradear a Rocky Linux.
 
+La solución más inteligente dentro del dilema que se nos plantea actualmente para la simulación de esta migración en mi opinión, es instalarnos CentOS Stream 8 y de ahí hacer una migración a Rocky Linux.
 
+Así es como evitaríamos chocarnos con problemas de isos o repositorios que ya ni siquiera existen. Y si quedan remanentes poco tiempo de vida les queda.
 
+### 5.2
 
+> Descargar la iso de CentOS Stream 8
 
+![centostream8descarga](https://i.imgur.com/uCvQnlP.jpg)
 
+### 5.3
 
+> Evaluar el producto
 
+Para evaluarlo, vamos a instalarlo desde la imagen descargada.
+
+Así queda el resumen de características que le voy a dar a la VM:
+
+![instalacion1](https://i.imgur.com/hftER1g.png)
+
+Después de esto, empezamos la instalación real:
+
+![instalacion2](https://i.imgur.com/iecAi8K.png)
+
+![instalacion3](https://i.imgur.com/qyvLLmh.png)
+
+En el siguiente menú, los apartados marcados en rojo son los que he tenido que configurar/cambiar *(ambas contraseñas son 1234 para root y para el usuario)*:
+
+![instalacion4](https://i.imgur.com/PQnM0Kt.png)
+
+![instalacion6](https://i.imgur.com/vqYnE5U.png)
+
+Tenemos que aceptar la licencia:
+
+![instalacion7](https://i.imgur.com/zh9CubD.png)
+
+Ya lo tenemos instalado, y muestro algunas pruebas:
+
+![instalacion8](https://i.imgur.com/7RsnSLw.png)
+
+### 5.4
+
+> Realizar la migración a Rocky Linux
+
+<https://docs.rockylinux.org/guides/migrate2rocky/>
+<https://www.cyberciti.biz/howto/migrate-from-centos-8-to-rocky-linux-conversion/>
+
+#### Actualización de paquetes
+
+```shell
+sudo dnf update
+sudo reboot
+```
+
+#### Descarga de script
+
+```shell
+curl https://raw.githubusercontent.com/rocky-linux/rocky-tools/main/migrate2rocky/migrate2rocky.sh -o migrate2rocky.sh
+```
+
+#### Permisos
+
+```shell
+chmod u+x migrate2rocky.sh
+```
+
+#### Ejecución
+
+```shell
+sudo ./migrate2rocky.sh -r
+```
+
+Así se ve el inicio del script:
+
+![migracioninicio](https://i.imgur.com/YLCs273.png)
+
+Además, nos fijamos que por ahora el icono de arriba a la izquierda es el de CentOS.
+
+Al terminar si ha funcionado correctamente, veremos esto:
+
+![migracioncorrecta](https://i.imgur.com/SjiNPMT.png)
+
+Además, nos fijamos que ahora el icono de arriba pasa a ser el de Rocky Linux.
+
+Reinicio:
+
+```shell
+sudo systemctl reboot
+```
+
+#### Comprobaciones
+
+![comprobaciones](https://i.imgur.com/VhO4QGI.png)
