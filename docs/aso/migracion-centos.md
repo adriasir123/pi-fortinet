@@ -128,46 +128,66 @@ Red Hat [en este enlace](https://www.redhat.com/en/topics/linux/what-is-centos-s
 
 ## Ejercicio 4
 
-> Descarga iso de una de las otras distribuciones candidatas, indica criterios para la elección de la nueva distribución y evalúa el producto.
+### 4.1
 
+> Las otras distribuciones alternativas son las siguientes:
+>
+>- AlmaLinux
+>- Rocky Linux
+>- VzLinux
+>- EuroLinux
+>
+> Elegir una, indicar criterios para la elección, y descargar la iso
 
+Elijo Rocky Linux ya que en mi opinión es la evolución lógica después del problema que ha habido con CentOS.
 
-AlmaLinux
+Gregory Kurtzer, el fundador de CentOS, creó el proyecto "Rocky Linux" para continuar con los ideales originales de CentOS.
 
-Rocky Linux
+Descargo la iso:
 
-VZLinux
+![rockydescarga](https://i.imgur.com/6LJNWh7.png)
 
-euroLinux
+### 4.2
 
+> Evaluar el producto
 
+Para evaluarlo, vamos a instalarlo desde la imagen descargada.
 
+Así queda el resumen de características que le voy a dar a la VM:
 
+![instalacion1](https://i.imgur.com/S6Jf9of.png)
 
+Como Rocky es un proyecto relativamente nuevo, he tenido que seleccionar RHEL 9 en virt manager ya que es lo que más se le asemeja, puesto que Rocky aún no aparece en la lista de SSOO.
 
+Después de esto, empezamos la instalación real:
 
+![instalacion2](https://i.imgur.com/wIeTtie.png)
 
+![instalacion3](https://i.imgur.com/hu99ndP.png)
 
+En el siguiente menú, los apartados marcados en rojo son los que he tenido que configurar/cambiar *(ambas contraseñas son 1234 para root y para el usuario)*:
 
+![instalacion4](https://i.imgur.com/fbaSG5c.png)
 
+![instalacion5](https://i.imgur.com/6jpFnuZ.png)
 
+Ya lo tenemos instalado, y muestro algunas pruebas:
 
+![instalacion6](https://i.imgur.com/kA8z3Ga.png)
 
+Como hemos podido ver, ya que Rocky parte de RHEL, pasa un poco como con CentOS. Es una copia del RHEL actual pero siguiendo la filosofía de CentOS original.
 
+Rocky Linux 9 tendrá soporte hasta 2032, manteniendo la promesa de 10 años de soporte que se venía teniendo tradicionalmente.
 
+[En este artículo](https://www.hostinger.com/tutorials/rocky-linux-review) describen muy bien Rocky Linux.
 
+A destacar positivamente, se usa LVM y XFS por defecto:
 
+![positivorockylinux](https://i.imgur.com/kLiKm36.png)
 
+La única desventaja que le veo a Rocky Linux es que por razones obvias, aunque parta de RHEL, las características propietarias y de pago no estarán disponibles.  
 
-
-
-
-
-
-
-
-
-
+Por ejemplo, el "live kernel patching" y "Red Hat Sattelite" no estarán disponibles.
 
 ## Ejercicio 5
 
