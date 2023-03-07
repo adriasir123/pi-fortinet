@@ -128,6 +128,7 @@ nav:
                 - 'Compilación de Kernel': 'aso/compilacion-kernel.md'
             - Red Hat:
                 - 'Migración CentOS': 'aso/migracion-centos.md'
+            - 'Recolección de logs journald': 'aso/recoleccion-logs-journald.md'
             - OpenLDAP:
                 - 'Práctica inicial': 'aso/ldap-inicial.md'
         - BD:
