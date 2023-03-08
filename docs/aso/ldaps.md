@@ -205,7 +205,8 @@ sudo nano /etc/nslcd.conf
 ```shell
 # SSL options
 ssl start_tls
-tls_reqcert allow
+tls_reqcert never
+# tls_cacertfile /etc/ssl/certs/ca-certificates.crt
 ```
 
 Reinicio:
