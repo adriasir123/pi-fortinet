@@ -131,6 +131,7 @@ nav:
             - 'Recolección de logs journald': 'aso/recoleccion-logs-journald.md'
             - OpenLDAP:
                 - 'Práctica inicial': 'aso/ldap-inicial.md'
+                - 'LDAPs': 'aso/ldaps.md'
         - BD:
             - 'Prueba inicial': 'bd/prueba-inicial.md'
             - 'Práctica 1: servidores y clientes': 'https://www.grupalesbdc.ga/p1-servidores-clientes/intro'
