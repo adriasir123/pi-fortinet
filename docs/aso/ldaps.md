@@ -6,27 +6,53 @@ Configura el servidor LDAP de alfa para que utilice el protocolo ldaps:// a la v
 
 ## 2. Server
 
-### 2.1 Certificados
-
-Genero la clave privada con passphrase `1234`:
+### 2.1 Autoridad certificadora
 
 ```shell
-sudo su -
-cd /etc/ssl/private
-openssl genrsa -aes128 -out server.key 2048
+sudo apt install easy-rsa
+mkdir ~/easy-rsa
+ln -s /usr/share/easy-rsa/* ~/easy-rsa/
+chmod 700 /home/vagrant/easy-rsa
+cd ~/easy-rsa
+./easyrsa init-pki
+nano vars
 ```
 
-Elimino la passphrase de la clave privada:
-
 ```shell
-openssl rsa -in server.key -out server.key
+set_var EASYRSA_REQ_COUNTRY    "ES"
+set_var EASYRSA_REQ_PROVINCE   "Sevilla"
+set_var EASYRSA_REQ_CITY       "Dos Hermanas"
+set_var EASYRSA_REQ_ORG        "IES Gonzalo Nazareno"
+set_var EASYRSA_REQ_EMAIL      "adrjaro@gmail.com"
+set_var EASYRSA_REQ_OU         "ASIR"
+set_var EASYRSA_ALGO           "ec"
+set_var EASYRSA_DIGEST         "sha512"
 ```
 
-Genero el csr:
+```shell
+./easyrsa build-ca
+```
+
+Password: 1234
+Common Name (eg: your user, host, or server name) [Easy-RSA CA]:server.adrianj.gonzalonazareno.org
+
+Importo el certificado:
 
 ```shell
-root@server:/etc/ssl/private# openssl req -new -days 3650 -key server.key -out server.csr
-Ignoring -days; not generating a certificate
+sudo cp ~/easy-rsa/pki/ca.crt /usr/local/share/ca-certificates/
+sudo update-ca-certificates
+```
+
+### 2.2 CSR servidor y firmado
+
+```shell
+mkdir ~/server-csr
+cd ~/server-csr
+openssl genrsa -out server.key
+```
+
+```shell
+vagrant@server:~/server-csr$ openssl req -new -key server.key -out server.csr
 You are about to be asked to enter information that will be incorporated
 into your certificate request.
 What you are about to enter is what is called a Distinguished Name or a DN.
@@ -48,39 +74,43 @@ A challenge password []:
 An optional company name []:
 ```
 
-Genero el crt:
-
 ```shell
-openssl x509 -in server.csr -out server.crt -req -signkey server.key -days 3650
-```
-
-Muestro los ficheros generados:
-
-```shell
-root@server:/etc/ssl/private# ls -la
-total 20
-drwx------ 2 root root 4096 Mar  8 03:12 .
-drwxr-xr-x 4 root root 4096 Dec 19 20:26 ..
--rw-r--r-- 1 root root 1424 Mar  8 03:12 server.crt
--rw-r--r-- 1 root root 1106 Mar  8 03:08 server.csr
--rw------- 1 root root 1679 Mar  8 02:58 server.key
+cd ~/easy-rsa
+./easyrsa import-req ~/server-csr/server.csr server
+./easyrsa sign-req server server
+cp pki/issued/server.crt ~/server-csr/
+cd ~/server-csr/
 ```
 
 Copio los ficheros al directorio necesario:
 
 ```shell
-cp /etc/ssl/private/server.key /etc/ssl/private/server.crt /etc/ssl/certs/ca-certificates.crt /etc/ldap/sasl2/
+sudo cp /home/vagrant/server-csr/server.key /home/vagrant/server-csr/server.crt /etc/ssl/certs/ca-certificates.crt /etc/ldap/sasl2/
 ```
 
 Modifico propietarios:
 
 ```shell
-chown openldap:openldap /etc/ldap/sasl2/server.key /etc/ldap/sasl2/server.crt /etc/ldap/sasl2/ca-certificates.crt
+sudo chown openldap:openldap /etc/ldap/sasl2/server.key /etc/ldap/sasl2/server.crt /etc/ldap/sasl2/ca-certificates.crt
 ```
 
-### 2.2 Configuración certificados
+
+
+
+
+
+
+
+
+
+
+
+
+
+### 2.3 Configuración certificados
 
 ```shell
+sudo su -
 nano mod_ssl.ldif
 ```
 
@@ -162,12 +192,26 @@ sudo ss -tulpn | grep 636
 
 
 
-## 3. Client
+## 3. Clientedebian
 
 ### 3.1 Configuración
 
-```shell
+Reemplazo las siguientes líneas:
 
+```shell
+sudo nano /etc/nslcd.conf
+```
+
+```shell
+# SSL options
+ssl start_tls
+tls_reqcert allow
+```
+
+Reinicio:
+
+```shell
+sudo systemctl restart nslcd
 ```
 
 
@@ -196,38 +240,3 @@ sudo ss -tulpn | grep 636
 
 
 
-
-
-
-
-
-
-
-
-## 5. Comprobaciones finales
-
-En el servidor podemos comprobar que se ha creado un fichero en `/var/log/journal/remote` para el cliente:
-
-```shell
-vagrant@server:~$ ls -la /var/log/journal/remote
-total 8200
-drwxr-xr-x  2 systemd-journal-remote systemd-journal-remote    4096 Mar  7 04:13 .
-drwxr-sr-x+ 4 root                   systemd-journal           4096 Mar  7 04:06 ..
--rw-r-----  1 systemd-journal-remote systemd-journal-remote 8388608 Mar  7 04:13 remote-10.0.0.3.journal
-```
-
-Esto funciona así por el modo `SplitMode=host`, y así separamos los ficheros de log por cliente.
-
-Desde el cliente, para hacer pruebas de funcionamiento, podríamos mandar mensajes manualmente al log:
-
-```shell
-logger -p syslog.debug "### MENSAJE TEST DE ADRIAN ###"
-```
-
-Volviendo al servidor, podríamos leer el log del cliente y saltar al final para ver la prueba así:
-
-```shell
-sudo journalctl -e --file=/var/log/journal/remote/remote-10.0.0.3.journal
-```
-
-![pruebafinal](https://i.imgur.com/uBZfcq9.png)
