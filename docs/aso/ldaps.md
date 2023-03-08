@@ -85,19 +85,24 @@ cd ~/server-csr/
 Copio los ficheros al directorio necesario:
 
 ```shell
-sudo cp /home/vagrant/server-csr/server.key /home/vagrant/server-csr/server.crt /etc/ssl/certs/ca-certificates.crt /etc/ldap/sasl2/
+sudo cp /home/vagrant/server-csr/server.key /etc/ssl/private
+sudo cp /home/vagrant/server-csr/server.crt /etc/ssl/certs
+sudo cp /home/vagrant/easy-rsa/pki/ca.crt /etc/ssl/certs
 ```
 
 Modifico propietarios:
 
 ```shell
-sudo chown openldap:openldap /etc/ldap/sasl2/server.key /etc/ldap/sasl2/server.crt /etc/ldap/sasl2/ca-certificates.crt
+sudo chown openldap:openldap /etc/ssl/private/server.key /etc/ssl/certs/server.crt /etc/ssl/certs/ca.crt
 ```
 
+### ACLs
 
-
-
-
+```shell
+sudo apt install acl
+sudo setfacl -m u:openldap:r-x /etc/ssl/private
+sudo setfacl -m u:openldap:r-x /etc/ssl/private/server.key
+```
 
 
 
@@ -118,13 +123,13 @@ nano mod_ssl.ldif
 dn: cn=config
 changetype: modify
 add: olcTLSCACertificateFile
-olcTLSCACertificateFile: /etc/ldap/sasl2/ca-certificates.crt
+olcTLSCACertificateFile: /etc/ssl/certs/ca.crt
 -
 replace: olcTLSCertificateFile
-olcTLSCertificateFile: /etc/ldap/sasl2/server.crt
+olcTLSCertificateFile: /etc/ssl/certs/server.crt
 -
 replace: olcTLSCertificateKeyFile
-olcTLSCertificateKeyFile: /etc/ldap/sasl2/server.key
+olcTLSCertificateKeyFile: /etc/ssl/private/server.key
 ```
 
 La aplico:
