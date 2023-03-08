@@ -6,11 +6,168 @@ Configura el servidor LDAP de alfa para que utilice el protocolo ldaps:// a la v
 
 ## 2. Server
 
-### 3.1 Paquetería
+### 2.1 Certificados
+
+Genero la clave privada con passphrase `1234`:
 
 ```shell
-sudo apt update
-sudo apt install systemd-journal-remote
+sudo su -
+cd /etc/ssl/private
+openssl genrsa -aes128 -out server.key 2048
+```
+
+Elimino la passphrase de la clave privada:
+
+```shell
+openssl rsa -in server.key -out server.key
+```
+
+Genero el csr:
+
+```shell
+root@server:/etc/ssl/private# openssl req -new -days 3650 -key server.key -out server.csr
+Ignoring -days; not generating a certificate
+You are about to be asked to enter information that will be incorporated
+into your certificate request.
+What you are about to enter is what is called a Distinguished Name or a DN.
+There are quite a few fields but you can leave some blank
+For some fields there will be a default value,
+If you enter '.', the field will be left blank.
+-----
+Country Name (2 letter code) [AU]:ES
+State or Province Name (full name) [Some-State]:Sevilla
+Locality Name (eg, city) []:Dos Hermanas
+Organization Name (eg, company) [Internet Widgits Pty Ltd]:IES Gonzalo Nazareno
+Organizational Unit Name (eg, section) []:ASIR
+Common Name (e.g. server FQDN or YOUR name) []:server.adrianj.gonzalonazareno.org
+Email Address []:adrjaro@gmail.com
+
+Please enter the following 'extra' attributes
+to be sent with your certificate request
+A challenge password []:
+An optional company name []:
+```
+
+Genero el crt:
+
+```shell
+openssl x509 -in server.csr -out server.crt -req -signkey server.key -days 3650
+```
+
+Muestro los ficheros generados:
+
+```shell
+root@server:/etc/ssl/private# ls -la
+total 20
+drwx------ 2 root root 4096 Mar  8 03:12 .
+drwxr-xr-x 4 root root 4096 Dec 19 20:26 ..
+-rw-r--r-- 1 root root 1424 Mar  8 03:12 server.crt
+-rw-r--r-- 1 root root 1106 Mar  8 03:08 server.csr
+-rw------- 1 root root 1679 Mar  8 02:58 server.key
+```
+
+Copio los ficheros al directorio necesario:
+
+```shell
+cp /etc/ssl/private/server.key /etc/ssl/private/server.crt /etc/ssl/certs/ca-certificates.crt /etc/ldap/sasl2/
+```
+
+Modifico propietarios:
+
+```shell
+chown openldap:openldap /etc/ldap/sasl2/server.key /etc/ldap/sasl2/server.crt /etc/ldap/sasl2/ca-certificates.crt
+```
+
+### 2.2 Configuración certificados
+
+```shell
+nano mod_ssl.ldif
+```
+
+```shell
+dn: cn=config
+changetype: modify
+add: olcTLSCACertificateFile
+olcTLSCACertificateFile: /etc/ldap/sasl2/ca-certificates.crt
+-
+replace: olcTLSCertificateFile
+olcTLSCertificateFile: /etc/ldap/sasl2/server.crt
+-
+replace: olcTLSCertificateKeyFile
+olcTLSCertificateKeyFile: /etc/ldap/sasl2/server.key
+```
+
+La aplico:
+
+```shell
+ldapmodify -Y EXTERNAL -H ldapi:/// -f mod_ssl.ldif
+```
+
+Compruebo que se ha aplicado:
+
+```shell
+slapcat -b cn=config
+```
+
+![certificadosaplicados](https://i.imgur.com/I5s3MNw.png)
+
+### 2.3 Configuración ldap
+
+Reemplazo la siguiente línea:
+
+```shell
+sudo nano /etc/default/slapd
+```
+
+```shell
+SLAPD_SERVICES="ldap:/// ldapi:/// ldaps:///"
+```
+
+Reinicio:
+
+```shell
+sudo systemctl restart slapd
+```
+
+### 2.4 Comprobaciones
+
+Puerto de LDAPs abierto:
+
+```shell
+sudo ss -tulpn | grep 636
+```
+
+![ldapspuerto](https://i.imgur.com/WXkopWr.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## 3. Client
+
+### 3.1 Configuración
+
+```shell
+
 ```
 
 
@@ -46,64 +203,6 @@ sudo apt install systemd-journal-remote
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-## 4. Client
-
-### 4.1 Paquetería
-
-```shell
-sudo apt update
-sudo apt install systemd-journal-remote
-```
-
-### 4.2 Unidad systemd
-
-```shell
-sudo systemctl enable systemd-journal-upload.service
-```
-
-### 4.3 Configuración servicio
-
-```shell
-sudo nano /etc/systemd/journal-upload.conf
-```
-
-```shell
-#  This file is part of systemd.
-#
-#  systemd is free software; you can redistribute it and/or modify it
-#  under the terms of the GNU Lesser General Public License as published by
-#  the Free Software Foundation; either version 2.1 of the License, or
-#  (at your option) any later version.
-#
-# Entries in this file show the compile time defaults.
-# You can change settings by editing this file.
-# Defaults can be restored by simply deleting this file.
-#
-# See journal-upload.conf(5) for details
-
-[Upload]
-URL=http://10.0.0.2:19532
-# ServerKeyFile=/etc/ssl/private/journal-upload.pem
-# ServerCertificateFile=/etc/ssl/certs/journal-upload.pem
-# TrustedCertificateFile=/etc/ssl/ca/trusted.pem
-```
-
-### 4.4 Activación
-
-```shell
-sudo systemctl restart systemd-journal-upload
-```
 
 ## 5. Comprobaciones finales
 
