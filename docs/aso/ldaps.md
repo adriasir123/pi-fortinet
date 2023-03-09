@@ -6,53 +6,33 @@ Configura el servidor LDAP de alfa para que utilice el protocolo ldaps:// a la v
 
 ## 2. Server
 
-### 2.1 Autoridad certificadora
+### 2.1 Requisitos
 
 ```shell
-sudo apt install easy-rsa
-mkdir ~/easy-rsa
-ln -s /usr/share/easy-rsa/* ~/easy-rsa/
-chmod 700 /home/vagrant/easy-rsa
-cd ~/easy-rsa
-./easyrsa init-pki
-nano vars
+sudo apt install libldap-common
 ```
 
+### 2.2 Certificados
+
+Genero la clave privada:
+
 ```shell
-set_var EASYRSA_REQ_COUNTRY    "ES"
-set_var EASYRSA_REQ_PROVINCE   "Sevilla"
-set_var EASYRSA_REQ_CITY       "Dos Hermanas"
-set_var EASYRSA_REQ_ORG        "IES Gonzalo Nazareno"
-set_var EASYRSA_REQ_EMAIL      "adrjaro@gmail.com"
-set_var EASYRSA_REQ_OU         "ASIR"
-set_var EASYRSA_ALGO           "ec"
-set_var EASYRSA_DIGEST         "sha512"
+sudo su -
+cd /etc/ssl/private
+openssl genrsa -aes128 -out server.key 2048
 ```
 
+Le quito la passphrase:
+
 ```shell
-./easyrsa build-ca
+openssl rsa -in server.key -out server.key
 ```
 
-Password: 1234
-Common Name (eg: your user, host, or server name) [Easy-RSA CA]:server.adrianj.gonzalonazareno.org
-
-Importo el certificado:
+Genero el csr:
 
 ```shell
-sudo cp ~/easy-rsa/pki/ca.crt /usr/local/share/ca-certificates/
-sudo update-ca-certificates
-```
-
-### 2.2 CSR servidor y firmado
-
-```shell
-mkdir ~/server-csr
-cd ~/server-csr
-openssl genrsa -out server.key
-```
-
-```shell
-vagrant@server:~/server-csr$ openssl req -new -key server.key -out server.csr
+root@server:/etc/ssl/private# openssl req -new -days 3650 -key server.key -out server.csr
+Ignoring -days; not generating a certificate
 You are about to be asked to enter information that will be incorporated
 into your certificate request.
 What you are about to enter is what is called a Distinguished Name or a DN.
@@ -74,48 +54,40 @@ A challenge password []:
 An optional company name []:
 ```
 
+Genero el crt:
+
 ```shell
-cd ~/easy-rsa
-./easyrsa import-req ~/server-csr/server.csr server
-./easyrsa sign-req server server
-cp pki/issued/server.crt ~/server-csr/
-cd ~/server-csr/
+openssl x509 -in server.csr -out server.crt -req -signkey server.key -days 3650
 ```
 
-Copio los ficheros al directorio necesario:
+Muestro los ficheros generados:
 
 ```shell
-sudo cp /home/vagrant/server-csr/server.key /etc/ssl/private
-sudo cp /home/vagrant/server-csr/server.crt /etc/ssl/certs
-sudo cp /home/vagrant/easy-rsa/pki/ca.crt /etc/ssl/certs
+root@server:/etc/ssl/private# ls -la
+total 20
+drwx------ 2 root root 4096 Mar  9 07:51 .
+drwxr-xr-x 4 root root 4096 Dec 19 20:26 ..
+-rw-r--r-- 1 root root 1424 Mar  9 07:51 server.crt
+-rw-r--r-- 1 root root 1106 Mar  9 07:50 server.csr
+-rw------- 1 root root 1679 Mar  8 00:45 server.key
+```
+
+Copio los ficheros al directorio correspondiente:
+
+```shell
+cp /etc/ssl/private/server.key /etc/ssl/private/server.crt /etc/ssl/certs/ca-certificates.crt /etc/ldap/sasl2/
 ```
 
 Modifico propietarios:
 
 ```shell
-sudo chown openldap:openldap /etc/ssl/private/server.key /etc/ssl/certs/server.crt /etc/ssl/certs/ca.crt
+chown openldap:openldap /etc/ldap/sasl2/server.key /etc/ldap/sasl2/server.crt /etc/ldap/sasl2/ca-certificates.crt
 ```
-
-### ACLs
-
-```shell
-sudo apt install acl
-sudo setfacl -m u:openldap:r-x /etc/ssl/private
-sudo setfacl -m u:openldap:r-x /etc/ssl/private/server.key
-```
-
-
-
-
-
-
-
-
 
 ### 2.3 Configuración certificados
 
 ```shell
-sudo su -
+cd
 nano mod_ssl.ldif
 ```
 
@@ -123,13 +95,13 @@ nano mod_ssl.ldif
 dn: cn=config
 changetype: modify
 add: olcTLSCACertificateFile
-olcTLSCACertificateFile: /etc/ssl/certs/ca.crt
+olcTLSCACertificateFile: /etc/ldap/sasl2/ca-certificates.crt
 -
 replace: olcTLSCertificateFile
-olcTLSCertificateFile: /etc/ssl/certs/server.crt
+olcTLSCertificateFile: /etc/ldap/sasl2/server.crt
 -
 replace: olcTLSCertificateKeyFile
-olcTLSCertificateKeyFile: /etc/ssl/private/server.key
+olcTLSCertificateKeyFile: /etc/ldap/sasl2/server.key
 ```
 
 La aplico:
@@ -146,7 +118,23 @@ slapcat -b cn=config
 
 ![certificadosaplicados](https://i.imgur.com/I5s3MNw.png)
 
-### 2.3 Configuración ldap
+Salgo de root:
+
+```shell
+exit
+```
+
+### 2.4 Configuración LDAP
+
+Añado la siguiente línea:
+
+```shell
+sudo nano /etc/ldap/ldap.conf
+```
+
+```shell
+TLS_REQCERT never
+```
 
 Reemplazo la siguiente línea:
 
@@ -164,7 +152,7 @@ Reinicio:
 sudo systemctl restart slapd
 ```
 
-### 2.4 Comprobaciones
+### 2.5 Comprobaciones
 
 Puerto de LDAPs abierto:
 
@@ -174,14 +162,13 @@ sudo ss -tulpn | grep 636
 
 ![ldapspuerto](https://i.imgur.com/WXkopWr.png)
 
+Pruebo que una consulta mediante `ldaps://` y sin root funciona:
 
+```shell
+ldapsearch -x -b "dc=adrianj,dc=gonzalonazareno,dc=org" -H ldaps://
+```
 
-
-
-
-
-
-
+![ldapsconsulta](https://i.imgur.com/7uADl24.png)
 
 
 
