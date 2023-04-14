@@ -39,9 +39,13 @@ En GMV me han explicado que hoy en día un firewall no protege de nada y se nece
 ## Tecnologías a utilizar
 
 **Hardware**: FortiGate 60F
+
 **Proveedor cloud**: lo más probable es que no haya necesidad de usar AWS, Azure etc. Existe FortiGate Cloud pero no dispondremos de licencia para usarlo.
+
 **Máquinas físicas**: sin contar el propio firewall, usaré mi portátil y probablemente la raspberry. No por ningún motivo en especial, sino porque son las máquinas de las que dispongo que puedo conectar físicamente al firewall.
+
 **Máquinas virtuales**: se podría tener un pequeño escenario de máquinas en el portátil en modo bridge, 2 o 3 máquinas, para simular una red que el firewall protegería.
+
 **Software**: con el que más se trabajará sera FortiOS, el propio sistema operativo del firewall. También se puede usar FortiClient para hacer una VPN. Para la memoria web estaremos usando mkdocs. Básicamente iremos usando todo el software que vaya siendo necesario según surja la necesidad.
 
 ## Resultados a obtener
