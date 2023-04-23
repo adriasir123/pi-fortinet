@@ -7,7 +7,7 @@ theme:
     - navigation.sections
   icon:
     logo: simple/fortinet
-  favicon: images/fortinet-red.svg
+  favicon: images/fortinet-favicon.svg
   palette:
     - scheme: default
       primary: red
