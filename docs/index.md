@@ -6,7 +6,7 @@ hide:
 
 # Bienvenid@ a la memoria del proyecto
 
-![profilepic](images/profile-pic.png){ align=left }
+![profilepic](images/profile-pic.png){ align=left width="300" }
 
 Soy Adrián Jaramillo Rodríguez, alumno del IES Gonzalo Nazareno. Aquí encontrarás toda la documentación de forma escrita sobre mi proyecto.
 
