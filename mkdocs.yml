@@ -6,7 +6,7 @@ theme:
     - navigation.tabs
     - navigation.sections
   icon:
-    logo: material/linux
+    logo: simple/fortinet
   favicon: images/favicon.ico
   palette:
     - scheme: default
