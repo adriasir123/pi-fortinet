@@ -16,5 +16,5 @@ Espero que todo sea informativo y de utilidad, un saludo.
 
 <figure markdown>
   ![profilepic](images/profile-pic.png){ width="300" }
-  <figcaption>Image caption</figcaption>
+  <figcaption>Soy Adrián Jaramillo Rodríguez, alumno del IES Gonzalo Nazareno. Aquí encontrarás toda la documentación de forma escrita sobre mi proyecto.<br>Espero que todo sea informativo y de utilidad, un saludo.</figcaption>
 </figure>
