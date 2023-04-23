@@ -10,7 +10,7 @@ theme:
   favicon: images/favicon.ico
   palette:
     - scheme: default
-      primary: indigo
+      primary: red
       accent: indigo
       toggle:
         icon: material/brightness-4
