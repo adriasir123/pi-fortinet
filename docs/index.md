@@ -13,3 +13,8 @@ Soy Adrián Jaramillo Rodríguez, alumno del IES Gonzalo Nazareno. Aquí encontr
 Espero que todo sea informativo y de utilidad, un saludo.
 
 <img src="images/profile-pic.png" alt="pfp" width="300" height="300"/>
+
+<figure markdown>
+  ![profilepic](images/profile-pic.png){ width="300" }
+  <figcaption>Image caption</figcaption>
+</figure>
