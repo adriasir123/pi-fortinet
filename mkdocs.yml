@@ -25,6 +25,8 @@ theme:
 nav:
     - Home: index.md
     - Pre-proyecto: pre-proyecto.md
+    - Primeros pasos: primeros-pasos.md
+    - Demo: demo.md
 markdown_extensions:
   - pymdownx.highlight:
       anchor_linenums: true
