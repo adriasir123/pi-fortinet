@@ -25,7 +25,8 @@ theme:
 nav:
     - Home: index.md
     - Pre-proyecto: pre-proyecto.md
-    - Primeros pasos: primeros-pasos.md
+    - Primeros pasos:
+        - 'Unboxing': 'unboxing.md'
     - Demo: demo.md
 markdown_extensions:
   - pymdownx.highlight:

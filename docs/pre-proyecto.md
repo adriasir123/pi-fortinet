@@ -1,3 +1,8 @@
+---
+hide:
+  - navigation
+---
+
 # Definición de pre-proyecto
 
 ## Título
