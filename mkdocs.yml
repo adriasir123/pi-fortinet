@@ -47,3 +47,4 @@ plugins:
   - mkdocs-asciinema
 repo_url: https://github.com/adriasir123/pi-fortinet
 repo_name: adriasir123/pi-fortinet
+copyright: GNU General Public License v3.0 &copy; 2023 Adrián Jaramillo Rodríguez
