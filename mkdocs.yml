@@ -42,6 +42,12 @@ extra_css:
   - stylesheets/asciinema-player.css
 extra_javascript:
   - javascripts/asciinema-player.min.js
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/adriasir123
+    - icon: fontawesome/brands/linkedin
+      link: https://www.linkedin.com/in/adrian-jaramillo-rodriguez/
 plugins:
   - glightbox
   - search
