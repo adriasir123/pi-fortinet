@@ -28,6 +28,7 @@ nav:
     - Primeros pasos:
         - 'Unboxing': 'unboxing.md'
     - Demo: demo.md
+    - Bibliografía: bibliografia.md
 markdown_extensions:
   - pymdownx.highlight:
       anchor_linenums: true
