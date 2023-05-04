@@ -4,7 +4,7 @@ hide:
   - toc
 ---
 
-# Bienvenid@ a la memoria del proyecto
+# Bienvenid@ a la memoria web del proyecto
 
 ![profilepic](images/profile-pic.png){ align=left width="500" }
 
