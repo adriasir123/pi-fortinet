@@ -1,3 +1,8 @@
+---
+hide:
+  - navigation
+---
+
 # Dificultades
 
 - Al no tener licencia, no podremos tener:
