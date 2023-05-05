@@ -28,6 +28,7 @@ nav:
     - Primeros pasos:
         - 'Unboxing': 'unboxing.md'
         - 'Paneles': 'paneles.md'
+        - 'Reseteo': 'reseteo.md'
     - Objetivos: objetivos.md
     - Escenario: escenario.md
     - Demo: demo.md
