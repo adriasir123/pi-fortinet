@@ -27,7 +27,11 @@ nav:
     - Pre-proyecto: pre-proyecto.md
     - Primeros pasos:
         - 'Unboxing': 'unboxing.md'
+    - Objetivos: objetivos.md
+    - Escenario: escenario.md
     - Demo: demo.md
+    - Conclusiones: conclusiones.md
+    - Dificultades: dificultades.md
     - Bibliografía: bibliografia.md
 markdown_extensions:
   - pymdownx.highlight:
