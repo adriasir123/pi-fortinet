@@ -27,6 +27,7 @@ nav:
     - Pre-proyecto: pre-proyecto.md
     - Primeros pasos:
         - 'Unboxing': 'unboxing.md'
+        - 'Paneles': 'paneles.md'
     - Objetivos: objetivos.md
     - Escenario: escenario.md
     - Demo: demo.md
