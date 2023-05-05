@@ -30,4 +30,14 @@ Y así:
 
 ![cables-sacados](images/cables-sacados.jpeg)
 
+Aquí he sacado todos los cables juntos para que se vean mejor.
 
+El cable de alimentación está dividido en 2 y se encontraba en los laterales de la caja. Es de modelo fsp036-rhbn3 2 pines, que irá conectado al puerto DC 12V.
+
+![fortigate-cara-superior](images/fortigate-cara-superior.jpeg)
+
+Pasamos al FortiGate, aquí vemos su cara superior. Tenemos algunas instrucciones de inicio.
+
+![fortigate-cara-inferior](images/fortigate-cara-inferior.jpeg)
+
+En la cara inferior tenemos información sobre el modelo. Nuestro dispositivo es un FortiGate 60F.
