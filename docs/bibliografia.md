@@ -1,3 +1,8 @@
+---
+hide:
+  - navigation
+---
+
 # Bibliografía
 
 [FortiGate 60F panel trasero](https://www.fortinet.com/content/dam/fortinet/assets/data-sheets/fortigate-fortiwifi-60f-series.pdf#page=6)
