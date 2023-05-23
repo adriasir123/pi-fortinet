@@ -24,8 +24,15 @@
     * Verde continuo: el dispositivo tiene corriente y funciona normalmente
     * Verde intermitente: el dispositivo está arrancando
     * Apagado: el dispositivo está apagado
-3. 1 x Puerto USB 3.0
-4. 1 x Puerto consola
-5. 2 x Puertos WAN GE RJ45
-
-
+3. HA
+    * Verde continuo: el dispositivo está funcionando en un cluster HA
+    * Ámbar continuo: el dispositivo está funcionando en modo HA failover
+    * Apagado: el dispositivo está funcionando en modo normal (standalone)
+4. LINK/ACT (activity)
+    * Verde continuo: interfaz conectada
+    * Verde intermitente: interfaz con tráfico
+    * Apagado: no hay enlace establecido
+5. SPEED
+    * Verde continuo: 1 Gbps
+    * Ámbar continuo: interfaz conectada funcionando a 100 Mbps
+    * Apagado: interfaz no conectada, o conectada funcionando a 10 Mbps
