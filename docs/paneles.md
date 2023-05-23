@@ -35,4 +35,4 @@
 5. SPEED
     * Verde continuo: 1 Gbps
     * Ámbar continuo: 100 Mbps
-    * Apagado: 10 Mbps
+    * Apagado: interfaz no conectada, o conectada funcionando a 10 Mbps
