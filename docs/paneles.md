@@ -18,12 +18,12 @@
 ![panel-frontal](images/panel-frontal.jpg)
 
 1. PWR
-   * Verde continuo: hay corriente
-   * Apagado: no hay corriente
+    * Verde continuo: hay corriente
+    * Apagado: no hay corriente
 2. STATUS
-   * Verde continuo: el dispositivo tiene corriente y funciona normalmente
-   * Verde intermitente: el dispositivo está arrancando
-   * Apagado: el dispositivo está apagado
+    * Verde continuo: el dispositivo tiene corriente y funciona normalmente
+    * Verde intermitente: el dispositivo está arrancando
+    * Apagado: el dispositivo está apagado
 3. 1 x Puerto USB 3.0
 4. 1 x Puerto consola
 5. 2 x Puertos WAN GE RJ45
