@@ -1,8 +1,6 @@
 # Paneles
 
-Esta sección podría haber estado perfectamente dentro de la de unboxing, pero como quiero detallar, mejor hacerlo en una sección aparte.
-
-## Panel trasero
+## Trasero
 
 ![panel-trasero](images/panel-trasero.jpg)
 
@@ -15,10 +13,19 @@ Esta sección podría haber estado perfectamente dentro de la de unboxing, pero 
 7. 2 x Puertos FortiLink GE RJ45
 8. 5 x Puertos internos GE RJ45
 
-## Panel frontal
+## Frontal
 
 ![panel-frontal](images/panel-frontal.jpg)
 
-
+1. PWR
+   * Verde continuo: hay corriente
+   * Apagado: no hay corriente
+2. STATUS
+   * Verde continuo: el dispositivo tiene corriente y funciona normalmente
+   * Verde intermitente: el dispositivo está arrancando
+   * Apagado: el dispositivo está apagado
+3. 1 x Puerto USB 3.0
+4. 1 x Puerto consola
+5. 2 x Puertos WAN GE RJ45
 
 
