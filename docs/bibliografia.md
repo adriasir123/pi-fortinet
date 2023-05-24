@@ -10,3 +10,5 @@ hide:
 [FortiGate 60F Status Lights](https://statuslights.com/statuslights.php?vendor=Fortinet&device=FortiGate-60F){:target="_blank"}
 
 [FortiGate Front panel LEDs](https://docs.fortinet.com/document/fortigate-6000/hardware/fortigate-6000f-system-guide/912499/front-panel-leds){:target="_blank"}
+
+[Factory reset](https://community.fortinet.com/t5/FortiGate/Technical-Tip-How-To-Reset-To-Factory-Default-Configuration/ta-p/198660){:target="_blank"}
