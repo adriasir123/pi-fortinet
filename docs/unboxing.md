@@ -6,13 +6,13 @@ Al final estoy trabajando con un producto que me han prestado, pero es como si l
 
 Así pues, empezamos.
 
-![1](images/1.jpeg)
+![1](images/primeros-pasos/1.jpeg)
 
 Lo primero que nos encontramos es con una caja cuadrada muy básica, sin diseños más allá del logo de Fortinet en la cara superior.
 
 En la cara inferior simplemente hay una etiqueta pegada con información sobre el modelo y varios códigos de barras.
 
-![2](images/2.jpeg)
+![2](images/primeros-pasos/2.jpeg)
 
 Nada más abrir la caja nos encontramos con un cable Ethernet. Características:
 
@@ -22,22 +22,22 @@ Nada más abrir la caja nos encontramos con un cable Ethernet. Características:
 
 Es decir es así:
 
-![3](images/3.png)
+![3](images/primeros-pasos/3.png)
 
 Y así:
 
-![4](images/4.jpg)
+![4](images/primeros-pasos/4.jpg)
 
-![5](images/5.jpeg)
+![5](images/primeros-pasos/5.jpeg)
 
 Aquí he sacado todos los cables juntos para que se vean mejor.
 
 El cable de alimentación está dividido en 2 y se encontraba en los laterales de la caja. Es de modelo fsp036-rhbn3 2 pines, que irá conectado al puerto DC 12V.
 
-![6](images/6.jpeg)
+![6](images/primeros-pasos/6.jpeg)
 
 Pasamos al FortiGate, aquí vemos su cara superior. Tenemos algunas instrucciones de inicio.
 
-![7](images/7.jpeg)
+![7](images/primeros-pasos/7.jpeg)
 
 En la cara inferior tenemos información sobre el modelo. Nuestro dispositivo es un FortiGate 60F.

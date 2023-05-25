@@ -12,7 +12,7 @@ Tendremos que preparar nuestro clásico alambre para poder pulsar el botón de R
 
 Por ejemplo, el pin que suele venir cuando nos compramos un móvil para abrir la ranura de la SIM nos serviría perfectamente:
 
-![pin-movil](images/pin-movil.jpeg)
+![10](images/primeros-pasos/10.jpeg)
 
 ## Paso 2
 
@@ -20,7 +20,7 @@ Conectamos el FortiGate a la corriente y esperamos a que el led de STATUS parpad
 
 En este momento, dejamos pulsado el botón de RESET de esta manera durante unos segundos:
 
-![pin-movil](images/pulso-reset.jpeg)
+![11](images/primeros-pasos/11.jpeg)
 
 El led de STATUS empezará a parpadear a más velocidad, y cuando se apague podremos dejar de pulsar.
 

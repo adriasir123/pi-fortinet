@@ -6,7 +6,7 @@ Como todavía no tenemos acceso a Internet (sólo tenemos el portátil conectado
 
 Vamos a conectar nuestro cable habitual de la LAN en el siguiente puerto de WAN libre, el 1:
 
-![puerto-wan-1](images/puerto-wan-1.jpeg)
+![23](images/primeros-pasos/23.jpeg)
 
 !!! Info
 
@@ -24,7 +24,7 @@ Vamos a conectar nuestro cable habitual de la LAN en el siguiente puerto de WAN 
 
 Podemos comprobar desde la web que la interfaz está funcionando:
 
-![estado-interfaces-inicial](images/estado-interfaces-inicial.png)
+![24](images/primeros-pasos/24.png)
 
 Nos damos cuenta de que ha tomado el direccionamiento correcto por DHCP.
 
@@ -34,7 +34,7 @@ No necesitamos nada más, conectando la interfaz al puerto correcto hará que fu
 
 Nos fijamos que la IP que tengamos no haya cambiado a la de la LAN, para así saber que luego salimos a Internet "legalmente":
 
-![1](images/primeros-pasos/1.png)
+![25](images/primeros-pasos/25.png)
 
 Seguimos teniendo una IP de la red 192.168.1, la que nos da el puerto 1 del FortiGate, así que es correcto.
 
@@ -42,23 +42,23 @@ El primer paso lógico que deberíamos de hacer, antes de nada, es comprobar si 
 
 Podemos hacer ping a la puerta de enlace:
 
-![2](images/primeros-pasos/2.png)
+![26](images/primeros-pasos/26.png)
 
 Podemos hacer ping a Internet:
 
-![3](images/primeros-pasos/3.png)
+![27](images/primeros-pasos/27.png)
 
 Sabiendo que desde el FortiGate la conexión funciona, podemos probar ya lo mismo desde nuestro portátil:
 
-![4](images/primeros-pasos/4.png)
+![28](images/primeros-pasos/28.png)
 
 Funciona, pero ¿por qué?, no hemos configurado ninguna ruta en el FortiGate como podemos observar:
 
-![5](images/primeros-pasos/5.png)
+![29](images/primeros-pasos/29.png)
 
 Tendremos que mostrar la tabla de enrutamiento desde la CLI para explicarlo:
 
-![6](images/primeros-pasos/6.png)
+![30](images/primeros-pasos/30.png)
 
 Quien haya tenido contacto con Cisco se dará cuenta de que el aspecto y nomenclatura es bastante similar.
 
@@ -68,15 +68,15 @@ Esa ruta estática es la importante, y se ha creado precisamente por haber conec
 
 Como dato interesante, muestro que el FortiGate ha sido lo suficientemente inteligente para en vez de darme sus DNS que tiene propios configurados, me ha dado los DNS de la LAN:
 
-![7](images/primeros-pasos/7.png)
+![31](images/primeros-pasos/31.png)
 
 Esto sucede por esta opción que viene marcada por defecto en la interfaz WAN:
 
-![8](images/primeros-pasos/8.png)
+![32](images/primeros-pasos/32.png)
 
 Los DNS que le lleguen sobreescribirán a los del sistema que tengamos o en nuestro caso vengan configurados:
 
-![9](images/primeros-pasos/9.png)
+![33](images/primeros-pasos/33.png)
 
 Vemos que abajo salen reflejados los DNS que usa para sobreescribir.
 
@@ -90,8 +90,8 @@ Vemos que abajo salen reflejados los DNS que usa para sobreescribir.
 
 Comprobamos también que podemos hacer resoluciones DNS sin problema desde el portátil:
 
-![10](images/primeros-pasos/10.png)
+![34](images/primeros-pasos/10.png)
 
 Por último enseñaré que ahora el vídeo del inicio que no cargaba en la interfaz web por no tener Internet en el apartado anterior, ahora carga perfectamente:
 
-![11](images/primeros-pasos/11.png)
+![35](images/primeros-pasos/35.png)

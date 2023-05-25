@@ -2,7 +2,7 @@
 
 ## Trasero
 
-![panel-trasero](images/panel-trasero.jpg)
+![8](images/primeros-pasos/8.jpg)
 
 1. Botón de reset
 2. Conector de alimentación
@@ -15,7 +15,7 @@
 
 ## Frontal
 
-![panel-frontal](images/panel-frontal.jpg)
+![9](images/primeros-pasos/9.jpg)
 
 1. PWR
     * Verde continuo: hay corriente
