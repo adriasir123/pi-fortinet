@@ -61,23 +61,3 @@ Ya tendríamos acceso por completo al FortiGate:
 ![configuracion-inicial-4-fortigate](images/configuracion-inicial-4-fortigate.png)
 
 *(Falla la carga del vídeo de introducción porque aún no tenemos configurada la salida a Internet)*
-
-## Paso 5
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

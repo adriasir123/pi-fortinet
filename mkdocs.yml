@@ -30,6 +30,7 @@ nav:
         - 'Paneles': 'paneles.md'
         - 'Reseteo': 'reseteo.md'
         - 'Acceso': 'acceso.md'
+        - 'Salida a Internet': 'salida-a-internet.md'
     - Objetivos: objetivos.md
     - Escenario: escenario.md
     - Demo: demo.md
