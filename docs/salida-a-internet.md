@@ -90,7 +90,7 @@ Vemos que abajo salen reflejados los DNS que usa para sobreescribir.
 
 Comprobamos también que podemos hacer resoluciones DNS sin problema desde el portátil:
 
-![34](images/primeros-pasos/10.png)
+![34](images/primeros-pasos/34.png)
 
 Por último enseñaré que ahora el vídeo del inicio que no cargaba en la interfaz web por no tener Internet en el apartado anterior, ahora carga perfectamente:
 
