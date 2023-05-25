@@ -14,3 +14,5 @@ hide:
 [Factory reset](https://community.fortinet.com/t5/FortiGate/Technical-Tip-How-To-Reset-To-Factory-Default-Configuration/ta-p/198660){:target="_blank"}
 
 [Routing table CLI](https://help.fortinet.com/fadc/4-8-1/cli/Content/FortiADC/cli-ref/get_router_info_routing_table.htm){:target="_blank"}
+
+[Override internal DNS](https://www.reddit.com/r/fortinet/comments/cbwfup/dns_server_provided_via_dhcp/){:target="_blank"}
