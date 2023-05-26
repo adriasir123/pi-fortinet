@@ -25,14 +25,16 @@ theme:
 nav:
     - Home: index.md
     - Pre-proyecto: pre-proyecto.md
+    - Objetivos: objetivos.md
+    - Conceptos: conceptos.md
     - Primeros pasos:
         - 'Unboxing': 'unboxing.md'
         - 'Paneles': 'paneles.md'
         - 'Reseteo': 'reseteo.md'
         - 'Acceso': 'acceso.md'
         - 'Salida a Internet': 'salida-a-internet.md'
-    - Objetivos: objetivos.md
-    - Escenario: escenario.md
+    - Interfaz web: interfaz-web.md
+    - CLI: cli.md
     - Demo: demo.md
     - Conclusiones: conclusiones.md
     - Dificultades: dificultades.md
