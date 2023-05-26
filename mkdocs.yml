@@ -23,7 +23,7 @@ theme:
         icon: material/brightness-7
         name: Switch to light mode
 nav:
-    - Home: index.md
+    - Inicio: index.md
     - Pre-proyecto: pre-proyecto.md
     - Objetivos: objetivos.md
     - Conceptos: conceptos.md
