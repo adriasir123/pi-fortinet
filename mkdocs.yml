@@ -26,7 +26,11 @@ nav:
     - Inicio: index.md
     - Pre-proyecto: pre-proyecto.md
     - Objetivos: objetivos.md
-    - Conceptos: conceptos.md
+    - Conceptos:
+        - '¿Qué es un firewall?': 'conceptos/que-es-un-firewall.md'
+        - 'Historia': 'conceptos/historia.md'
+        - 'Tipos': 'conceptos/tipos.md'
+        - 'Firewall hardware VS software': 'conceptos/firewall-hardware-vs-software.md'
     - Primeros pasos:
         - 'Unboxing': 'unboxing.md'
         - 'Paneles': 'paneles.md'

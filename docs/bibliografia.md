@@ -16,3 +16,5 @@ hide:
 [Routing table CLI](https://help.fortinet.com/fadc/4-8-1/cli/Content/FortiADC/cli-ref/get_router_info_routing_table.htm){:target="_blank"}
 
 [Override internal DNS](https://www.reddit.com/r/fortinet/comments/cbwfup/dns_server_provided_via_dhcp/){:target="_blank"}
+
+[What Is a Firewall Fortinet](https://www.fortinet.com/resources/cyberglossary/firewall){:target="_blank"}
