@@ -17,6 +17,6 @@ hide:
 
 [Override internal DNS](https://www.reddit.com/r/fortinet/comments/cbwfup/dns_server_provided_via_dhcp/){:target="_blank"}
 
-[What Is a Firewall Fortinet](https://www.fortinet.com/resources/cyberglossary/firewall){:target="_blank"}
+[What is a Firewall Fortinet](https://www.fortinet.com/resources/cyberglossary/firewall){:target="_blank"}
 
 [Hardware firewalls better than software](https://www.fortinet.com/resources/cyberglossary/hardware-firewalls-better-than-software){:target="_blank"}
