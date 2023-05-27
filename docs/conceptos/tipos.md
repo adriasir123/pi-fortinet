@@ -9,7 +9,7 @@ Depende del punto de vista, podemos considerar 2 clasificaciones de tipos.
 
 Aquí tenemos una imagen para ilustrarlo mejor:
 
-![36](images/conceptos/36.webp)
+![36](../images/conceptos/36.webp)
 
 ## Por su capa/función
 
