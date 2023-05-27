@@ -39,7 +39,10 @@ nav:
         - 'Salida a Internet': 'salida-a-internet.md'
     - Interfaz web: interfaz-web.md
     - CLI: cli.md
-    - Demo: demo.md
+    - Demo:
+        - 'Escenario': 'demo/escenario.md'
+        - 'Preparación de la Raspberry': 'demo/preparacion-raspberry.md'
+        - 'Salida a Internet': 'https://pi.adrianj.eu/salida-a-internet'
     - Conclusiones: conclusiones.md
     - Dificultades: dificultades.md
     - Bibliografía: bibliografia.md
