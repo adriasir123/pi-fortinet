@@ -15,7 +15,7 @@ El hardware del firewall se basa en componentes físicos, como procesadores, mem
 
 ## ¿Qué es un firewall software?
 
-Es simplemente un programa que filtra, igual que el hardware pero con diferencias notorias como que está compartiendo recursos con otros programas. Se puede colocar de forma perimetral, pero nunca tendrá la exclusividad de un firewall hardware puede aportar.
+Es simplemente un programa que filtra, igual que el hardware pero con diferencias notorias como que está compartiendo recursos con otros programas. Se puede colocar de forma perimetral, pero nunca tendrá la exclusividad que un firewall hardware puede aportar.
 
 ## Ventajas de los firewall software
 
