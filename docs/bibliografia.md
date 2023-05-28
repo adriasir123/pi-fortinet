@@ -20,3 +20,7 @@ hide:
 [What is a Firewall Fortinet](https://www.fortinet.com/resources/cyberglossary/firewall){:target="_blank"}
 
 [Hardware firewalls better than software](https://www.fortinet.com/resources/cyberglossary/hardware-firewalls-better-than-software){:target="_blank"}
+
+[Configure DMZ on FortiGate](https://getlabsdone.com/how-to-configure-dmz-on-the-fortigate-firewall/){:target="_blank"}
+
+[Port Forwarding](https://getlabsdone.com/how-to-configure-fortigate-port-forwarding/){:target="_blank"}

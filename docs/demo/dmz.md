@@ -84,16 +84,58 @@ Comprobamos que tenemos conectividad con la IP del FortiGate:
 
 ## Paso 3
 
+Según la lógica que sigue el FortiGate, los dispositivos de la red DMZ no tienen salida a Internet a no ser que la habilitemos, así que la Raspberry no tiene conectividad hacia fuera.
 
+Para habilitar esto, primero tendremos que crear un "Address object":
 
+![67](../images/demo/67.png)
 
+![68](../images/demo/68.png)
 
+![69](../images/demo/69.png)
 
+Básicamente lo que acabamos de hacer es definir un objeto, que no es más que un conjunto de información sobre un dispositivo. Como hemos visto hemos definido su IP, en la interfaz en la que está, etc. Luego podremos usar este objeto en las políticas que defininamos.
 
+Es una forma de ahorrar trabajo para no tener que repetir siempre información en las políticas.
 
+El siguiente paso será crear la política:
 
+![70](../images/demo/70.png)
 
+![71](../images/demo/71.png)
 
+![72](../images/demo/72.png)
 
+Ahora ya la Raspberry tendrá salida a Internet:
 
+![73](../images/demo/73.jpeg)
 
+![74](../images/demo/74.jpeg)
+
+## Paso 4
+
+Por ahora desde el exterior no se puede acceder al servidor web de la Raspberry, como podemos comprobar accediendo a la IP de WAN 1:
+
+![75](../images/demo/75.png)
+
+No carga, así que no se puede acceder. Falta por configurar el port forwarding.
+
+Para ello primero tenemos que crear un "Virtual IP", el equivalente a DNAT de FortiGate:
+
+![76](../images/demo/76.png)
+
+![77](../images/demo/77.png)
+
+![78](../images/demo/78.png)
+
+Por último creamos la política:
+
+![79](../images/demo/79.png)
+
+![80](../images/demo/80.png)
+
+![81](../images/demo/81.png)
+
+Ya funcionaría, podemos acceder desde la IP de WAN 1 al servidor web:
+
+![82](../images/demo/82.png)
