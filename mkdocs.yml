@@ -43,6 +43,7 @@ nav:
         - 'Escenario': 'demo/escenario.md'
         - 'Preparación de la Raspberry': 'demo/preparacion-raspberry.md'
         - 'Salida a Internet': 'https://pi.adrianj.eu/salida-a-internet'
+        - 'DMZ': 'demo/dmz.md'
     - Conclusiones: conclusiones.md
     - Dificultades: dificultades.md
     - Bibliografía: bibliografia.md
