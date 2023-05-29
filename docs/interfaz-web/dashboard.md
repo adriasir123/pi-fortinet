@@ -40,7 +40,7 @@ Orígenes de tráfico en la red. En este caso son mi portátil y la Raspberry.
 
 ![104](../images/interfaz-web/104.png)
 
-Destinos que se han visitado, por defecto ordenados cantidad de tráfico.
+Destinos que se han visitado, por defecto ordenados por cantidad de tráfico.
 
 ## FortiView Applications
 
