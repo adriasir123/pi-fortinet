@@ -26,3 +26,5 @@ hide:
 [Port Forwarding](https://getlabsdone.com/how-to-configure-fortigate-port-forwarding/){:target="_blank"}
 
 [Guía CLI FortiGate](https://weberblog.net/cli-commands-for-troubleshooting-fortigate-firewalls/){:target="_blank"}
+
+[Certificaciones Fortinet](https://www.fortinet.com/training-certification){:target="_blank"}
