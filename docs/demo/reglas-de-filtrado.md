@@ -20,8 +20,8 @@ Hagamos la prueba:
 
 ![135](../images/demo/135.gif)
 
-Como podemos ver empiezo la prueba con la regla deshabilitada, y el ping se permite.
-En cuanto que habilito la regla el ping que se estaba ejecutando deja de funcionar.
+Como podemos ver empiezo la prueba con la regla deshabilitada, y el ping se permite.  
+En cuanto que habilito la regla el ping que se estaba ejecutando deja de funcionar.  
 Cuando vuelvo a deshabilitar la regla, el ping empieza a funcionar de nuevo.
 
 ##
