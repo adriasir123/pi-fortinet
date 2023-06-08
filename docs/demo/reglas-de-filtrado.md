@@ -2,8 +2,6 @@
 
 Vamos a añadir algunas reglas que por defecto estarán deshabilitadas. Las iremos habilitando una a una para mostrar sus distintos funcionamientos.
 
-mirar la práctica de firewall por si acaso
-
 ## Bloqueo de pings externos
 
 Regla a crear:
@@ -60,13 +58,20 @@ En cuanto que deshabilitamos la primera regla ya no funciona ningún tráfico DN
 
 Si deshabilitamos la segunda regla, vuelve a funcionar todo el tráfico DNS porque ya no hay bloqueos.
 
-## ssh solo desde la red interna
+## SSH interno a Raspberry
 
+Aquí lo que querremos hacer será permitir conexiones SSH desde la red interna a la Raspberry en la DMZ, pero desde fuera no se podrá hacer SSH.
 
+Regla a crear:
 
+![141](../images/demo/141.png)
 
+En la lista de reglas se verá así:
 
+![142](../images/demo/142.png)
 
+Hagamos la prueba:
 
+![143](../images/demo/143.gif)
 
-
+Vemos que mientras que está la regla activada, el testeo de puerto 22 y la conexión SSH funciona, mientras que cuando desactivamos la regla deja de funcionar.
