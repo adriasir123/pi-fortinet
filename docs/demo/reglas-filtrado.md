@@ -1,3 +1,0 @@
-# Reglas filtrado
-
-
