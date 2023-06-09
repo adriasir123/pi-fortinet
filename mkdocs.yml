@@ -56,6 +56,7 @@ nav:
         - 'Salida a Internet': 'https://pi.adrianj.eu/salida-a-internet'
         - 'DMZ': 'demo/dmz.md'
         - 'Reglas de filtrado': 'demo/reglas-de-filtrado.md'
+        - 'Web Filter': 'demo/web-filter.md'
     - Conclusiones: conclusiones.md
     - Dificultades: dificultades.md
     - Bibliografía: bibliografia.md
