@@ -138,4 +138,8 @@ Por último creamos la política:
 
 Ya funcionaría, podemos acceder desde la IP de WAN 1 al servidor web:
 
-![82](../images/demo/82.png)
+![82](../images/demo/82.gif)
+
+Como vemos en la demostración, mientras que la política está activada podemos acceder, pero si la desactivamos no funciona el acceso, se queda cargando infinitamente la página.
+
+No se ve que está cargando infinitamente porque el programa que uso peek no me deja grabar la lista de tabs por espacio en la pantalla, pero es así.
